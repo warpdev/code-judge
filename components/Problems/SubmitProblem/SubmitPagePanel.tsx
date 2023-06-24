@@ -6,6 +6,8 @@ import { useRef, useState } from "react";
 import type { editor } from "monaco-editor";
 import { submitProblem } from "@/utils/judgeClientUtils";
 import { useParams } from "next/navigation";
+import { twJoin, twMerge } from "tailwind-merge";
+import { actionOpacity, roundButton } from "@/style/baseStyle";
 
 const SubmitPagePanel = ({
   availableLangs,
@@ -23,6 +25,8 @@ const SubmitPagePanel = ({
     const code = editorRef.current?.getValue();
     if (!code) return;
     const { id: sid } = await submitProblem(id, code, currentLanguage.id);
+    window.opener?.postMessage("submitted", window.location.origin);
+    window.close();
   };
 
   return (
@@ -38,7 +42,17 @@ const SubmitPagePanel = ({
         defaultValue={`#include <iostream>`}
         theme="vs-dark"
       />
-      <button onClick={handleSubmission}>test</button>
+      <button
+        onClick={handleSubmission}
+        className={twMerge(
+          roundButton,
+          "bg-emerald-500 font-bold text-neutral-50",
+          "px-4 py-2",
+          actionOpacity
+        )}
+      >
+        Submit
+      </button>
     </div>
   );
 };

@@ -41,8 +41,6 @@ const SubmissionDetailPage = async ({
     }
   );
 
-  console.log(judgeResult);
-
   return (
     <div>
       <h1>Submission Detail - {submission?.problem.title}</h1>
