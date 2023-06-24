@@ -1,8 +1,15 @@
 import { fetchJudgeApi } from "@/utils/judgeServerUtils";
 import { ILanguage } from "@/types/common";
 import SubmitPagePanel from "@/components/Problems/SubmitProblem/SubmitPagePanel";
+import { getServerUser } from "@/utils/serverUtils";
+import { redirect } from "next/navigation";
 
 const SubmitPage = async () => {
+  const user = getServerUser();
+  if (!user) {
+    redirect("/api/auth/signin?callbackUrl=" + window.location.href);
+  }
+
   const availableLanguages = (
     await fetchJudgeApi("/languages", {
       next: {

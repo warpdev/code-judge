@@ -11,7 +11,7 @@ const UserProfilePage = async () => {
   const user = await getServerUser();
 
   if (!user) {
-    redirect("/api/auth/signin");
+    redirect("/api/auth/signin?callbackUrl=" + window.location.href);
   }
 
   const submissions = await prisma.submission.findMany({
@@ -42,7 +42,10 @@ const UserProfilePage = async () => {
       <h2 className={twJoin(title, "mt-8")}>My Submissions</h2>
       <SubmissionsListPanel submissions={submissions} />
       <div className="flex justify-end">
-        <SignOutButton className="border-2 border-neutral-400" />
+        <SignOutButton
+          className="border-2 border-neutral-400"
+          callbackUrl="/"
+        />
       </div>
     </div>
   );

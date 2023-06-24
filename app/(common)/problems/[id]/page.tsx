@@ -4,6 +4,8 @@ import { twJoin } from "tailwind-merge";
 import { actionToDark, roundButton, title } from "@/style/baseStyle";
 import Link from "next/link";
 import OpenSubmitButton from "@/components/Problems/OpenSubmitButton";
+import { getServerUser } from "@/utils/serverUtils";
+import SignInButton from "@/components/Auth/SignInButton";
 
 const sectionTitle = twJoin("mb-4", "text-lg font-bold text-neutral-900");
 const monoContent = twJoin(
@@ -24,6 +26,8 @@ const ProblemDetailPage = async ({
       id: params.id,
     },
   });
+
+  const user = await getServerUser();
 
   if (!problem) {
     redirect("/problems");
@@ -60,7 +64,11 @@ const ProblemDetailPage = async ({
           <pre className={monoContent}>{problem.sampleOutput}</pre>
         </div>
       </div>
-      <OpenSubmitButton id={params.id} />
+      {user ? (
+        <OpenSubmitButton id={params.id} />
+      ) : (
+        <SignInButton className="border-2 border-neutral-400" />
+      )}
     </div>
   );
 };

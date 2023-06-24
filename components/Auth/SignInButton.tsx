@@ -2,10 +2,10 @@
 
 import { twJoin } from "tailwind-merge";
 import { actionNeutral, roundButton } from "@/style/baseStyle";
-import { signOut } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { BaseProps } from "@/types/common";
 
-const SignOutButton = ({
+const SignInButton = ({
   className,
   callbackUrl,
 }: BaseProps & {
@@ -15,12 +15,12 @@ const SignOutButton = ({
     <>
       <button
         className={twJoin(roundButton, actionNeutral, className)}
-        onClick={() => signOut({ callbackUrl })}
+        onClick={() => signIn(undefined, { callbackUrl })}
       >
-        Sign out
+        Sign In
       </button>
     </>
   );
 };
 
-export default SignOutButton;
+export default SignInButton;
