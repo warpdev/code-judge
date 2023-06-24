@@ -9,7 +9,7 @@ const OpenSubmitButton = ({ id }: { id: string }) => {
   const router = useRouter();
 
   const handleClick = useCallback(() => {
-    if (submitWindow) {
+    if (submitWindow && !submitWindow.closed) {
       submitWindow.focus();
       return;
     }
