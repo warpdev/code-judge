@@ -128,7 +128,7 @@ export const TiptapExtensions = [
 
 export const TiptapEditorProps: EditorProps = {
   attributes: {
-    class: `prose-lg prose-headings:font-display font-default focus:outline-none max-w-full selection:bg-blue-500/30`,
+    class: `prose prose-headings:font-display font-default focus:outline-none max-w-full selection:bg-blue-500/30`,
   },
   handleDOMEvents: {
     keydown: (_view, event) => {

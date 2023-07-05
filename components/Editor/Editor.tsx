@@ -6,6 +6,7 @@ import { useDebouncedCallback } from "use-debounce";
 import useStorage from "@/utils/hooks/useStorage";
 import { EditorBubbleMenu } from "@/components/Editor/EditorBubbleMenu";
 
+//TODO: add Syntax Highlighting
 const Editor = ({
   id,
   onChange,

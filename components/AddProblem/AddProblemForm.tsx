@@ -51,7 +51,7 @@ const InputRow = ({
     <span className="flex flex-col gap-2">
       <label htmlFor={id}>{label}</label>
       {type === "editor" ? (
-        <div className={inputStyle}>
+        <div className="rounded border border-neutral-700 p-2">
           <Controller
             control={control}
             render={({ field: { onChange } }) => (
