@@ -1,13 +1,20 @@
 "use client";
 
-import { SubmitHandler, useForm, UseFormRegister } from "react-hook-form";
+import {
+  Control,
+  Controller,
+  FieldError,
+  SubmitHandler,
+  useForm,
+  UseFormRegister,
+} from "react-hook-form";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { createReactEditorJS } from "react-editor-js";
-import { EDITOR_JS_TOOLS } from "@/lib/editor";
 import { baseInput } from "@/style/baseStyle";
-
-const ReactEditorJS = createReactEditorJS();
+import { problemInputs } from "@/constants/problem";
+import { IProblemInput } from "@/types/common";
+import React from "react";
+import Editor from "@/components/Editor/Editor";
 
 /*
   title String
@@ -21,83 +28,52 @@ const ReactEditorJS = createReactEditorJS();
   sampleInput String
   sampleOutput String
  */
-interface InputValue {
-  title: string;
-  description: string;
-  difficulty: string;
-  input: string;
-  output: string;
-  sampleInput: string;
-  sampleOutput: string;
-  timeLimit: number;
-  memoryLimit: number;
-}
-
-const inputs = [
-  {
-    id: "title",
-    label: "Title",
-    required: true,
-  },
-  {
-    id: "description",
-    label: "Description",
-    required: true,
-  },
-  {
-    id: "difficulty",
-    label: "Difficulty",
-    required: true,
-  },
-  {
-    id: "input",
-    label: "Input",
-    required: true,
-  },
-  {
-    id: "output",
-    label: "Output",
-    required: true,
-  },
-  {
-    id: "sampleInput",
-    label: "Sample Input",
-    required: true,
-  },
-  {
-    id: "sampleOutput",
-    label: "Sample Output",
-    required: true,
-  },
-  {
-    id: "timeLimit",
-    label: "Time Limit",
-    required: true,
-  },
-  {
-    id: "memoryLimit",
-    label: "Memory Limit",
-    required: true,
-  },
-];
+type InputValue = Record<
+  (typeof problemInputs)[number]["id"],
+  IProblemInput["type"]
+>;
 
 const inputStyle = baseInput;
 
 const InputRow = ({
-  id,
-  label,
+  control,
+  inputProps: { id, label, placeholder, options, type, inputMode },
   register,
-  required = true,
+  error,
 }: {
-  id: keyof InputValue;
-  label: string;
+  control: Control<InputValue>;
+  inputProps: IProblemInput;
   register: UseFormRegister<InputValue>;
-  required?: boolean;
+  error?: FieldError;
 }) => {
   return (
     <span className="flex flex-col gap-2">
       <label htmlFor={id}>{label}</label>
-      <input id={id} className={inputStyle} {...register(id, { required })} />
+      {type === "multiline" ? (
+        <div className={inputStyle}>
+          <Controller
+            control={control}
+            render={({ field: { onChange } }) => (
+              <Editor id={id} onChange={onChange} />
+            )}
+            name={id}
+          />
+        </div>
+      ) : (
+        // <textarea
+        //   id={id}
+        //   className={inputStyle}
+        //   {...register(id, options)}
+        //   placeholder={placeholder}
+        // />
+        <input
+          className={inputStyle}
+          placeholder={placeholder}
+          inputMode={inputMode}
+          {...register(id, options)}
+        />
+      )}
+      {error && <span className="text-sm text-red-400">{error.message}</span>}
     </span>
   );
 };
@@ -106,6 +82,7 @@ const AddProblemForm = () => {
   const {
     register,
     handleSubmit,
+    control,
     watch,
     formState: { errors },
   } = useForm<InputValue>();
@@ -118,20 +95,20 @@ const AddProblemForm = () => {
   };
 
   return (
-    <form className="flex flex-col gap-4 p-4" onSubmit={handleSubmit(onSubmit)}>
+    <div className="flex flex-col gap-4 p-4">
       {/* register your input into the hook by invoking the "register" function */}
-      {inputs.map((input) => (
+      {problemInputs.map((input) => (
         <InputRow
           key={input.id}
-          label={input.label}
           register={register}
-          required={input.required}
-          id={input.id as any}
+          control={control}
+          inputProps={input}
+          error={errors[input.id]}
         />
       ))}
 
-      <input type="submit" />
-    </form>
+      <input type="button" onClick={handleSubmit(onSubmit)} />
+    </div>
   );
 };
 
