@@ -6,6 +6,7 @@ import Link from "next/link";
 import OpenSubmitButton from "@/components/Problems/OpenSubmitButton";
 import { getServerUser } from "@/utils/serverUtils";
 import SignInButton from "@/components/Auth/SignInButton";
+import Viewer from "@/components/Editor/Viewer";
 
 const sectionTitle = twJoin("mb-4", "text-lg font-bold text-neutral-900");
 const monoContent = twJoin(
@@ -43,11 +44,15 @@ const ProblemDetailPage = async ({
         </span>
       </div>
       <h2 className="sr-only">Description</h2>
-      <p className="rounded-lg bg-neutral-200 p-4">{problem.description}</p>
+      <p className="rounded-lg bg-neutral-200 p-4">
+        <Viewer value={problem.description} />
+      </p>
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
         <div>
           <h2 className={sectionTitle}>Input Format</h2>
-          <p>{problem.input}</p>
+          <p>
+            <Viewer value={problem.input} />
+          </p>
         </div>
         <div>
           <h2 className={sectionTitle}>Sample Input</h2>
@@ -57,7 +62,9 @@ const ProblemDetailPage = async ({
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
         <div>
           <h2 className={sectionTitle}>Output Format</h2>
-          <p>{problem.output}</p>
+          <p>
+            <Viewer value={problem.output} />
+          </p>
         </div>
         <div>
           <h2 className={sectionTitle}>Sample Output</h2>

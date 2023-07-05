@@ -1,3 +1,4 @@
+"use client";
 import { EditorContent, useEditor } from "@tiptap/react";
 import { TiptapEditorProps, TiptapExtensions } from "@/lib/editorConfigs";
 import { useEffect, useState } from "react";
@@ -5,7 +6,15 @@ import { useDebouncedCallback } from "use-debounce";
 import useStorage from "@/utils/hooks/useStorage";
 import { EditorBubbleMenu } from "@/components/Editor/EditorBubbleMenu";
 
-const Editor = ({ id, onChange }: { id: string; onChange: any }) => {
+const Editor = ({
+  id,
+  onChange,
+  readOnly,
+}: {
+  id: string;
+  onChange: any;
+  readOnly?: boolean;
+}) => {
   const [content, setContent, isLoading] = useStorage(id);
   const [saveStatus, setSaveStatus] = useState("Saved");
   const [hydrated, setHydrated] = useState(false);
@@ -54,6 +63,12 @@ const Editor = ({ id, onChange }: { id: string; onChange: any }) => {
       setHydrated(true);
     }
   }, [editor, content, hydrated, isLoading, onChange]);
+
+  useEffect(() => {
+    if (editor && readOnly) {
+      editor.setEditable(false);
+    }
+  }, [editor, readOnly]);
 
   return (
     <>

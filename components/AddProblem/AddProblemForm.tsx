@@ -10,11 +10,12 @@ import {
 } from "react-hook-form";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { baseInput } from "@/style/baseStyle";
+import { actionToDark, baseInput, roundButton } from "@/style/baseStyle";
 import { problemInputs } from "@/constants/problem";
 import { IProblemInput } from "@/types/common";
 import React from "react";
 import Editor from "@/components/Editor/Editor";
+import { twJoin } from "tailwind-merge";
 
 /*
   title String
@@ -49,7 +50,7 @@ const InputRow = ({
   return (
     <span className="flex flex-col gap-2">
       <label htmlFor={id}>{label}</label>
-      {type === "multiline" ? (
+      {type === "editor" ? (
         <div className={inputStyle}>
           <Controller
             control={control}
@@ -59,13 +60,14 @@ const InputRow = ({
             name={id}
           />
         </div>
+      ) : type === "multiline" ? (
+        <textarea
+          id={id}
+          className={inputStyle}
+          {...register(id, options)}
+          placeholder={placeholder}
+        />
       ) : (
-        // <textarea
-        //   id={id}
-        //   className={inputStyle}
-        //   {...register(id, options)}
-        //   placeholder={placeholder}
-        // />
         <input
           className={inputStyle}
           placeholder={placeholder}
@@ -107,7 +109,16 @@ const AddProblemForm = () => {
         />
       ))}
 
-      <input type="button" onClick={handleSubmit(onSubmit)} />
+      <button
+        onClick={handleSubmit(onSubmit)}
+        className={twJoin(
+          roundButton,
+          "bg-emerald-500 py-2 font-bold text-white",
+          actionToDark
+        )}
+      >
+        Submit
+      </button>
     </div>
   );
 };

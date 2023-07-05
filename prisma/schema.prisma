@@ -60,13 +60,13 @@ model VerificationToken {
 model Problem {
   id           String       @id @default(cuid())
   title        String
-  description  String
+  description  Json
   difficulty   String
   tags         String[]
   memoryLimit  Int
   timeLimit    Int
-  input        String
-  output       String
+  input        Json
+  output       Json
   sampleInput  String
   sampleOutput String
   createdAt    DateTime     @default(now())

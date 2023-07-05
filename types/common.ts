@@ -14,7 +14,7 @@ export interface IProblemInput {
   id: string;
   label: string;
   placeholder?: string;
-  type: "multiline" | "text" | "number";
+  type: "multiline" | "text" | "number" | "editor";
   inputMode?: "text" | "numeric";
   options: RegisterOptions;
 }

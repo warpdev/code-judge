@@ -19,7 +19,7 @@ export const problemInputs: IProblemInput[] = [
   {
     id: "description",
     label: "Description",
-    type: "multiline",
+    type: "editor",
     options: {
       required: {
         value: true,
@@ -41,7 +41,7 @@ export const problemInputs: IProblemInput[] = [
   {
     id: "input",
     label: "Input",
-    type: "multiline",
+    type: "editor",
     options: {
       required: {
         value: true,
@@ -52,7 +52,7 @@ export const problemInputs: IProblemInput[] = [
   {
     id: "output",
     label: "Output",
-    type: "multiline",
+    type: "editor",
     options: {
       required: {
         value: true,
