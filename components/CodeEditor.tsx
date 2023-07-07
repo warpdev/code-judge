@@ -8,16 +8,19 @@ const CodeEditor = (
     defaultValue,
     language,
     theme,
+    setEditor,
   }: {
     defaultValue?: string;
     language: string;
     theme: string;
+    setEditor: (editor: any) => void;
   },
   ref: ForwardedRef<any>
 ) => {
   function handleEditorDidMount(editor: any) {
     // @ts-ignore
     ref.current = editor;
+    setEditor(editor);
   }
 
   return (

@@ -47,6 +47,7 @@ model User {
   sessions      Session[]
   role          String?      @default("user")
   submissions   Submission[]
+  Hint          Hint[]
 }
 
 model VerificationToken {
@@ -71,6 +72,7 @@ model Problem {
   sampleOutput String
   createdAt    DateTime     @default(now())
   submission   Submission[]
+  Hint         Hint[]
 }
 
 model Submission {
@@ -81,4 +83,14 @@ model Submission {
   createdAt       DateTime @default(now())
   user            User     @relation(fields: [userId], references: [id])
   problem         Problem  @relation(fields: [problemId], references: [id])
+}
+
+model Hint {
+  id        String   @id @default(cuid())
+  problemId String
+  userId    String
+  content   String
+  createdAt DateTime @default(now())
+  problem   Problem  @relation(fields: [problemId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
 }

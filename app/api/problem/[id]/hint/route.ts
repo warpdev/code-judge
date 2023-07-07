@@ -5,31 +5,33 @@ import { Ratelimit } from "@upstash/ratelimit";
 import { PROMPTS } from "@/constants/prompts";
 import { getProblemInfo } from "@/utils/dbUtils";
 import { makeHintUserPrompt } from "@/utils/commonUtils";
+import prisma from "@/lib/prisma";
+import { getServerUser } from "@/utils/serverUtils";
+import { NextResponse } from "next/server";
 
 const config = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
 const openai = new OpenAIApi(config);
 
-export const runtime = "edge";
-
 export async function POST(
   req: Request,
   { params }: { params: { id: string } }
 ): Promise<Response> {
+  const userInfo = await getServerUser();
+  if (!userInfo) return NextResponse.error();
   if (
     process.env.NODE_ENV != "development" &&
     process.env.KV_REST_API_URL &&
     process.env.KV_REST_API_TOKEN
   ) {
-    const ip = req.headers.get("x-forwarded-for");
     const ratelimit = new Ratelimit({
       redis: kv,
       limiter: Ratelimit.slidingWindow(50, "10 m"),
     });
 
     const { success, limit, reset, remaining } = await ratelimit.limit(
-      `hint_ratelimit_${ip}`
+      `hint_ratelimit_${userInfo.id}`
     );
 
     if (!success) {
@@ -73,7 +75,19 @@ export async function POST(
     n: 1,
   });
 
-  const stream = OpenAIStream(response);
+  // Convert the response into a friendly text-stream
+  const stream = OpenAIStream(response, {
+    onCompletion: async (completion) => {
+      await prisma.hint.create({
+        data: {
+          userId: userInfo.id,
+          problemId: problemInfo.id,
+          content: completion,
+        },
+      });
+    },
+  });
 
+  // Respond with the stream
   return new StreamingTextResponse(stream);
 }

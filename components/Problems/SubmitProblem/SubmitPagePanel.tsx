@@ -10,11 +10,15 @@ import { twJoin, twMerge } from "tailwind-merge";
 import { actionOpacity, roundButton } from "@/style/baseStyle";
 import { useChat, useCompletion } from "ai/react";
 import { toast } from "sonner";
+import ExtraInfoPanel from "@/components/Problems/SubmitProblem/ExtraInfoPanel";
+import { Hint } from "@prisma/client";
 
 const SubmitPagePanel = ({
   availableLangs,
+  savedHints,
 }: {
   availableLangs: ILanguage[];
+  savedHints: Hint[];
 }) => {
   const [currentLanguage, setCurrentLanguage] = useState<ILanguage>(
     availableLangs.find((lang) => lang.monacoLanguage === "python") ||
@@ -23,19 +27,9 @@ const SubmitPagePanel = ({
   const editorRef = useRef<editor.IStandaloneCodeEditor>(null);
   const { id } = useParams();
 
-  const { isLoading, setInput, completion, complete } = useCompletion({
-    id: "hint",
-    api: "/api/generate/hint",
-    onResponse: (response) => {
-      if (response.status === 429) {
-        toast.error("You have reached your request limit for the day.");
-        return;
-      }
-    },
-    onError: () => {
-      toast.error("Something went wrong.");
-    },
-  });
+  const [editor, setEditor] = useState<
+    editor.IStandaloneCodeEditor | undefined
+  >();
 
   const handleSubmission = useCallback(async () => {
     const code = editorRef.current?.getValue();
@@ -45,12 +39,6 @@ const SubmitPagePanel = ({
     window.close();
   }, [currentLanguage.id, id]);
 
-  const handleGetHint = useCallback(async () => {
-    const code = editorRef.current?.getValue();
-    if (!code) return;
-    await complete(code);
-  }, [complete]);
-
   return (
     <div className="flex flex-col gap-8">
       <SettingPanel
@@ -59,23 +47,12 @@ const SubmitPagePanel = ({
         setLanguage={setCurrentLanguage}
       />
       <CodeEditor
+        setEditor={setEditor}
         ref={editorRef}
         language={currentLanguage.monacoLanguage}
         defaultValue={`#include <iostream>`}
         theme="vs-dark"
       />
-      <span>{completion}</span>
-      <button
-        onClick={handleGetHint}
-        className={twMerge(
-          roundButton,
-          "bg-emerald-500 font-bold text-neutral-50",
-          "px-4 py-2",
-          actionOpacity
-        )}
-      >
-        Get Hint
-      </button>
       <button
         onClick={handleSubmission}
         className={twMerge(
@@ -87,6 +64,7 @@ const SubmitPagePanel = ({
       >
         Submit
       </button>
+      <ExtraInfoPanel savedHints={savedHints} editor={editor} />
     </div>
   );
 };

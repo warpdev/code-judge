@@ -3,12 +3,29 @@ import { ILanguage } from "@/types/common";
 import SubmitPagePanel from "@/components/Problems/SubmitProblem/SubmitPagePanel";
 import { getServerUser } from "@/utils/serverUtils";
 import { redirect } from "next/navigation";
+import { getProblemInfo } from "@/utils/dbUtils";
+import ProblemInfoPanel from "@/components/Problems/SubmitProblem/ProblemInfoPanel";
+import prisma from "@/lib/prisma";
 
-const SubmitPage = async () => {
-  const user = getServerUser();
+const SubmitPage = async ({
+  params,
+}: {
+  params: {
+    id: string;
+  };
+}) => {
+  const user = await getServerUser();
   if (!user) {
     redirect("/api/auth/signin?callbackUrl=" + window.location.href);
   }
+
+  const problemInfo = await getProblemInfo(params.id);
+  const savedHints = await prisma.hint.findMany({
+    where: {
+      problemId: params.id,
+      userId: user.id,
+    },
+  });
 
   const availableLanguages = (
     await fetchJudgeApi("/languages", {
@@ -29,7 +46,15 @@ const SubmitPage = async () => {
     };
   });
 
-  return <SubmitPagePanel availableLangs={availableLanguages} />;
+  return (
+    <>
+      <ProblemInfoPanel problem={problemInfo} />
+      <SubmitPagePanel
+        availableLangs={availableLanguages}
+        savedHints={savedHints}
+      />
+    </>
+  );
 };
 
 export default SubmitPage;
