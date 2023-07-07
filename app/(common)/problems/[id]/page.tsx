@@ -1,12 +1,11 @@
-import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
-import { twJoin } from "tailwind-merge";
+import { twJoin, twMerge } from "tailwind-merge";
 import { actionToDark, roundButton, title } from "@/style/baseStyle";
-import Link from "next/link";
 import OpenSubmitButton from "@/components/Problems/OpenSubmitButton";
 import { getServerUser } from "@/utils/serverUtils";
 import SignInButton from "@/components/Auth/SignInButton";
 import Viewer from "@/components/Editor/Viewer";
+import { getProblemInfo } from "@/utils/dbUtils";
 
 const sectionTitle = twJoin("mb-4", "text-lg font-bold text-neutral-900");
 const monoContent = twJoin(
@@ -22,11 +21,7 @@ const ProblemDetailPage = async ({
     id: string;
   };
 }) => {
-  const problem = await prisma.problem.findUnique({
-    where: {
-      id: params.id,
-    },
-  });
+  const problem = await getProblemInfo(params.id);
 
   const user = await getServerUser();
 
@@ -72,7 +67,20 @@ const ProblemDetailPage = async ({
         </div>
       </div>
       {user ? (
-        <OpenSubmitButton id={params.id} />
+        <div className="flex gap-2">
+          <OpenSubmitButton id={params.id} />
+          <a
+            className={twMerge(
+              roundButton,
+              "bg-emerald-500 font-bold text-neutral-50",
+              "px-4 py-2",
+              actionToDark
+            )}
+            href={`/problems/${params.id}/submit`}
+          >
+            Start Coding!
+          </a>
+        </div>
       ) : (
         <SignInButton className="border-2 border-neutral-400" />
       )}

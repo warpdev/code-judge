@@ -6,7 +6,6 @@ const Viewer = ({ value }: { value: any }) => {
   const editor = useEditor({
     extensions: TiptapExtensions,
     editorProps: TiptapEditorProps,
-    onUpdate: (e) => {},
     content: value,
     editable: false,
   });

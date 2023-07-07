@@ -3,6 +3,7 @@ import { twJoin, twMerge } from "tailwind-merge";
 import { actionToDark, roundButton } from "@/style/baseStyle";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { MoveUpRight } from "lucide-react";
 
 const OpenSubmitButton = ({ id }: { id: string }) => {
   const [submitWindow, setSubmitWindow] = useState<Window | null>(null);
@@ -43,10 +44,12 @@ const OpenSubmitButton = ({ id }: { id: string }) => {
         roundButton,
         "bg-emerald-500 font-bold text-neutral-50",
         "px-4 py-2",
-        actionToDark
+        actionToDark,
+        "flex items-center"
       )}
     >
       Start Coding!
+      <MoveUpRight className="h-4 w-4" />
     </button>
   );
 };
