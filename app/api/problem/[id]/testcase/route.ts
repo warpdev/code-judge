@@ -22,6 +22,8 @@ export const POST = async (
   }: { input: string; output: string; idx?: number } = body;
   const { id: problemId } = params;
 
+  const isEdit = idx !== undefined;
+
   const problemInfo = await getProblemInfo(problemId);
   if (!problemInfo) {
     return ResTypes.NOT_FOUND("Problem not found");
@@ -37,12 +39,12 @@ export const POST = async (
     const { data: inputResult, error: inputError } = await supabase.storage
       .from("testcase")
       .upload(`${params.id}/${testSetNumber}.in`, input, {
-        upsert: !!idx,
+        upsert: isEdit,
       });
     const { data: outputResult, error: outputError } = await supabase.storage
       .from("testcase")
       .upload(`${params.id}/${testSetNumber}.out`, output, {
-        upsert: !!idx,
+        upsert: isEdit,
       });
     if (inputError || outputError) {
       return ResTypes.OTHER_ERROR;
