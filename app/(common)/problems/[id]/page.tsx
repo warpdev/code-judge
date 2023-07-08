@@ -46,7 +46,7 @@ const ProblemDetailPage = async ({
         <div>
           <h2 className={sectionTitle}>Input Format</h2>
           <p>
-            <Viewer value={problem.input} />
+            <Viewer value={problem.inputFormat} />
           </p>
         </div>
         <div>
@@ -58,7 +58,7 @@ const ProblemDetailPage = async ({
         <div>
           <h2 className={sectionTitle}>Output Format</h2>
           <p>
-            <Viewer value={problem.output} />
+            <Viewer value={problem.outputFormat} />
           </p>
         </div>
         <div>

@@ -66,10 +66,11 @@ model Problem {
   tags         String[]
   memoryLimit  Int
   timeLimit    Int
-  input        Json
-  output       Json
+  inputFormat  Json
+  outputFormat Json
   sampleInput  String
   sampleOutput String
+  testSetSize  Int          @default(0)
   createdAt    DateTime     @default(now())
   submission   Submission[]
   Hint         Hint[]

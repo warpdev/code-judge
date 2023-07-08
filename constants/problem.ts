@@ -39,7 +39,7 @@ export const problemInputs: IProblemInput[] = [
     },
   },
   {
-    id: "input",
+    id: "inputFormat",
     label: "Input",
     type: "editor",
     options: {
@@ -50,7 +50,7 @@ export const problemInputs: IProblemInput[] = [
     },
   },
   {
-    id: "output",
+    id: "outputFormat",
     label: "Output",
     type: "editor",
     options: {

@@ -51,8 +51,8 @@ export async function POST(
   const prompt = makeHintUserPrompt(
     JSON.stringify(problemInfo.description),
     userCode,
-    JSON.stringify(problemInfo.input),
-    JSON.stringify(problemInfo.output)
+    JSON.stringify(problemInfo.inputFormat),
+    JSON.stringify(problemInfo.outputFormat)
   );
 
   const response = await openai.createChatCompletion({
