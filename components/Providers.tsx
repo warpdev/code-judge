@@ -2,6 +2,7 @@
 
 import { SessionProvider } from "next-auth/react";
 import { SWRConfig } from "swr";
+import { Toaster } from "sonner";
 
 interface Props {
   children: React.ReactNode;
@@ -17,6 +18,7 @@ export const Providers = ({ children }: Props) => {
         }}
       >
         {children}
+        <Toaster position="bottom-right" />
       </SWRConfig>
     </SessionProvider>
   );

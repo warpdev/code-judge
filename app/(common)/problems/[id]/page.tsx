@@ -7,6 +7,7 @@ import { getProblemInfo } from "@/utils/dbUtils";
 import { generateHTML } from "@tiptap/html";
 import { TiptapExtensions } from "@/lib/editorConfigs";
 import Link from "next/link";
+import DeleteProblemButton from "@/components/Problems/DeleteProblemButton";
 
 const sectionTitle = twJoin("mb-4", "text-lg font-bold text-neutral-900");
 const monoContent = twJoin(
@@ -98,7 +99,8 @@ const ProblemDetailPage = async ({
             </Link>
           </div>
           {isAdmin && (
-            <div>
+            <div className="flex items-center gap-2">
+              <DeleteProblemButton problem={problem} />
               <Link
                 className={twMerge(
                   roundButton,

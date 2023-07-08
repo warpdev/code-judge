@@ -7,7 +7,7 @@ export const baseInput = twJoin(
   "focus:outline-none focus:border-emerald-400"
 );
 
-export const roundButton = twJoin("block rounded px-2 py-1");
+export const roundButton = twJoin("block rounded px-4 py-2");
 
 export const actionNeutral = twJoin(
   "transition",

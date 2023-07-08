@@ -12,15 +12,7 @@ export const metadata = {
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <Providers>
-          <main className="container mx-auto h-full w-full px-10">
-            {children}
-          </main>
-        </Providers>
-      </body>
-    </html>
+    <main className="container mx-auto h-full w-full px-10">{children}</main>
   );
 };
 
