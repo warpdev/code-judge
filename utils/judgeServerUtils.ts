@@ -1,4 +1,5 @@
 import { JUDGE_API_URL } from "@/constants/common";
+import { ITestSet } from "@/types/common";
 
 const JUDGE_HEADER = {
   "Content-Type": "application/json",
@@ -6,7 +7,10 @@ const JUDGE_HEADER = {
   "X-RapidAPI-Host": process.env.JUDGE_HOST || "",
 };
 
-export const fetchJudgeApi = async (url: string, options?: RequestInit) => {
+export const fetchJudgeApi = async <T>(
+  url: string,
+  options?: RequestInit
+): Promise<T> => {
   const response = await fetch(JUDGE_API_URL + url, {
     headers: JUDGE_HEADER,
     ...options,
@@ -38,7 +42,7 @@ export const postSubmission = async ({
   input: string;
   output: string;
 }): Promise<string> => {
-  const { token } = await fetchJudgeApi(
+  const { token } = await fetchJudgeApi<{ token: string }>(
     "/submissions?base64_encoded=true&fields=*",
     {
       method: "POST",
@@ -51,4 +55,31 @@ export const postSubmission = async ({
     }
   );
   return token;
+};
+
+export const postBatchSubmission = async ({
+  langId,
+  code,
+  testSets,
+}: {
+  langId: number;
+  code: string;
+  testSets: ITestSet[];
+}): Promise<string[]> => {
+  const encodedCode = btoa(code);
+  const tokens = await fetchJudgeApi<{ token: string }[]>(
+    "/submissions/batch?base64_encoded=true&fields=*",
+    {
+      method: "POST",
+      body: JSON.stringify({
+        submissions: testSets.map((testSet) => ({
+          language_id: langId,
+          source_code: encodedCode,
+          stdin: btoa(testSet.input),
+          expected_output: btoa(testSet.output),
+        })),
+      }),
+    }
+  );
+  return tokens.map((token) => token.token);
 };

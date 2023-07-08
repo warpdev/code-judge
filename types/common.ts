@@ -18,3 +18,8 @@ export interface IProblemInput {
   inputMode?: "text" | "numeric";
   options: RegisterOptions;
 }
+
+export interface ITestSet {
+  input: string;
+  output: string;
+}
