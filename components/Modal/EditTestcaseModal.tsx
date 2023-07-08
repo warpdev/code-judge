@@ -12,6 +12,7 @@ import {
   roundButton,
 } from "@/style/baseStyle";
 import axios from "axios";
+import { useSWRConfig } from "swr";
 
 const inputStyle = twJoin(
   "h-40",
@@ -41,6 +42,8 @@ const EditTestcaseModal = ({
     !isNew && `/api/problem/${problem.id}/testcase?idx=${caseNumber}`
   );
 
+  const { mutate: mutateProblem } = useSWRConfig();
+
   const {
     register,
     handleSubmit,
@@ -57,13 +60,14 @@ const EditTestcaseModal = ({
 
   const submitData = async (data: ITestCase) => {
     await axios.post(`/api/problem/${problem.id}/testcase`, {
-      idx: caseNumber,
+      idx: isNew ? undefined : caseNumber,
       input: data.input,
       output: data.output,
     });
     mutate(data, {
       revalidate: false,
     });
+    mutateProblem(`/api/problem/${problem.id}`);
     handleClose();
   };
 

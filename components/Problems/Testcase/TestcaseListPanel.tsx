@@ -1,12 +1,17 @@
-import { getProblemInfo } from "@/utils/dbUtils";
+"use client";
 import { redirect } from "next/navigation";
-import { twMerge } from "tailwind-merge";
-import { actionToDark, roundButton } from "@/style/baseStyle";
-import { Edit3 } from "lucide-react";
 import TestcaseRow from "@/components/Problems/Testcase/TestcaseRow";
+import { Problem } from "@prisma/client";
+import useSWR from "swr";
 
-const TestcaseListPanel = async ({ problemId }: { problemId: string }) => {
-  const problem = await getProblemInfo(problemId);
+const TestcaseListPanel = ({ initProblems }: { initProblems: Problem }) => {
+  const { data: problem, mutate } = useSWR(
+    `/api/problem/${initProblems.id}`,
+    null,
+    {
+      fallbackData: initProblems,
+    }
+  );
 
   if (!problem) {
     redirect("/problems");
@@ -19,6 +24,13 @@ const TestcaseListPanel = async ({ problemId }: { problemId: string }) => {
           <TestcaseRow problem={problem} caseNumber={i} />
         </li>
       ))}
+      <li>
+        <TestcaseRow
+          problem={problem}
+          caseNumber={problem.testSetSize + 1}
+          isNew={true}
+        />
+      </li>
     </ol>
   );
 };

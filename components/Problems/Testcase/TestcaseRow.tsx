@@ -10,9 +10,11 @@ import { AnimatePresence } from "framer-motion";
 const TestcaseRow = ({
   problem,
   caseNumber,
+  isNew = false,
 }: {
   problem: Problem;
   caseNumber: number;
+  isNew?: boolean;
 }) => {
   const [openModal, setOpenModal] = useState(false);
   const handleClick = () => {
@@ -26,12 +28,15 @@ const TestcaseRow = ({
           roundButton,
           "bg-neutral-100 px-2 py-2 text-lg font-bold",
           "flex w-full items-center justify-between gap-4",
-          actionToDark
+          actionToDark,
+          isNew && "justify-center"
         )}
         onClick={handleClick}
       >
-        <span>Set #{caseNumber}</span>
-        <Edit3 className="h-6 w-6 text-neutral-300 transition group-hover:text-neutral-400" />
+        {isNew ? <span>Add Testcase</span> : <span>Set #{caseNumber}</span>}
+        {!isNew && (
+          <Edit3 className="h-6 w-6 text-neutral-300 transition group-hover:text-neutral-400" />
+        )}
       </button>
       <AnimatePresence>
         {openModal && (
@@ -41,6 +46,7 @@ const TestcaseRow = ({
             }}
             problem={problem}
             caseNumber={caseNumber - 1}
+            isNew={isNew}
           />
         )}
       </AnimatePresence>
