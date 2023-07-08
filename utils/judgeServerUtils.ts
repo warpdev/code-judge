@@ -3,8 +3,6 @@ import { ITestSet } from "@/types/common";
 
 const JUDGE_HEADER = {
   "Content-Type": "application/json",
-  "X-RapidAPI-Key": process.env.JUDGE_API_KEY || "",
-  "X-RapidAPI-Host": process.env.JUDGE_HOST || "",
 };
 
 export const fetchJudgeApi = async <T>(

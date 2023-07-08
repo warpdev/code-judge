@@ -23,6 +23,7 @@ export const POST = async (req: NextRequest) => {
 
   const languages = await prisma.language.createMany({
     data: availableLanguages,
+    skipDuplicates: true,
   });
 
   return NextResponse.json(languages);
