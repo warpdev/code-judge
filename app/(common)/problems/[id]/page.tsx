@@ -6,6 +6,7 @@ import SignInButton from "@/components/Auth/SignInButton";
 import { getProblemInfo } from "@/utils/dbUtils";
 import { generateHTML } from "@tiptap/html";
 import { TiptapExtensions } from "@/lib/editorConfigs";
+import Link from "next/link";
 
 const sectionTitle = twJoin("mb-4", "text-lg font-bold text-neutral-900");
 const monoContent = twJoin(
@@ -84,7 +85,7 @@ const ProblemDetailPage = async ({
       {user ? (
         <div className="flex justify-between">
           <div className="flex gap-2">
-            <a
+            <Link
               className={twMerge(
                 roundButton,
                 "bg-emerald-500 font-bold text-neutral-50",
@@ -94,11 +95,11 @@ const ProblemDetailPage = async ({
               href={`/problems/${params.id}/submit`}
             >
               Start Coding!
-            </a>
+            </Link>
           </div>
           {isAdmin && (
             <div>
-              <a
+              <Link
                 className={twMerge(
                   roundButton,
                   "bg-violet-500 font-bold text-neutral-50",
@@ -108,7 +109,7 @@ const ProblemDetailPage = async ({
                 href={`/problems/${params.id}/testcase`}
               >
                 Edit Testcase
-              </a>
+              </Link>
             </div>
           )}
         </div>
