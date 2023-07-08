@@ -25,12 +25,16 @@ const CodeEditor = (
     storedValue: content,
     setValue: setContent,
     isLoading,
+    rawGet,
   } = useStorage<string>(storeKey || "temp.code");
 
   function handleEditorDidMount(editor: IStandaloneCodeEditor) {
     // @ts-ignore
     ref.current = editor;
     setEditor(editor);
+    rawGet().then((value) => {
+      editor.setValue(value || "");
+    });
   }
 
   const handleChange = useDebouncedCallback((value?: string) => {
@@ -43,7 +47,6 @@ const CodeEditor = (
     <Editor
       height="80vh"
       language={language}
-      defaultValue={content}
       theme={theme}
       onMount={handleEditorDidMount}
       onChange={handleChange}
