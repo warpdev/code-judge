@@ -28,7 +28,7 @@ const SubmitPage = async ({
   });
 
   const availableLanguages = (
-    await fetchJudgeApi("/languages", {
+    await fetchJudgeApi<any>("/languages", {
       next: {
         revalidate: 60 * 60 * 24,
       },

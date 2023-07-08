@@ -67,7 +67,6 @@
     "encoding": "^0.1.13",
     "prettier": "^2.8.8",
     "prettier-plugin-tailwindcss": "^0.3.0",
-    "prisma": "^4.16.2",
-    "supabase": "^1.75.3"
+    "prisma": "^4.16.2"
   }
 }

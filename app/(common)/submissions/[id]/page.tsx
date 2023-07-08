@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma";
 import { fetchJudgeApi } from "@/utils/judgeServerUtils";
+import { ISubmissions } from "@/types/judge";
 
 const getTextColor = (statusId: number) => {
   switch (statusId) {
@@ -25,6 +26,7 @@ const SubmissionDetailPage = async ({
     },
     include: {
       problem: true,
+      language: true,
     },
   });
 
@@ -32,8 +34,12 @@ const SubmissionDetailPage = async ({
     return <div>Submission not found</div>;
   }
 
-  const judgeResult = await fetchJudgeApi(
-    `/submissions/${submission.submissionToken}?base64_encoded=true&fields=*`,
+  const { submissions: judgeSubmissions } = await fetchJudgeApi<{
+    submissions: ISubmissions[];
+  }>(
+    `/submissions/batch?tokens=${submission.submissionTokens.join(
+      ","
+    )}&base64_encoded=true&fields=status`,
     {
       next: {
         revalidate: 30,
@@ -44,9 +50,11 @@ const SubmissionDetailPage = async ({
   return (
     <div>
       <h1>Submission Detail - {submission?.problem.title}</h1>
-      <p className={getTextColor(judgeResult.status.id)}>
-        {judgeResult.status.description}
-      </p>
+      {judgeSubmissions.map((result, index) => (
+        <p className={getTextColor(result.status.id)} key={index}>
+          {result.status.description}
+        </p>
+      ))}
     </div>
   );
 };

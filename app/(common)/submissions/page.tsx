@@ -7,6 +7,7 @@ const SubmissionsPage = async () => {
     include: {
       user: true,
       problem: true,
+      language: true,
     },
   });
 

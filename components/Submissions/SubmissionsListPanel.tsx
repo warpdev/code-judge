@@ -1,11 +1,16 @@
 import { twJoin } from "tailwind-merge";
 import { actionNeutral } from "@/style/baseStyle";
 import Link from "next/link";
+import { Prisma } from "@prisma/client";
+
+const submissionWithExtra = Prisma.validator<Prisma.SubmissionArgs>()({
+  include: { problem: true, user: true, language: true },
+});
 
 const SubmissionsListPanel = async ({
   submissions,
 }: {
-  submissions: any[];
+  submissions: Prisma.SubmissionGetPayload<typeof submissionWithExtra>[];
 }) => {
   return (
     <ul className="flex flex-col">

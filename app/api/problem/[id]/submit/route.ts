@@ -1,11 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import { postBatchSubmission } from "@/utils/judgeServerUtils";
+import { fetchJudgeApi, postBatchSubmission } from "@/utils/judgeServerUtils";
 import { getProblemInfo } from "@/utils/dbUtils";
 import { getServerUser } from "@/utils/serverUtils";
 import { ResTypes } from "@/constants/response";
-import { writeFile } from "fs/promises";
-import { existsSync, mkdir, mkdirSync } from "fs";
 import supabase from "@/lib/supabase";
 
 export const POST = async (
@@ -24,16 +22,6 @@ export const POST = async (
   if (!problemInfo) {
     return ResTypes.NOT_FOUND("Problem or user not found");
   }
-  //TODO: migrate to own judge server
-  // const { run_cmd, compile_cmd, source_file } = await fetchJudgeApi(
-  //   `/languages/${langId}`,
-  //   {}
-  // );
-  // const dirPath = `/tmp/${userInfo.id}/${problemInfo.id}`;
-  // if (!existsSync(dirPath)) {
-  //   mkdirSync(dirPath, { recursive: true });
-  // }
-  // await writeFile(`/tmp/${userInfo.id}/${problemInfo.id}/${source_file}`, code);
 
   const allTestSets = await Promise.all(
     Array.from({ length: problemInfo.testSetSize }).map(async (_, i) => {
@@ -62,13 +50,22 @@ export const POST = async (
     testSets: allTestSets,
   });
 
-  const sub = await prisma.submission.createMany({
-    data: submitTokens.map((submitToken) => ({
+  const sub = await prisma.submission.create({
+    data: {
       problemId: params.id,
       userId: userInfo.id,
-      submissionToken: submitToken,
-    })),
+      languageId: langId,
+      submissionTokens: submitTokens,
+    },
   });
+
+  const { data: codeUploadResult } = await supabase.storage
+    .from("usercodes")
+    .upload(`${userInfo.id}/${params.id}/${sub.id}`, code);
+
+  if (!codeUploadResult) {
+    return ResTypes.OTHER_ERROR;
+  }
 
   return NextResponse.json(sub);
 };

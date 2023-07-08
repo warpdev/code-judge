@@ -21,6 +21,7 @@ const UserProfilePage = async () => {
     include: {
       problem: true,
       user: true,
+      language: true,
     },
   });
 
