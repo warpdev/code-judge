@@ -5,7 +5,7 @@ import CodeEditor from "@/components/CodeEditor";
 import { useCallback, useRef, useState } from "react";
 import type { editor } from "monaco-editor";
 import { submitProblem } from "@/utils/judgeClientUtils";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { twJoin, twMerge } from "tailwind-merge";
 import { actionOpacity, roundButton } from "@/style/baseStyle";
 import { useChat, useCompletion } from "ai/react";
@@ -27,6 +27,8 @@ const SubmitPagePanel = ({
   const editorRef = useRef<editor.IStandaloneCodeEditor>(null);
   const { id } = useParams();
 
+  const router = useRouter();
+
   const [editor, setEditor] = useState<
     editor.IStandaloneCodeEditor | undefined
   >();
@@ -35,9 +37,8 @@ const SubmitPagePanel = ({
     const code = editorRef.current?.getValue();
     if (!code) return;
     const { id: sid } = await submitProblem(id, code, currentLanguage.id);
-    window.opener?.postMessage("submitted", window.location.origin);
-    window.close();
-  }, [currentLanguage.id, id]);
+    router.push(`/submissions/${sid}`);
+  }, [currentLanguage.id, id, router]);
 
   return (
     <div className="flex flex-col gap-8">

@@ -70,7 +70,6 @@ const ProblemDetailPage = async ({
       {user ? (
         <div className="flex justify-between">
           <div className="flex gap-2">
-            <OpenSubmitButton id={params.id} />
             <a
               className={twMerge(
                 roundButton,

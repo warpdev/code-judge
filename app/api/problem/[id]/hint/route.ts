@@ -8,6 +8,7 @@ import { makeHintUserPrompt } from "@/utils/commonUtils";
 import prisma from "@/lib/prisma";
 import { getServerUser } from "@/utils/serverUtils";
 import { NextResponse } from "next/server";
+import { ResTypes } from "@/constants/response";
 
 const config = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -19,7 +20,7 @@ export async function POST(
   { params }: { params: { id: string } }
 ): Promise<Response> {
   const userInfo = await getServerUser();
-  if (!userInfo) return NextResponse.error();
+  if (!userInfo) return ResTypes.NOT_AUTHORIZED;
   if (
     process.env.NODE_ENV != "development" &&
     process.env.KV_REST_API_URL &&
@@ -91,3 +92,19 @@ export async function POST(
   // Respond with the stream
   return new StreamingTextResponse(stream);
 }
+
+export const GET = async (
+  req: Request,
+  { params }: { params: { id: string } }
+) => {
+  const userInfo = await getServerUser();
+  if (!userInfo) return ResTypes.NOT_AUTHORIZED;
+  const hints = await prisma.hint.findMany({
+    where: {
+      problemId: params.id,
+      userId: userInfo.id,
+    },
+  });
+
+  return NextResponse.json(hints);
+};

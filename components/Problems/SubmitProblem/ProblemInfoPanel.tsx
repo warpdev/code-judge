@@ -20,7 +20,9 @@ const monoContent = twJoin(
 );
 
 const ProblemInfoPanel = ({ problem }: { problem: Problem }) => {
-  const [currentTab, setCurrentTab] = useState<string | undefined>(undefined);
+  const [currentTab, setCurrentTab] = useState<string | undefined>(
+    "description"
+  );
 
   const handleClick = useCallback(
     (tab: string) => () => {
