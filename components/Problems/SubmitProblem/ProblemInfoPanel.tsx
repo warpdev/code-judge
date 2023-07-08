@@ -5,7 +5,7 @@ import { useCallback, useState } from "react";
 import { Problem } from "@prisma/client";
 import Viewer from "@/components/Editor/Viewer";
 import { actionNeutral } from "@/style/baseStyle";
-import { FileInput, FileText } from "lucide-react";
+import { FileInput, FileOutput, FileText } from "lucide-react";
 
 const tabButton = twJoin(
   "w-10 h-10 bg-neutral-100",
@@ -33,11 +33,11 @@ const ProblemInfoPanel = ({ problem }: { problem: Problem }) => {
     <aside className={twJoin("fixed bottom-0 left-0 top-0 z-10", "flex")}>
       <div
         className={twMerge(
-          "h-full w-[300px]",
+          "h-full w-[360px]",
           "border-r border-neutral-700 bg-neutral-100",
           "overflow-y-auto transition-all",
           "px-2 py-4",
-          currentTab ? "ml-0" : "-ml-[300px]"
+          currentTab ? "ml-0" : "-ml-[360px]"
         )}
       >
         {currentTab === "input" || currentTab === "output" ? (
@@ -63,6 +63,11 @@ const ProblemInfoPanel = ({ problem }: { problem: Problem }) => {
         <li>
           <button className={tabButton} onClick={handleClick("input")}>
             <FileInput className="m-auto h-4 w-4" />
+          </button>
+        </li>
+        <li>
+          <button className={tabButton} onClick={handleClick("output")}>
+            <FileOutput className="m-auto h-4 w-4" />
           </button>
         </li>
       </ul>

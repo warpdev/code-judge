@@ -15,7 +15,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-          <main className="h-full w-full">{children}</main>
+          <main className="container mx-auto h-full w-full px-10">
+            {children}
+          </main>
         </Providers>
       </body>
     </html>

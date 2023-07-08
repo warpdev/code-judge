@@ -74,7 +74,7 @@ const ExtraInfoPanel = ({
         <ul className="flex flex-col gap-2">
           {savedHints.map((hint) => (
             <li
-              className="rounded border border-neutral-600 bg-neutral-50 p-4 shadow-sm"
+              className="rounded border border-neutral-600 bg-neutral-50 p-4 shadow-md"
               key={hint.id}
             >
               {hint.content}
