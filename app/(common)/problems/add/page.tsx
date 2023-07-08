@@ -1,11 +1,11 @@
-import { getServerUser } from "@/utils/serverUtils";
+import { getIsAdmin } from "@/utils/serverUtils";
 import { redirect } from "next/navigation";
-import AddProblemForm from "@/components/AddProblem/AddProblemForm";
+import AddProblemForm from "@/components/Problems/AddProblem/AddProblemForm";
 
 const AddProblemPage = async () => {
-  const user = await getServerUser();
+  const isAdmin = await getIsAdmin();
 
-  if (!user || user.role !== "admin") {
+  if (!isAdmin) {
     redirect("/api/auth/signin");
   }
 
