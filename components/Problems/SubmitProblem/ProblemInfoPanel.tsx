@@ -40,14 +40,18 @@ const ProblemInfoPanel = ({ problem }: { problem: Problem }) => {
           currentTab ? "ml-0" : "-ml-[360px]"
         )}
       >
-        {currentTab === "input" || currentTab === "output" ? (
+        {currentTab === "inputFormat" || currentTab === "outputFormat" ? (
           <div className="flex flex-col gap-4">
             <span>
               <Viewer value={problem[currentTab]} />
             </span>
             <span className="h-0.5 w-full bg-neutral-400" />
             <span className={monoContent}>
-              {problem[currentTab === "input" ? "sampleInput" : "sampleOutput"]}
+              {
+                problem[
+                  currentTab === "inputFormat" ? "sampleInput" : "sampleOutput"
+                ]
+              }
             </span>
           </div>
         ) : (
@@ -61,12 +65,12 @@ const ProblemInfoPanel = ({ problem }: { problem: Problem }) => {
           </button>
         </li>
         <li>
-          <button className={tabButton} onClick={handleClick("input")}>
+          <button className={tabButton} onClick={handleClick("inputFormat")}>
             <FileInput className="m-auto h-4 w-4" />
           </button>
         </li>
         <li>
-          <button className={tabButton} onClick={handleClick("output")}>
+          <button className={tabButton} onClick={handleClick("outputFormat")}>
             <FileOutput className="m-auto h-4 w-4" />
           </button>
         </li>
