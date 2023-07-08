@@ -92,8 +92,8 @@ export const problemInputs: IProblemInput[] = [
         value: true,
         message: "Time Limit is required",
       },
-      setValueAs: (value: string) => {
-        return parseInt(value.replace(/\D+/g, ""));
+      setValueAs: (value: string | number) => {
+        return value ? parseInt(String(value).replace(/\D+/g, "")) : "";
       },
     },
   },
@@ -107,8 +107,8 @@ export const problemInputs: IProblemInput[] = [
         value: true,
         message: "Memory Limit is required",
       },
-      setValueAs: (value: string) => {
-        return parseInt(value.replace(/\D+/g, ""));
+      setValueAs: (value: string | number) => {
+        return value ? parseInt(String(value).replace(/\D+/g, "")) : "";
       },
     },
   },

@@ -6,10 +6,8 @@ import { useCallback, useRef, useState } from "react";
 import type { editor } from "monaco-editor";
 import { submitProblem } from "@/utils/judgeClientUtils";
 import { useParams, useRouter } from "next/navigation";
-import { twJoin, twMerge } from "tailwind-merge";
+import { twMerge } from "tailwind-merge";
 import { actionOpacity, roundButton } from "@/style/baseStyle";
-import { useChat, useCompletion } from "ai/react";
-import { toast } from "sonner";
 import ExtraInfoPanel from "@/components/Problems/SubmitProblem/ExtraInfoPanel";
 import { Hint } from "@prisma/client";
 
@@ -51,7 +49,7 @@ const SubmitPagePanel = ({
         setEditor={setEditor}
         ref={editorRef}
         language={currentLanguage.monacoLanguage}
-        defaultValue={`#include <iostream>`}
+        storeKey={`${id}.code`}
         theme="vs-dark"
       />
       <button

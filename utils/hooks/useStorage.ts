@@ -4,14 +4,23 @@ import localforage from "localforage";
 const useStorage = <T>(
   key: string
   // eslint-disable-next-line no-unused-vars
-): [T | undefined, (value: T) => void, boolean] => {
+): {
+  storedValue: T | undefined;
+  setValue: (value: T) => void;
+  isLoading: boolean;
+  rawGet: () => Promise<T | null>;
+} => {
   const [isLoading, setIsLoading] = useState(true);
   const [storedValue, setStoredValue] = useState<T>();
 
+  const rawGet = useCallback(async () => {
+    return await localforage.getItem<T>(key);
+  }, [key]);
+
   const getFromStorage = useCallback(async () => {
-    const item: any = await localforage.getItem(key);
+    const item = await localforage.getItem<T>(key);
     if (item) {
-      setStoredValue(JSON.parse(item));
+      setStoredValue(item);
     }
   }, [key]);
 
@@ -20,7 +29,7 @@ const useStorage = <T>(
       // Save state
       setStoredValue(value);
       // Save to localStorage
-      localforage.setItem(key, JSON.stringify(value));
+      localforage.setItem(key, value);
     },
     [key]
   );
@@ -29,7 +38,12 @@ const useStorage = <T>(
     getFromStorage().then(() => setIsLoading(false));
   }, [getFromStorage]);
 
-  return [storedValue, setValue, isLoading];
+  return {
+    storedValue,
+    setValue,
+    isLoading,
+    rawGet,
+  };
 };
 
 export default useStorage;

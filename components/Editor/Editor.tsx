@@ -8,22 +8,22 @@ import { EditorBubbleMenu } from "@/components/Editor/EditorBubbleMenu";
 
 //TODO: add Syntax Highlighting
 const Editor = ({
+  defaultValue,
   id,
   onChange,
   readOnly,
 }: {
+  defaultValue?: any;
   id: string;
   onChange: any;
   readOnly?: boolean;
 }) => {
-  const [content, setContent, isLoading] = useStorage(id);
   const [saveStatus, setSaveStatus] = useState("Saved");
   const [hydrated, setHydrated] = useState(false);
 
   const debouncedUpdates = useDebouncedCallback(async ({ editor }) => {
     const json = editor.getJSON();
     setSaveStatus("Saving...");
-    setContent(json);
     // Simulate a delay in saving.
     setTimeout(() => {
       setSaveStatus("Saved");
@@ -58,12 +58,11 @@ const Editor = ({
   });
 
   useEffect(() => {
-    if (editor && content && !isLoading && !hydrated) {
-      editor.commands.setContent(content);
-      onChange(content);
+    if (editor && defaultValue && !hydrated) {
+      editor.commands.setContent(defaultValue);
       setHydrated(true);
     }
-  }, [editor, content, hydrated, isLoading, onChange]);
+  }, [editor, defaultValue, hydrated]);
 
   useEffect(() => {
     if (editor && readOnly) {

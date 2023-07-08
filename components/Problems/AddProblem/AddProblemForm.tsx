@@ -13,9 +13,11 @@ import { useRouter } from "next/navigation";
 import { actionToDark, baseInput, roundButton } from "@/style/baseStyle";
 import { problemInputs } from "@/constants/problem";
 import { IProblemInput } from "@/types/common";
-import React from "react";
+import React, { useEffect } from "react";
 import Editor from "@/components/Editor/Editor";
 import { twJoin } from "tailwind-merge";
+import useStorage from "@/utils/hooks/useStorage";
+import { useDebouncedCallback } from "use-debounce";
 
 /*
   title String
@@ -54,9 +56,11 @@ const InputRow = ({
         <div className="rounded border border-neutral-700 p-2">
           <Controller
             control={control}
-            render={({ field: { onChange } }) => (
-              <Editor id={id} onChange={onChange} />
-            )}
+            render={({ field: { onChange, value } }) => {
+              return (
+                <Editor id={id} onChange={onChange} defaultValue={value} />
+              );
+            }}
             name={id}
           />
         </div>
@@ -82,17 +86,34 @@ const InputRow = ({
 
 const AddProblemForm = () => {
   const {
+    storedValue: content,
+    setValue: setContent,
+    rawGet,
+  } = useStorage<InputValue>("add.problem");
+  const {
     register,
     handleSubmit,
     control,
     watch,
     formState: { errors },
-  } = useForm<InputValue>();
+  } = useForm<InputValue>({
+    defaultValues: async () => ((await rawGet()) as InputValue) ?? {},
+  });
+
+  const setDebouncedContent = useDebouncedCallback((value: any) => {
+    setContent(value);
+  }, 1500);
+
+  useEffect(() => {
+    watch(setDebouncedContent);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const router = useRouter();
 
   const onSubmit: SubmitHandler<InputValue> = async (data) => {
     const { data: problem } = await axios.post("/api/problem", data);
+    setContent({});
     router.push(`/problems/${problem.id}`);
   };
 
