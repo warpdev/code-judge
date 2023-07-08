@@ -1,11 +1,11 @@
 import { redirect } from "next/navigation";
 import { twJoin, twMerge } from "tailwind-merge";
 import { actionToDark, roundButton, title } from "@/style/baseStyle";
-import OpenSubmitButton from "@/components/Problems/OpenSubmitButton";
 import { getIsAdmin, getServerUser } from "@/utils/serverUtils";
 import SignInButton from "@/components/Auth/SignInButton";
-import Viewer from "@/components/Editor/Viewer";
 import { getProblemInfo } from "@/utils/dbUtils";
+import { generateHTML } from "@tiptap/html";
+import { TiptapExtensions } from "@/lib/editorConfigs";
 
 const sectionTitle = twJoin("mb-4", "text-lg font-bold text-neutral-900");
 const monoContent = twJoin(
@@ -40,15 +40,24 @@ const ProblemDetailPage = async ({
         </span>
       </div>
       <h2 className="sr-only">Description</h2>
-      <p className="rounded-lg bg-neutral-200 p-4">
-        <Viewer value={problem.description} />
-      </p>
+      <div className="rounded-lg bg-neutral-200 p-4">
+        <div
+          dangerouslySetInnerHTML={{
+            __html: generateHTML(problem.description as any, TiptapExtensions),
+          }}
+        />
+      </div>
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
         <div>
           <h2 className={sectionTitle}>Input Format</h2>
-          <p>
-            <Viewer value={problem.inputFormat} />
-          </p>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: generateHTML(
+                problem.inputFormat as any,
+                TiptapExtensions
+              ),
+            }}
+          />
         </div>
         <div>
           <h2 className={sectionTitle}>Sample Input</h2>
@@ -58,9 +67,14 @@ const ProblemDetailPage = async ({
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
         <div>
           <h2 className={sectionTitle}>Output Format</h2>
-          <p>
-            <Viewer value={problem.outputFormat} />
-          </p>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: generateHTML(
+                problem.outputFormat as any,
+                TiptapExtensions
+              ),
+            }}
+          />
         </div>
         <div>
           <h2 className={sectionTitle}>Sample Output</h2>
