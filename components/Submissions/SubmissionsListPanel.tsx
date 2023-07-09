@@ -16,22 +16,18 @@ const SubmissionsListPanel = async ({
     <ul className="flex flex-col">
       {submissions.map((submission) => (
         <li
-          className={twJoin(
-            "grid grid-cols-4",
-            "px-1 py-2",
-            "border-b border-neutral-400 first:border-t",
-            actionNeutral
-          )}
           key={submission.id}
+          className="border-b border-neutral-400 first:border-t"
         >
-          <Link href={`/problems/${submission.problem.id}`} className="block">
-            {submission.problem.title}
+          <Link
+            href={`/submissions/${submission.id}`}
+            className={twJoin("grid grid-cols-4", "px-1 py-2", actionNeutral)}
+          >
+            <span className="block">{submission.problem.title}</span>
+            <span className="block">View Detail</span>
+            <span>{submission.createdAt.toLocaleString()}</span>
+            <span>{submission.user.name}</span>
           </Link>
-          <Link href={`/submissions/${submission.id}`} className="block">
-            View Detail
-          </Link>
-          <span>{submission.createdAt.toLocaleString()}</span>
-          <span>{submission.user.name}</span>
         </li>
       ))}
     </ul>
