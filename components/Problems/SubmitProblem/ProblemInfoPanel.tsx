@@ -32,7 +32,9 @@ const ProblemInfoPanel = ({ problem }: { problem: Problem }) => {
   );
 
   return (
-    <aside className={twJoin("fixed bottom-0 left-0 top-0 z-10", "flex")}>
+    <aside
+      className={twJoin("fixed bottom-0 left-0 top-0 z-10", "hidden md:flex")}
+    >
       <div
         className={twMerge(
           "h-full w-[360px]",

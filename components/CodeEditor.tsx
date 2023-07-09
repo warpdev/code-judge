@@ -44,13 +44,20 @@ const CodeEditor = (
   }, 1000);
 
   return (
-    <Editor
-      height="80vh"
-      language={language}
-      theme={theme}
-      onMount={handleEditorDidMount}
-      onChange={handleChange}
-    />
+    <div className="min-h-0 min-w-0 flex-1">
+      <Editor
+        options={{
+          automaticLayout: true,
+          minimap: {
+            enabled: false,
+          },
+        }}
+        language={language}
+        theme={theme}
+        onMount={handleEditorDidMount}
+        onChange={handleChange}
+      />
+    </div>
   );
 };
 

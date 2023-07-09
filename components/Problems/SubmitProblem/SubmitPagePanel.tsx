@@ -39,7 +39,7 @@ const SubmitPagePanel = ({
   }, [currentLanguage.id, id, router]);
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex h-full flex-col gap-4">
       <SettingPanel
         allLanguages={availableLangs}
         currentLanguage={currentLanguage}
