@@ -34,15 +34,26 @@ const ProblemDetailPage = async ({
 
   return (
     <div className="space-y-12">
-      <div className="flex justify-between">
+      <div
+        className={twJoin(
+          "flex justify-between gap-2",
+          "flex-col-reverse md:flex-row"
+        )}
+      >
         <h1 className={twJoin(title)}>{problem.title}</h1>
-        <span className="flex gap-4">
-          <span>Memory Limit : {problem.memoryLimit} MB</span>
-          <span>Time Limit : {problem.timeLimit} ms</span>
+        <span className="flex gap-4 text-xs md:text-sm">
+          <span>
+            Memory <span className="sr-only md:not-sr-only">Limit</span> :{" "}
+            {problem.memoryLimit} MB
+          </span>
+          <span>
+            Time <span className="sr-only md:not-sr-only">Limit</span> :{" "}
+            {problem.timeLimit} ms
+          </span>
         </span>
       </div>
       <h2 className="sr-only">Description</h2>
-      <div className="rounded-lg bg-neutral-200 p-4">
+      <div className="rounded-lg bg-neutral-100 p-4">
         <div
           dangerouslySetInnerHTML={{
             __html: generateHTML(problem.description as any, TiptapExtensions),
@@ -84,22 +95,25 @@ const ProblemDetailPage = async ({
         </div>
       </div>
       {user ? (
-        <div className="flex justify-between">
-          <div className="flex gap-2">
-            <Link
-              className={twMerge(
-                roundButton,
-                "bg-emerald-500 font-bold text-neutral-50",
-                "px-4 py-2",
-                actionToDark
-              )}
-              href={`/problems/${params.id}/submit`}
-            >
-              Start Coding!
-            </Link>
-          </div>
+        <div
+          className={twJoin(
+            "flex justify-between gap-2",
+            "flex-col md:flex-row"
+          )}
+        >
+          <Link
+            className={twMerge(
+              roundButton,
+              "bg-emerald-500 font-bold text-neutral-50",
+              "px-4 py-2",
+              actionToDark
+            )}
+            href={`/problems/${params.id}/submit`}
+          >
+            Start Coding!
+          </Link>
           {isAdmin && (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center justify-end gap-2">
               <DeleteProblemButton problem={problem} />
               <Link
                 className={twMerge(

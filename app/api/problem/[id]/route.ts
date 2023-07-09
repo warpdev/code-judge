@@ -3,6 +3,7 @@ import { getProblemInfo } from "@/utils/dbUtils";
 import prisma from "@/lib/prisma";
 import { getIsAdmin } from "@/utils/serverUtils";
 import { ResTypes } from "@/constants/response";
+import supabase from "@/lib/supabase";
 
 export const GET = async (
   req: NextRequest,
@@ -27,5 +28,16 @@ export const DELETE = async (
       id: params.id,
     },
   });
+
+  const { data, error } = await supabase.storage
+    .from("testcase")
+    .remove([`${params.id}/`]);
+  if (error) {
+    await prisma.problem.create({
+      data: problem as any,
+    });
+    return ResTypes.OTHER_ERROR;
+  }
+
   return NextResponse.json(problem);
 };

@@ -5,7 +5,8 @@ const AppLogo = ({ className }: BaseProps) => {
   return (
     <span
       className={twJoin(
-        "min-w-max select-none text-2xl font-black text-neutral-800",
+        "min-w-max select-none font-black text-neutral-800 md:text-2xl",
+        "text-md",
         className
       )}
     >
