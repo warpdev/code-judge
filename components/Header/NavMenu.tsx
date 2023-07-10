@@ -50,7 +50,7 @@ const NavMenu = ({ user }: { user?: Session["user"] }) => {
                 </Link>
               </li>
             ))}
-            <li>
+            <li onClick={() => setIsMenuOpen(false)}>
               <UserHeaderPanel user={user} />
             </li>
           </ul>

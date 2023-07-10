@@ -5,6 +5,8 @@ import { twJoin } from "tailwind-merge";
 import Link from "next/link";
 import { title } from "@/style/baseStyle";
 import { ArrowUpRight } from "lucide-react";
+import { getServerUser } from "@/utils/serverUtils";
+import SubmissionCodePanel from "@/components/Submissions/SubmissionCodePanel";
 
 const getTextColor = (statusId: number) => {
   switch (statusId) {
@@ -79,6 +81,7 @@ const SubmissionDetailPage = async ({
           </li>
         ))}
       </ol>
+      <SubmissionCodePanel submission={submission} />
     </div>
   );
 };
