@@ -2,16 +2,22 @@ import { twJoin } from "tailwind-merge";
 import { actionNeutral } from "@/style/baseStyle";
 import Link from "next/link";
 import { Prisma } from "@prisma/client";
+import { getServerUser } from "@/utils/serverUtils";
+import { UserCheck2 } from "lucide-react";
 
 const submissionWithExtra = Prisma.validator<Prisma.SubmissionArgs>()({
   include: { problem: true, user: true, language: true },
 });
+
+const gridTemplate = twJoin(`grid-cols-[1fr_1fr_1fr_30px]`);
 
 const SubmissionsListPanel = async ({
   submissions,
 }: {
   submissions: Prisma.SubmissionGetPayload<typeof submissionWithExtra>[];
 }) => {
+  const userInfo = await getServerUser();
+
   return (
     <ul className="flex flex-col">
       {submissions.map((submission) => (
@@ -21,12 +27,18 @@ const SubmissionsListPanel = async ({
         >
           <Link
             href={`/submissions/${submission.id}`}
-            className={twJoin("grid grid-cols-4", "px-1 py-2", actionNeutral)}
+            className={twJoin("grid", gridTemplate, "px-1 py-2", actionNeutral)}
           >
             <span className="block">{submission.problem.title}</span>
             <span className="block">View Detail</span>
             <span>{submission.createdAt.toLocaleString()}</span>
-            <span>{submission.user.name}</span>
+            <span>
+              {userInfo?.id === submission.userId ? (
+                <UserCheck2 className="h-6 w-6" />
+              ) : (
+                ""
+              )}
+            </span>
           </Link>
         </li>
       ))}

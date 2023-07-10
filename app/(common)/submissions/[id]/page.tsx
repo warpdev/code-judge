@@ -4,20 +4,8 @@ import { ISubmissions } from "@/types/judge";
 import { twJoin } from "tailwind-merge";
 import Link from "next/link";
 import { title } from "@/style/baseStyle";
-import { ArrowUpRight } from "lucide-react";
-import { getServerUser } from "@/utils/serverUtils";
 import SubmissionCodePanel from "@/components/Submissions/SubmissionCodePanel";
-
-const getTextColor = (statusId: number) => {
-  switch (statusId) {
-    case 3:
-      return "text-green-400";
-    case 4:
-      return "text-red-400";
-    default:
-      return "text-neutral-400";
-  }
-};
+import { getTextColor } from "@/utils/judgeClientUtils";
 
 const SubmissionDetailPage = async ({
   params,
