@@ -15,6 +15,10 @@
     "profile": "Profile",
     "signIn": "Sign In"
   },
+  "main": {
+    "title": "Community based Problem Solving Platform",
+    "subTitle": "Coming soon..."
+  },
   "problem": {
     "allProblems": "All Problems",
     "addProblem": "Add Problem",

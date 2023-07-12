@@ -15,6 +15,10 @@
     "profile": "내 정보",
     "signIn": "로그인"
   },
+  "main": {
+    "title": "모두에게 열린 코딩 문제 풀이 사이트",
+    "subTitle": "정식 오픈 전까지는 테스트 운영 중입니다."
+  },
   "problem": {
     "allProblems": "모든 문제들",
     "addProblem": "문제 추가",

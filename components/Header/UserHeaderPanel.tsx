@@ -5,8 +5,10 @@ import { twJoin } from "tailwind-merge";
 import { actionNeutral, roundButton } from "@/style/baseStyle";
 import { UserIcon } from "@/components/Icons";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 const UserHeaderPanel = ({ user }: { user?: Session["user"] }) => {
+  const t = useTranslations("header");
   if (user) {
     return (
       <>
@@ -26,7 +28,7 @@ const UserHeaderPanel = ({ user }: { user?: Session["user"] }) => {
         className={twJoin(roundButton, actionNeutral)}
         onClick={() => signIn()}
       >
-        Sign in
+        {t("signIn")}
       </button>
     </>
   );
