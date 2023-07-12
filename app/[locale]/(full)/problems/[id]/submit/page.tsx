@@ -22,7 +22,7 @@ const SubmitPage = async ({
   const problemInfo = await getProblemInfo(params.id);
   const savedHints = await prisma.hint.findMany({
     where: {
-      problemId: params.id,
+      problemId: problemInfo.id,
       userId: user.id,
     },
   });

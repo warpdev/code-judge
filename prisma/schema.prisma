@@ -48,6 +48,7 @@ model User {
   role          String?      @default("user")
   submissions   Submission[]
   Hint          Hint[]
+  Problem       Problem[]
 }
 
 model VerificationToken {
@@ -59,11 +60,10 @@ model VerificationToken {
 }
 
 model Problem {
-  id           String       @id @default(cuid())
+  id           Int          @id @default(autoincrement())
   title        String
   description  Json
-  difficulty   String
-  tags         String[]
+  locale       String
   memoryLimit  Int
   timeLimit    Int
   inputFormat  Json
@@ -72,13 +72,16 @@ model Problem {
   sampleOutput String
   testSetSize  Int          @default(0)
   createdAt    DateTime     @default(now())
+  createdBy    String
   submission   Submission[]
   Hint         Hint[]
+  Tag          Tag[]
+  User         User         @relation(fields: [createdBy], references: [id])
 }
 
 model Submission {
-  id               String   @id @default(cuid())
-  problemId        String
+  id               Int      @id @default(autoincrement())
+  problemId        Int
   userId           String
   submissionTokens String[]
   languageId       Int
@@ -90,7 +93,7 @@ model Submission {
 
 model Hint {
   id        String   @id @default(cuid())
-  problemId String
+  problemId Int
   userId    String
   content   String
   createdAt DateTime @default(now())
@@ -103,4 +106,12 @@ model Language {
   name           String
   monacoLanguage String
   Submission     Submission[]
+}
+
+model Tag {
+  id        Int      @id @default(autoincrement())
+  name      String
+  problemId Int
+  createdAt DateTime @default(now())
+  problem   Problem  @relation(fields: [problemId], references: [id])
 }

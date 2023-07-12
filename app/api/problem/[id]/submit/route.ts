@@ -8,7 +8,7 @@ import supabase from "@/lib/supabase";
 
 export const POST = async (
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) => {
   const body = await req.json();
 
@@ -41,7 +41,7 @@ export const POST = async (
             return res.data?.text();
           }),
       };
-    })
+    }),
   );
 
   const submitTokens = await postBatchSubmission({
@@ -52,7 +52,7 @@ export const POST = async (
 
   const sub = await prisma.submission.create({
     data: {
-      problemId: params.id,
+      problemId: +params.id,
       userId: userInfo.id,
       languageId: langId,
       submissionTokens: submitTokens,

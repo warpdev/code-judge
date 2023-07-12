@@ -36,8 +36,8 @@ const ProblemDetailPage = async ({
 
   const t = await getTranslator(params.locale, "problem");
 
-  const memoryLimit = t("memoryLimit").split("#");
-  const timeLimit = t("timeLimit").split("#");
+  const memoryLimit = t("memoryLimit").split(" ");
+  const timeLimit = t("timeLimit").split(" ");
 
   return (
     <div className="space-y-12">
@@ -50,16 +50,14 @@ const ProblemDetailPage = async ({
         <h1 className={twJoin(title)}>{problem.title}</h1>
         <span className="flex gap-4 text-xs md:text-sm">
           <span>
-            <span>{memoryLimit[0]}</span>
-            <span className="sr-only md:not-sr-only">
-              {memoryLimit[1]}
-            </span> : {problem.memoryLimit} MB
+            <span>{memoryLimit[0]}</span>{" "}
+            <span className="sr-only md:not-sr-only">{memoryLimit[1]}</span> :{" "}
+            {problem.memoryLimit} MB
           </span>
           <span>
-            <span>{timeLimit[0]}</span>
-            <span className="sr-only md:not-sr-only">
-              {timeLimit[1]}
-            </span> : {problem.timeLimit} ms
+            <span>{timeLimit[0]}</span>{" "}
+            <span className="sr-only md:not-sr-only">{timeLimit[1]}</span> :{" "}
+            {problem.timeLimit} ms
           </span>
         </span>
       </div>

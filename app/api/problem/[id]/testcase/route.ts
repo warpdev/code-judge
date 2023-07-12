@@ -7,7 +7,7 @@ import { ResTypes } from "@/constants/response";
 
 export const POST = async (
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) => {
   const isAdmin = await getIsAdmin();
   if (!isAdmin) {
@@ -38,12 +38,12 @@ export const POST = async (
   try {
     const { data: inputResult, error: inputError } = await supabase.storage
       .from("testcase")
-      .upload(`${params.id}/${testSetNumber}.in`, input, {
+      .upload(`${problemInfo.id}/${testSetNumber}.in`, input, {
         upsert: isEdit,
       });
     const { data: outputResult, error: outputError } = await supabase.storage
       .from("testcase")
-      .upload(`${params.id}/${testSetNumber}.out`, output, {
+      .upload(`${problemInfo.id}/${testSetNumber}.out`, output, {
         upsert: isEdit,
       });
     if (inputError || outputError) {
@@ -52,7 +52,7 @@ export const POST = async (
     if (!idx) {
       await prisma.problem.update({
         where: {
-          id: problemId,
+          id: problemInfo.id,
         },
         data: {
           testSetSize: testSetNumber + 1,
@@ -70,7 +70,7 @@ export const POST = async (
 
 export const GET = async (
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) => {
   const isAdmin = await getIsAdmin();
   if (!isAdmin) {
@@ -87,7 +87,7 @@ export const GET = async (
       },
       {
         status: 400,
-      }
+      },
     );
   }
 

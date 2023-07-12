@@ -19,7 +19,7 @@ const SubmissionDetailPage = async ({
   const t = await getTranslator(params.locale, "submission");
   const submission = await prisma.submission.findUnique({
     where: {
-      id: params.id,
+      id: parseInt(params.id),
     },
     include: {
       problem: true,

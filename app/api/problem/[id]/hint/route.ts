@@ -17,7 +17,7 @@ const openai = new OpenAIApi(config);
 
 export async function POST(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ): Promise<Response> {
   const userInfo = await getServerUser();
   if (!userInfo) return ResTypes.NOT_AUTHORIZED;
@@ -32,7 +32,7 @@ export async function POST(
     });
 
     const { success, limit, reset, remaining } = await ratelimit.limit(
-      `hint_ratelimit_${userInfo.id}`
+      `hint_ratelimit_${userInfo.id}`,
     );
 
     if (!success) {
@@ -53,7 +53,7 @@ export async function POST(
     JSON.stringify(problemInfo.description),
     userCode,
     JSON.stringify(problemInfo.inputFormat),
-    JSON.stringify(problemInfo.outputFormat)
+    JSON.stringify(problemInfo.outputFormat),
   );
 
   const response = await openai.createChatCompletion({
@@ -95,13 +95,14 @@ export async function POST(
 
 export const GET = async (
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) => {
   const userInfo = await getServerUser();
   if (!userInfo) return ResTypes.NOT_AUTHORIZED;
+
   const hints = await prisma.hint.findMany({
     where: {
-      problemId: params.id,
+      problemId: +params.id,
       userId: userInfo.id,
     },
   });

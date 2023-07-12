@@ -7,7 +7,7 @@ import supabase from "@/lib/supabase";
 
 export const GET = async (
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) => {
   const problemInfo = await getProblemInfo(params.id);
 
@@ -16,7 +16,7 @@ export const GET = async (
 
 export const DELETE = async (
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) => {
   const isAdmin = await getIsAdmin();
   if (!isAdmin) {
@@ -25,7 +25,7 @@ export const DELETE = async (
 
   const problem = await prisma.problem.delete({
     where: {
-      id: params.id,
+      id: +params.id,
     },
   });
 

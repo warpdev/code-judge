@@ -1,9 +1,9 @@
 import prisma from "@/lib/prisma";
 
-export const getProblemInfo = async (id: string) => {
+export const getProblemInfo = async (id: number | string) => {
   const problem = await prisma.problem.findUnique({
     where: {
-      id,
+      id: parseInt(id.toString()),
     },
   });
   if (!problem) {
