@@ -8,7 +8,11 @@ const AddProblemButton = () => {
   return (
     <Link
       href={"/problems/add"}
-      className={twJoin(roundButton, "bg-purple-300 font-bold", actionToDark)}
+      className={twJoin(
+        roundButton,
+        "bg-violet-500 font-bold text-white",
+        actionToDark,
+      )}
     >
       {t("addProblem")}
     </Link>

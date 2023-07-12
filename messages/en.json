@@ -4,32 +4,52 @@
     "problems": "Problems",
     "submission": "Submission",
     "submissions": "Submissions",
-    "profile": "Profile"
+    "profile": "Profile",
+    "signIn": "Sign In",
+    "signOut": "Sign Out",
+    "delete": "Delete"
   },
   "header": {
     "problems": "Problems",
     "submissions": "Submissions",
     "profile": "Profile",
-    "signIn": "Sign In",
-    "signOut": "Sign Out"
+    "signIn": "Sign In"
   },
   "problem": {
     "allProblems": "All Problems",
     "addProblem": "Add Problem",
     "title": "Title",
     "description": "Description",
-    "memoryLimit": "Memory Limit",
-    "timeLimit": "Time Limit",
+    "memoryLimit": "Memory# Limit",
+    "timeLimit": "Time# Limit",
     "inputFormat": "Input Format",
     "outputFormat": "Output Format",
     "sampleInput": "Sample Input",
     "sampleOutput": "Sample Output",
-    "submit": "Submit"
+    "submit": "Submit",
+    "startCoding": "Start Coding!",
+    "editTestCases": "Edit Test Cases"
+  },
+  "solving": {
+    "submit": "Submit",
+    "submitting": "Submitting...",
+    "getNewHint": "Get a new hint"
+  },
+  "testcase": {
+    "addTestCase": "Add Test Case",
+    "editTestCase": "Edit Test Case",
+    "input": "Input",
+    "output": "Output",
+    "save": "Save",
+    "cancel": "Cancel"
   },
   "submission": {
     "allSubmissions": "All Submissions",
     "viewDetail": "View Detail",
     "submissionDetail": "Submission Detail",
     "yourCode": "Your Code"
+  },
+  "profile": {
+    "mySubmissions": "My Submissions"
   }
 }

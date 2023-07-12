@@ -18,6 +18,7 @@ import Editor from "@/components/Editor/Editor";
 import { twJoin } from "tailwind-merge";
 import useStorage from "@/utils/hooks/useStorage";
 import { useDebouncedCallback } from "use-debounce";
+import { useTranslations } from "next-intl";
 
 /*
   title String
@@ -49,9 +50,11 @@ const InputRow = ({
   register: UseFormRegister<InputValue>;
   error?: FieldError;
 }) => {
+  const t = useTranslations("problem");
+
   return (
     <span className="flex flex-col gap-2">
-      <label htmlFor={id}>{label}</label>
+      <label htmlFor={id}>{t(label as any)}</label>
       {type === "editor" ? (
         <div className="rounded border border-neutral-700 p-2">
           <Controller
@@ -135,7 +138,7 @@ const AddProblemForm = () => {
         className={twJoin(
           roundButton,
           "bg-emerald-500 py-2 font-bold text-white",
-          actionToDark
+          actionToDark,
         )}
       >
         Submit

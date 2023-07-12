@@ -10,11 +10,12 @@ import { editor } from "monaco-editor";
 import { useParams } from "next/navigation";
 import type { Hint } from "@prisma/client";
 import useSWR from "swr";
+import { useTranslations } from "next-intl";
 
 const tabButton = twJoin(
   "w-10 h-10 bg-neutral-100",
   "rounded-md border-2 border-neutral-400 border-r-0 rounded-r-none",
-  actionNeutral
+  actionNeutral,
 );
 
 const ExtraInfoPanel = ({
@@ -24,6 +25,7 @@ const ExtraInfoPanel = ({
   editor?: editor.IStandaloneCodeEditor;
   savedHints: Hint[];
 }) => {
+  const t = useTranslations("solving");
   const [currentTab, setCurrentTab] = useState<string | undefined>(undefined);
   const { id } = useParams();
   const { data: hints, mutate } = useSWR<Hint[]>(
@@ -31,14 +33,14 @@ const ExtraInfoPanel = ({
     null,
     {
       fallbackData: savedHints,
-    }
+    },
   );
 
   const handleClick = useCallback(
     (tab: string) => () => {
       setCurrentTab((prev) => (prev === tab ? undefined : tab));
     },
-    []
+    [],
   );
 
   const { completion, complete, isLoading } = useCompletion({
@@ -83,7 +85,7 @@ const ExtraInfoPanel = ({
           "border-l border-neutral-700 bg-neutral-100",
           "overflow-y-auto transition-all",
           "px-2 py-4",
-          currentTab ? "mr-0" : "-mr-[300px]"
+          currentTab ? "mr-0" : "-mr-[300px]",
         )}
       >
         <ul className="flex flex-col gap-2">
@@ -108,13 +110,13 @@ const ExtraInfoPanel = ({
             actionToDark,
             "flex w-full items-center justify-center gap-1 px-3 py-2",
             "mt-6",
-            "disabled:brightness-80"
+            "disabled:brightness-80",
           )}
           disabled={isLoading}
           onClick={handleGetHint}
         >
           <Plus className="h-4 w-4" />
-          <span>Get a new hint</span>
+          <span>{t("getNewHint")}</span>
         </button>
       </div>
     </aside>

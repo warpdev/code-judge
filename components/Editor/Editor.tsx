@@ -39,7 +39,7 @@ const Editor = ({
       const lastTwo = e.editor.state.doc.textBetween(
         selection.from - 2,
         selection.from,
-        "\n"
+        "\n",
       );
       // if (lastTwo === "++" && !isLoading) {
       //   e.editor.commands.deleteRange({

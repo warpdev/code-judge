@@ -5,8 +5,16 @@ import { twJoin } from "tailwind-merge";
 import { actionToDark, roundButton } from "@/style/baseStyle";
 import DeleteProblemModal from "@/components/Modal/DeleteProblemModal";
 import { AnimatePresence } from "framer-motion";
+import { useTranslations } from "next-intl";
 
-const DeleteProblemButton = ({ problem }: { problem: Problem }) => {
+const DeleteProblemButton = ({
+  locale,
+  problem,
+}: {
+  locale: string;
+  problem: Problem;
+}) => {
+  const t = useTranslations("common");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -15,11 +23,11 @@ const DeleteProblemButton = ({ problem }: { problem: Problem }) => {
         className={twJoin(
           roundButton,
           "bg-red-500 font-bold text-white",
-          actionToDark
+          actionToDark,
         )}
         onClick={() => setIsModalOpen(true)}
       >
-        Delete
+        {t("delete")}
       </button>
       <AnimatePresence>
         {isModalOpen && (

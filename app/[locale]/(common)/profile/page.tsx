@@ -6,12 +6,14 @@ import Image from "next/image";
 import SubmissionsListPanel from "@/components/Submissions/SubmissionsListPanel";
 import prisma from "@/lib/prisma";
 import SignOutButton from "@/components/Auth/SignOutButton";
+import { getTranslator } from "next-intl/server";
 
 const UserProfilePage = async ({
   params: { locale },
 }: {
   params: { locale: string };
 }) => {
+  const t = await getTranslator(locale, "profile");
   const user = await getServerUser();
 
   if (!user) {
@@ -44,10 +46,11 @@ const UserProfilePage = async ({
           height={250}
         />
       )}
-      <h2 className={twJoin(title, "mt-8")}>My Submissions</h2>
+      <h2 className={twJoin(title, "mt-8")}>{t("mySubmissions")}</h2>
       <SubmissionsListPanel submissions={submissions} locale={locale} />
       <div className="flex justify-end">
         <SignOutButton
+          locale={locale}
           className="border-2 border-neutral-400"
           callbackUrl="/"
         />

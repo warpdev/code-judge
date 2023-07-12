@@ -13,13 +13,14 @@ import {
 } from "@/style/baseStyle";
 import axios from "axios";
 import { useSWRConfig } from "swr";
+import { useTranslations } from "next-intl";
 
 const inputStyle = twJoin(
   "h-40",
   "border",
   "border-gray-300",
   "rounded-md",
-  "p-2"
+  "p-2",
 );
 
 interface ITestCase {
@@ -38,8 +39,9 @@ const EditTestcaseModal = ({
   caseNumber: number;
   isNew?: boolean;
 }) => {
+  const t = useTranslations("testcase");
   const { data, isLoading, mutate } = useSWRImmutable<ITestCase>(
-    !isNew && `/api/problem/${problem.id}/testcase?idx=${caseNumber}`
+    !isNew && `/api/problem/${problem.id}/testcase?idx=${caseNumber}`,
   );
 
   const { mutate: mutateProblem } = useSWRConfig();
@@ -76,24 +78,24 @@ const EditTestcaseModal = ({
       <form className="flex flex-col gap-4" onSubmit={handleSubmit(submitData)}>
         <ul className={twJoin("flex w-full flex-col gap-4", "md:flex-row")}>
           <li className={twJoin("flex flex-col gap-2", "w-full", "md:w-1/2")}>
-            <label htmlFor={`input-case-${caseNumber}`}>Input</label>
+            <label htmlFor={`input-case-${caseNumber}`}>{t("input")}</label>
             <textarea
               disabled={isLoading}
               className={twJoin(
                 inputStyle,
-                isLoading && "animate-pulse bg-neutral-300"
+                isLoading && "animate-pulse bg-neutral-300",
               )}
               id={`input-case-${caseNumber}`}
               {...register("input")}
             />
           </li>
           <li className={twJoin("flex flex-col gap-2", "w-full", "md:w-1/2")}>
-            <label htmlFor={`output-case-${caseNumber}`}>Output</label>
+            <label htmlFor={`output-case-${caseNumber}`}>{t("output")}</label>
             <textarea
               disabled={isLoading}
               className={twJoin(
                 inputStyle,
-                isLoading && "animate-pulse bg-neutral-300"
+                isLoading && "animate-pulse bg-neutral-300",
               )}
               id={`output-case-${caseNumber}`}
               {...register("output")}
@@ -107,21 +109,21 @@ const EditTestcaseModal = ({
               roundButton,
               "px-4 py-2",
               "bg-neutral-900 font-bold text-white",
-              actionOpacity
+              actionOpacity,
             )}
             onClick={handleClose}
           >
-            Cancel
+            {t("cancel")}
           </button>
           <button
             className={twJoin(
               roundButton,
               "px-4 py-2",
               "bg-purple-400 font-bold text-white",
-              actionToDark
+              actionToDark,
             )}
           >
-            Save
+            {t("save")}
           </button>
         </div>
       </form>

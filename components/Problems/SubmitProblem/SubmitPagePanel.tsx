@@ -10,6 +10,7 @@ import { twMerge } from "tailwind-merge";
 import { actionOpacity, roundButton } from "@/style/baseStyle";
 import ExtraInfoPanel from "@/components/Problems/SubmitProblem/ExtraInfoPanel";
 import { Hint } from "@prisma/client";
+import { useTranslations } from "next-intl";
 
 const SubmitPagePanel = ({
   availableLangs,
@@ -18,9 +19,10 @@ const SubmitPagePanel = ({
   availableLangs: ILanguage[];
   savedHints: Hint[];
 }) => {
+  const t = useTranslations("solving");
   const [currentLanguage, setCurrentLanguage] = useState<ILanguage>(
     availableLangs.find((lang) => lang.monacoLanguage === "python") ||
-      availableLangs[0]
+      availableLangs[0],
   );
   const editorRef = useRef<editor.IStandaloneCodeEditor>(null);
   const { id } = useParams();
@@ -58,10 +60,10 @@ const SubmitPagePanel = ({
           roundButton,
           "bg-emerald-500 font-bold text-neutral-50",
           "px-4 py-2",
-          actionOpacity
+          actionOpacity,
         )}
       >
-        Submit
+        {t("submit")}
       </button>
       <ExtraInfoPanel savedHints={savedHints} editor={editor} />
     </div>

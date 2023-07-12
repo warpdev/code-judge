@@ -3,7 +3,7 @@ import { IProblemInput } from "@/types/common";
 export const problemInputs: IProblemInput[] = [
   {
     id: "title",
-    label: "Title",
+    label: "title",
     type: "text",
     options: {
       required: {
@@ -18,7 +18,7 @@ export const problemInputs: IProblemInput[] = [
   },
   {
     id: "description",
-    label: "Description",
+    label: "description",
     type: "editor",
     options: {
       required: {
@@ -28,19 +28,8 @@ export const problemInputs: IProblemInput[] = [
     },
   },
   {
-    id: "difficulty",
-    label: "Difficulty",
-    type: "text",
-    options: {
-      required: {
-        value: true,
-        message: "Difficulty is required",
-      },
-    },
-  },
-  {
     id: "inputFormat",
-    label: "Input",
+    label: "inputFormat",
     type: "editor",
     options: {
       required: {
@@ -51,7 +40,7 @@ export const problemInputs: IProblemInput[] = [
   },
   {
     id: "outputFormat",
-    label: "Output",
+    label: "outputFormat",
     type: "editor",
     options: {
       required: {
@@ -62,7 +51,7 @@ export const problemInputs: IProblemInput[] = [
   },
   {
     id: "sampleInput",
-    label: "Sample Input",
+    label: "sampleInput",
     type: "multiline",
     options: {
       required: {
@@ -73,7 +62,7 @@ export const problemInputs: IProblemInput[] = [
   },
   {
     id: "sampleOutput",
-    label: "Sample Output",
+    label: "sampleOutput",
     type: "multiline",
     options: {
       required: {
@@ -84,7 +73,7 @@ export const problemInputs: IProblemInput[] = [
   },
   {
     id: "timeLimit",
-    label: "Time Limit",
+    label: "timeLimit",
     type: "number",
     inputMode: "numeric",
     options: {
@@ -99,7 +88,7 @@ export const problemInputs: IProblemInput[] = [
   },
   {
     id: "memoryLimit",
-    label: "Memory Limit",
+    label: "memoryLimit",
     type: "number",
     inputMode: "numeric",
     options: {
