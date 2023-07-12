@@ -35,7 +35,9 @@ import { useTranslations } from "next-intl";
 type InputValue = Record<
   (typeof problemInputs)[number]["id"],
   IProblemInput["type"]
->;
+> & {
+  locale?: string;
+};
 
 const inputStyle = baseInput;
 
@@ -53,7 +55,7 @@ const InputRow = ({
   const t = useTranslations("problem");
 
   return (
-    <span className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2">
       <label htmlFor={id}>{t(label as any)}</label>
       {type === "editor" ? (
         <div className="rounded border border-neutral-700 p-2">
@@ -83,11 +85,12 @@ const InputRow = ({
         />
       )}
       {error && <span className="text-sm text-red-400">{error.message}</span>}
-    </span>
+    </div>
   );
 };
 
 const AddProblemForm = () => {
+  const t = useTranslations("problem");
   const {
     storedValue: content,
     setValue: setContent,
@@ -132,6 +135,21 @@ const AddProblemForm = () => {
           error={errors[input.id]}
         />
       ))}
+      <div className="flex flex-col gap-2">
+        <label htmlFor="locale">{t("language")}</label>
+        <select
+          id="locale"
+          {...register("locale")}
+          className={twJoin(
+            "rounded px-2 py-2",
+            "border-2 border-neutral-600",
+            actionToDark,
+          )}
+        >
+          <option value="en">English</option>
+          <option value="ko">Korean</option>
+        </select>
+      </div>
 
       <button
         onClick={handleSubmit(onSubmit)}

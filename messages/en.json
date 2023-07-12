@@ -22,6 +22,7 @@
   "problem": {
     "allProblems": "All Problems",
     "addProblem": "Add Problem",
+    "language": "Language",
     "title": "Title",
     "description": "Description",
     "memoryLimit": "Memory Limit",

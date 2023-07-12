@@ -4,8 +4,17 @@ import { twJoin } from "tailwind-merge";
 import { actionNeutral } from "@/style/baseStyle";
 import Link from "next/link";
 
-const ProblemsList = async ({ initIndex }: { initIndex: number }) => {
+const ProblemsList = async ({
+  initIndex,
+  locale,
+}: {
+  initIndex: number;
+  locale: string;
+}) => {
   const problems = await prisma.problem.findMany({
+    where: {
+      locale: locale,
+    },
     skip: initIndex * PROBLEM_LIST_PAGE_SIZE,
     take: PROBLEM_LIST_PAGE_SIZE,
   });
@@ -18,7 +27,7 @@ const ProblemsList = async ({ initIndex }: { initIndex: number }) => {
           className={twJoin(
             "px-1 py-2",
             "border-b border-neutral-400 first:border-t",
-            actionNeutral
+            actionNeutral,
           )}
         >
           <Link href={`/problems/${problem.id}`}>{problem.title}</Link>

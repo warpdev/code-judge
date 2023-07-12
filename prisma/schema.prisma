@@ -75,8 +75,8 @@ model Problem {
   createdBy    String
   submission   Submission[]
   Hint         Hint[]
-  Tag          Tag[]
   User         User         @relation(fields: [createdBy], references: [id])
+  TagMap       TagMap[]
 }
 
 model Submission {
@@ -109,9 +109,15 @@ model Language {
 }
 
 model Tag {
-  id        Int      @id @default(autoincrement())
-  name      String
+  id     Int      @id @default(autoincrement())
+  name   String
+  TagMap TagMap[]
+}
+
+model TagMap {
+  id        String  @id @default(cuid())
+  tagId     Int
   problemId Int
-  createdAt DateTime @default(now())
-  problem   Problem  @relation(fields: [problemId], references: [id])
+  problem   Problem @relation(fields: [problemId], references: [id])
+  tag       Tag     @relation(fields: [tagId], references: [id])
 }

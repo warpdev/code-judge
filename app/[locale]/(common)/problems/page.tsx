@@ -18,7 +18,7 @@ const ProblemListPage = async ({
   return (
     <div>
       <h1 className={title}>{t("allProblems")}</h1>
-      <ProblemsList initIndex={currentPage} />
+      <ProblemsList initIndex={currentPage} locale={locale} />
       <div className="mt-4 flex justify-end">
         <AddProblemButton />
       </div>

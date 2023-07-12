@@ -16,7 +16,6 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
       memoryLimit: parseInt(body.memoryLimit),
       timeLimit: parseInt(body.timeLimit),
       createdBy: user.id,
-      locale: "ko",
     },
     select: {
       id: true,
