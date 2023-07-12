@@ -4,9 +4,11 @@ import Accordion from "@/components/Accordions/Accordion";
 import CodeEditor from "@/components/CodeEditor";
 import { Prisma } from "@prisma/client";
 import SubmissionGetPayload = Prisma.SubmissionGetPayload;
+import { getTranslator } from "next-intl/server";
 
 const SubmissionCodePanel = async ({
   submission,
+  locale,
 }: {
   submission: SubmissionGetPayload<{
     include: {
@@ -14,8 +16,10 @@ const SubmissionCodePanel = async ({
       language: true;
     };
   }>;
+  locale: string;
 }) => {
   const userInfo = await getServerUser();
+  const t = await getTranslator(locale, "submission");
   const isMine = userInfo?.id === submission.userId;
 
   if (!isMine) {
@@ -33,7 +37,7 @@ const SubmissionCodePanel = async ({
       className="mt-8"
       contents={[
         {
-          title: "Your Code",
+          title: t("yourCode"),
           content: (
             <CodeEditor
               height={300}

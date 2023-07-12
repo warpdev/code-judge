@@ -7,7 +7,11 @@ import SubmissionsListPanel from "@/components/Submissions/SubmissionsListPanel"
 import prisma from "@/lib/prisma";
 import SignOutButton from "@/components/Auth/SignOutButton";
 
-const UserProfilePage = async () => {
+const UserProfilePage = async ({
+  params: { locale },
+}: {
+  params: { locale: string };
+}) => {
   const user = await getServerUser();
 
   if (!user) {
@@ -41,7 +45,7 @@ const UserProfilePage = async () => {
         />
       )}
       <h2 className={twJoin(title, "mt-8")}>My Submissions</h2>
-      <SubmissionsListPanel submissions={submissions} />
+      <SubmissionsListPanel submissions={submissions} locale={locale} />
       <div className="flex justify-end">
         <SignOutButton
           className="border-2 border-neutral-400"

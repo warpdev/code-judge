@@ -8,10 +8,12 @@ import UserHeaderPanel from "@/components/Header/UserHeaderPanel";
 import { Session } from "next-auth";
 import { useState } from "react";
 import { RemoveScroll } from "react-remove-scroll";
+import { useTranslations } from "next-intl";
 
 //TODO: More detail ux
 const NavMenu = ({ user }: { user?: Session["user"] }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const t = useTranslations("header");
   return (
     <div>
       <RemoveScroll enabled={isMenuOpen}>
@@ -29,14 +31,14 @@ const NavMenu = ({ user }: { user?: Session["user"] }) => {
             "h-screen md:h-auto",
             "shadow-lg md:shadow-none",
             isMenuOpen ? "block" : "hidden",
-            "md:block"
+            "md:block",
           )}
         >
           <ul
             className={twJoin(
               "flex gap-2",
               "flex-col md:flex-row",
-              "items-end md:items-start"
+              "items-end md:items-start",
             )}
           >
             {NAV_LINKS.map((link) => (
@@ -46,7 +48,7 @@ const NavMenu = ({ user }: { user?: Session["user"] }) => {
                   className={twJoin(roundButton, actionNeutral)}
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  {link.name}
+                  {t(link.name as any)}
                 </Link>
               </li>
             ))}

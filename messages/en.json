@@ -1,0 +1,35 @@
+{
+  "common": {
+    "problem": "Problem",
+    "problems": "Problems",
+    "submission": "Submission",
+    "submissions": "Submissions",
+    "profile": "Profile"
+  },
+  "header": {
+    "problems": "Problems",
+    "submissions": "Submissions",
+    "profile": "Profile",
+    "signIn": "Sign In",
+    "signOut": "Sign Out"
+  },
+  "problem": {
+    "allProblems": "All Problems",
+    "addProblem": "Add Problem",
+    "title": "Title",
+    "description": "Description",
+    "memoryLimit": "Memory Limit",
+    "timeLimit": "Time Limit",
+    "inputFormat": "Input Format",
+    "outputFormat": "Output Format",
+    "sampleInput": "Sample Input",
+    "sampleOutput": "Sample Output",
+    "submit": "Submit"
+  },
+  "submission": {
+    "allSubmissions": "All Submissions",
+    "viewDetail": "View Detail",
+    "submissionDetail": "Submission Detail",
+    "yourCode": "Your Code"
+  }
+}

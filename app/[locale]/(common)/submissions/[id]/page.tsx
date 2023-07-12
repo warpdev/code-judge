@@ -6,14 +6,17 @@ import Link from "next/link";
 import { title } from "@/style/baseStyle";
 import SubmissionCodePanel from "@/components/Submissions/SubmissionCodePanel";
 import { getTextColor } from "@/utils/judgeClientUtils";
+import { getTranslator } from "next-intl/server";
 
 const SubmissionDetailPage = async ({
   params,
 }: {
   params: {
+    locale: string;
     id: string;
   };
 }) => {
+  const t = await getTranslator(params.locale, "submission");
   const submission = await prisma.submission.findUnique({
     where: {
       id: params.id,
@@ -32,19 +35,19 @@ const SubmissionDetailPage = async ({
     submissions: ISubmissions[];
   }>(
     `/submissions/batch?tokens=${submission.submissionTokens.join(
-      ","
+      ",",
     )}&base64_encoded=true&fields=status`,
     {
       next: {
         revalidate: 30,
       },
-    }
+    },
   );
 
   return (
     <div>
       <h1>
-        Submission Detail
+        <span>{t("submissionDetail")}</span>
         <span className="sr-only"> - {submission?.problem.title}</span>
       </h1>
       <Link
@@ -59,7 +62,7 @@ const SubmissionDetailPage = async ({
             key={index}
             className={twJoin(
               "flex flex-col border-neutral-950 py-2",
-              "md:flex-row md:justify-between md:border-b"
+              "md:flex-row md:justify-between md:border-b",
             )}
           >
             <span>Case #{index + 1}</span>
@@ -69,7 +72,7 @@ const SubmissionDetailPage = async ({
           </li>
         ))}
       </ol>
-      <SubmissionCodePanel submission={submission} />
+      <SubmissionCodePanel submission={submission} locale={params.locale} />
     </div>
   );
 };

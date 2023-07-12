@@ -4,11 +4,11 @@ export const JUDGE_API_URL = "http://34.64.215.10:2358";
 
 export const NAV_LINKS = [
   {
-    name: "Problems",
+    name: "problems",
     href: "/problems",
   },
   {
-    name: "Submissions",
+    name: "submissions",
     href: "/submissions",
   },
 ];
