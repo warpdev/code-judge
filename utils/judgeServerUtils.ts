@@ -4,6 +4,7 @@ import { ITestSet } from "@/types/common";
 
 const JUDGE_HEADER = {
   "Content-Type": "application/json",
+  "X-Auth-Token": process.env.JUDGE_SECRET || "",
 };
 
 export const fetchJudgeApi = async <T>(
