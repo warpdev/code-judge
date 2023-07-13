@@ -7,7 +7,11 @@
     "profile": "Profile",
     "signIn": "Sign In",
     "signOut": "Sign Out",
-    "delete": "Delete"
+    "delete": "Delete",
+    "language": "Language",
+    "korean": "Korean",
+    "english": "English",
+    "all": "All"
   },
   "header": {
     "problems": "Problems",
@@ -33,7 +37,8 @@
     "sampleOutput": "Sample Output",
     "submit": "Submit",
     "startCoding": "Start Coding!",
-    "editTestCases": "Edit Test Cases"
+    "editTestCases": "Edit Test Cases",
+    "filter": "Filter"
   },
   "solving": {
     "submit": "Submit",

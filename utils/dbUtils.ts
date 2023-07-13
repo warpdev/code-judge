@@ -22,7 +22,7 @@ export const getProblems = async ({
 }) => {
   const problems = await prisma.problem.findMany({
     where: {
-      locale: LOCALE_MAP[locale || "en"].id,
+      locale: LOCALE_MAP[locale as any]?.id,
     },
     skip: pageIndex * PROBLEM_LIST_PAGE_SIZE,
     take: PROBLEM_LIST_PAGE_SIZE,

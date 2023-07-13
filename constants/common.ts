@@ -24,10 +24,10 @@ export const LOCALE_MAP: Record<
 > = {
   en: {
     id: 0,
-    name: "English",
+    name: "english",
   },
   ko: {
     id: 1,
-    name: "한국어",
+    name: "korean",
   },
 };

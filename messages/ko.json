@@ -7,7 +7,11 @@
     "profile": "프로필",
     "signIn": "로그인",
     "signOut": "로그아웃",
-    "delete": "삭제"
+    "delete": "삭제",
+    "language": "문제 언어",
+    "korean": "한국어",
+    "english": "영어",
+    "all": "모두"
   },
   "header": {
     "problems": "문제 풀기",
@@ -33,7 +37,8 @@
     "sampleOutput": "출력 예시",
     "submit": "제출하기",
     "startCoding": "코딩 시작!",
-    "editTestCases": "테스트 케이스 수정"
+    "editTestCases": "테스트 케이스 수정",
+    "filter": "필터"
   },
   "solving": {
     "submit": "제출하기",

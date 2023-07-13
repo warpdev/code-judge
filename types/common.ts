@@ -23,3 +23,13 @@ export interface ITestSet {
   input: string;
   output: string;
 }
+
+export interface IProblemFilter {
+  locale: {
+    title: string;
+    options: {
+      label: string;
+      value: string;
+    }[];
+  };
+}

@@ -2,12 +2,15 @@
 import React from "react";
 import { RemoveScroll } from "react-remove-scroll";
 import { motion, MotionConfig } from "framer-motion";
+import { twMerge } from "tailwind-merge";
 
 const BaseModal = ({
   children,
+  className,
   onClose: handleClose,
 }: {
   children: React.ReactNode;
+  className?: string;
   onClose?: () => void;
 }) => {
   return (
@@ -31,7 +34,10 @@ const BaseModal = ({
             }}
           ></motion.div>
           <motion.div
-            className="container max-h-screen w-full overflow-y-auto rounded-t-2xl bg-white p-4 md:m-auto md:rounded-2xl md:p-10 md:px-14"
+            className={twMerge(
+              "container max-h-screen w-full overflow-y-auto rounded-t-2xl bg-white p-4 md:m-auto md:rounded-2xl md:p-10 md:px-14",
+              className,
+            )}
             onClick={(e) => e.stopPropagation()}
             initial={{
               opacity: 0.4,

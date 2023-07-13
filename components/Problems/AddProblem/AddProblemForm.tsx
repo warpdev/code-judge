@@ -91,7 +91,7 @@ const InputRow = ({
 };
 
 const AddProblemForm = () => {
-  const t = useTranslations("problem");
+  const t = useTranslations();
   const {
     storedValue: content,
     setValue: setContent,
@@ -137,7 +137,7 @@ const AddProblemForm = () => {
         />
       ))}
       <div className="flex flex-col gap-2">
-        <label htmlFor="locale">{t("language")}</label>
+        <label htmlFor="locale">{t("problem.language")}</label>
         <select
           id="locale"
           {...register("locale")}
@@ -149,7 +149,7 @@ const AddProblemForm = () => {
         >
           {LOCALES.map((locale) => (
             <option key={locale} value={locale}>
-              {LOCALE_MAP[locale].name}
+              {t(`common.${LOCALE_MAP[locale].name}` as any)}
             </option>
           ))}
         </select>

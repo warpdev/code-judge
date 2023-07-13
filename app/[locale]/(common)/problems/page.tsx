@@ -10,6 +10,7 @@ const ProblemListPage = async ({
 }: {
   searchParams: {
     page?: string;
+    locale?: string;
   };
   params: { locale: string };
 }) => {
@@ -17,7 +18,7 @@ const ProblemListPage = async ({
   const t = await getTranslator(locale, "problem");
   const problems = await getProblems({
     pageIndex: currentPage,
-    locale,
+    locale: searchParams.locale || locale,
   });
 
   return (

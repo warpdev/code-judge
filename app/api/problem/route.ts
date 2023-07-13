@@ -29,8 +29,9 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 };
 
 export const GET = async (req: NextRequest) => {
-  const body = await req.json();
-  const { page, locale } = body;
+  const { searchParams } = new URL(req.url);
+  const locale = searchParams.get("locale") || "all";
+  const page = parseInt(searchParams.get("page") || "0");
 
   const problems = await getProblems({
     locale: locale,
