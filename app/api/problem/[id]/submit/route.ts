@@ -23,39 +23,12 @@ export const POST = async (
     return ResTypes.NOT_FOUND("Problem or user not found");
   }
 
-  const allTestSets = await Promise.all(
-    Array.from({ length: problemInfo.testSetSize }).map(async (_, i) => {
-      return {
-        input: await supabase.storage
-          .from("testcase")
-          .download(`${params.id}/${i}.in`)
-          .then((res) => {
-            if (!res.data) throw new Error("Testcase not found");
-            return res.data?.text();
-          }),
-        output: await supabase.storage
-          .from("testcase")
-          .download(`${params.id}/${i}.out`)
-          .then((res) => {
-            if (!res.data) throw new Error("Testcase not found");
-            return res.data?.text();
-          }),
-      };
-    }),
-  );
-
-  const submitTokens = await postBatchSubmission({
-    langId,
-    code,
-    testSets: allTestSets,
-  });
-
   const sub = await prisma.submission.create({
     data: {
       problemId: +params.id,
       userId: userInfo.id,
       languageId: langId,
-      submissionTokens: submitTokens,
+      submissionTokens: [],
     },
   });
 
@@ -63,9 +36,46 @@ export const POST = async (
     .from("usercodes")
     .upload(`${userInfo.id}/${params.id}/${sub.id}`, code);
 
+  setTimeout(async () => {
+    const allTestSets = await Promise.all(
+      Array.from({ length: problemInfo.testSetSize }).map(async (_, i) => {
+        return {
+          input: await supabase.storage
+            .from("testcase")
+            .download(`${params.id}/${i}.in`)
+            .then((res) => {
+              if (!res.data) throw new Error("Testcase not found");
+              return res.data?.text();
+            }),
+          output: await supabase.storage
+            .from("testcase")
+            .download(`${params.id}/${i}.out`)
+            .then((res) => {
+              if (!res.data) throw new Error("Testcase not found");
+              return res.data?.text();
+            }),
+        };
+      }),
+    );
+
+    const submitTokens = await postBatchSubmission({
+      langId,
+      code,
+      testSets: allTestSets,
+    });
+
+    await prisma.submission.update({
+      where: {
+        id: sub.id,
+      },
+      data: {
+        submissionTokens: submitTokens,
+      },
+    });
+  }, 0);
+
   if (!codeUploadResult) {
     return ResTypes.OTHER_ERROR;
   }
-
   return NextResponse.json(sub);
 };

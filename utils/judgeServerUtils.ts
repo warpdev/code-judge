@@ -1,3 +1,4 @@
+import "server-only";
 import { JUDGE_API_URL } from "@/constants/common";
 import { ITestSet } from "@/types/common";
 
@@ -7,7 +8,7 @@ const JUDGE_HEADER = {
 
 export const fetchJudgeApi = async <T>(
   url: string,
-  options?: RequestInit
+  options?: RequestInit,
 ): Promise<T> => {
   const response = await fetch(JUDGE_API_URL + url, {
     headers: JUDGE_HEADER,
@@ -50,7 +51,7 @@ export const postSubmission = async ({
         stdin: btoa(input),
         expected_output: btoa(output),
       }),
-    }
+    },
   );
   return token;
 };
@@ -77,7 +78,7 @@ export const postBatchSubmission = async ({
           expected_output: btoa(testSet.output),
         })),
       }),
-    }
+    },
   );
   return tokens.map((token) => token.token);
 };

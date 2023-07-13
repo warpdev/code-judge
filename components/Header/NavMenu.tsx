@@ -25,7 +25,7 @@ const NavMenu = ({ user }: { user?: Session["user"] }) => {
         </button>
         <nav
           className={twJoin(
-            "absolute left-0 right-0 top-full z-50",
+            "absolute left-0 right-0 top-full z-10",
             "md:relative",
             "bg-white",
             "h-screen md:h-auto",

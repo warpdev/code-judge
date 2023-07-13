@@ -16,7 +16,7 @@ const BaseModal = ({
   return (
     <MotionConfig transition={{ duration: 0.17, ease: "easeOut" }}>
       <motion.div
-        className="fixed inset-0 z-20 flex items-end justify-center md:items-center"
+        className="fixed inset-0 z-50 flex items-end justify-center md:items-center"
         onClick={handleClose}
       >
         <RemoveScroll className="w-full" removeScrollBar={false}>
