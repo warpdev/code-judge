@@ -1,6 +1,6 @@
 "use client";
 import { twJoin } from "tailwind-merge";
-import { actionNeutral, roundButton } from "@/style/baseStyle";
+import { actionNeutral, actionToDark, roundButton } from "@/style/baseStyle";
 import Link from "next/link";
 import { Problem } from "@prisma/client";
 import useSWR from "swr";
@@ -10,6 +10,8 @@ import { IProblemFilter } from "@/types/common";
 import ProblemFilterModal from "@/components/Modal/ProblemFilterModal";
 import { AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
+import ProblemFilterView from "@/components/Problems/ProblemFilterView";
+import { motion } from "framer-motion";
 
 const makeParams = (filter: Record<keyof IProblemFilter, string | null>) => {
   const params = new URLSearchParams();
@@ -28,7 +30,7 @@ const ProblemsList = ({
   initData: Problem[];
   locale: string;
 }) => {
-  const t = useTranslations("problem");
+  const t = useTranslations();
   const searchParams = useSearchParams();
   const currentPage = useMemo(() => {
     const page = searchParams.get("page");
@@ -59,17 +61,27 @@ const ProblemsList = ({
   return (
     <section className="mt-8 flex flex-col gap-8">
       <div className="flex flex-wrap gap-3">
-        <button
-          className={twJoin(
-            roundButton,
-            "rounded-full",
-            "border border-neutral-400",
-            actionNeutral,
-          )}
-          onClick={() => setIsFilterOpen(true)}
+        <ProblemFilterView currentFilter={currentFilter} />
+        <motion.span
+          layoutId="filter-open-button"
+          layout="position"
+          transition={{
+            duration: 0.25,
+            ease: "easeInOut",
+          }}
         >
-          {t("filter")}
-        </button>
+          <button
+            className={twJoin(
+              roundButton,
+              "rounded-full",
+              "border border-neutral-400",
+              actionNeutral,
+            )}
+            onClick={() => setIsFilterOpen(true)}
+          >
+            {t("problem.filter")}
+          </button>
+        </motion.span>
       </div>
       <ul className="flex flex-col">
         {problems?.map((problem) => (
@@ -79,13 +91,16 @@ const ProblemsList = ({
               "px-1 py-2",
               "border-b border-neutral-400 first:border-t",
               actionNeutral,
+              "hover:opacity-80",
             )}
           >
-            <Link href={`/problems/${problem.id}`}>{problem.title}</Link>
+            <Link className="block w-full" href={`/problems/${problem.id}`}>
+              {problem.title}
+            </Link>
           </li>
         ))}
       </ul>
-      <AnimatePresence>
+      <AnimatePresence key="modal-problem">
         {isFilterOpen && (
           <ProblemFilterModal
             currentFilter={currentFilter}

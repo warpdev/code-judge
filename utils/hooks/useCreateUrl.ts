@@ -6,9 +6,13 @@ const useCreateUrl = () => {
   const searchParams = useSearchParams()!;
 
   const createQueryString = useCallback(
-    (name: string, value: string) => {
+    (name: string, value: string | null | undefined) => {
       const params = new URLSearchParams(searchParams as any);
-      params.set(name, value);
+      if (value === null || value === undefined) {
+        params.delete(name);
+      } else {
+        params.set(name, value);
+      }
 
       return `${pathname}?${params.toString()}`;
     },
