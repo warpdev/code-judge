@@ -71,7 +71,7 @@ export const TiptapExtensions = [
 
             tr.insert(start - 1, this.type.create(attributes)).delete(
               tr.mapping.map(start),
-              tr.mapping.map(end)
+              tr.mapping.map(end),
             );
           },
         }),
@@ -99,7 +99,7 @@ export const TiptapExtensions = [
       if (node.type.name === "heading") {
         return `Heading ${node.attrs.level}`;
       }
-      return "Press '/' for commands, or '++' for AI autocomplete...";
+      return "Press '/' for commands";
     },
     includeChildren: true,
   }),

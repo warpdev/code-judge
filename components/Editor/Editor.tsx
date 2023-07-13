@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import useStorage from "@/utils/hooks/useStorage";
 import { EditorBubbleMenu } from "@/components/Editor/EditorBubbleMenu";
+import SlashCommand from "@/components/Editor/SlashCommand";
 
 //TODO: add Syntax Highlighting
 const Editor = ({
@@ -31,7 +32,7 @@ const Editor = ({
   }, 750);
 
   const editor = useEditor({
-    extensions: TiptapExtensions,
+    extensions: [...TiptapExtensions, SlashCommand],
     editorProps: TiptapEditorProps,
     onUpdate: (e) => {
       setSaveStatus("Unsaved");
