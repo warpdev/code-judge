@@ -19,6 +19,7 @@ import { twJoin } from "tailwind-merge";
 import useStorage from "@/utils/hooks/useStorage";
 import { useDebouncedCallback } from "use-debounce";
 import { useTranslations } from "next-intl";
+import { LOCALE_MAP, LOCALES } from "@/constants/common";
 
 /*
   title String
@@ -146,8 +147,11 @@ const AddProblemForm = () => {
             actionToDark,
           )}
         >
-          <option value="en">English</option>
-          <option value="ko">Korean</option>
+          {LOCALES.map((locale) => (
+            <option key={locale} value={locale}>
+              {LOCALE_MAP[locale].name}
+            </option>
+          ))}
         </select>
       </div>
 

@@ -63,7 +63,7 @@ model Problem {
   id           Int          @id @default(autoincrement())
   title        String
   description  Json
-  locale       String
+  locale       Int
   memoryLimit  Int
   timeLimit    Int
   inputFormat  Json
@@ -75,7 +75,7 @@ model Problem {
   createdBy    String
   submission   Submission[]
   Hint         Hint[]
-  User         User         @relation(fields: [createdBy], references: [id])
+  User         User         @relation(fields: [createdBy], references: [id], onDelete: NoAction)
   TagMap       TagMap[]
 }
 
@@ -86,8 +86,8 @@ model Submission {
   submissionTokens String[]
   languageId       Int
   createdAt        DateTime @default(now())
-  user             User     @relation(fields: [userId], references: [id])
-  problem          Problem  @relation(fields: [problemId], references: [id])
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problem          Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
   language         Language @relation(fields: [languageId], references: [id])
 }
 
@@ -97,8 +97,8 @@ model Hint {
   userId    String
   content   String
   createdAt DateTime @default(now())
-  problem   Problem  @relation(fields: [problemId], references: [id])
-  user      User     @relation(fields: [userId], references: [id])
+  problem   Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Language {
@@ -118,6 +118,6 @@ model TagMap {
   id        String  @id @default(cuid())
   tagId     Int
   problemId Int
-  problem   Problem @relation(fields: [problemId], references: [id])
-  tag       Tag     @relation(fields: [tagId], references: [id])
+  problem   Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  tag       Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
 }

@@ -12,3 +12,22 @@ export const NAV_LINKS = [
     href: "/submissions",
   },
 ];
+
+export const LOCALES = ["en", "ko"];
+
+export const LOCALE_MAP: Record<
+  (typeof LOCALES)[number],
+  {
+    id: number;
+    name: string;
+  }
+> = {
+  en: {
+    id: 0,
+    name: "English",
+  },
+  ko: {
+    id: 1,
+    name: "한국어",
+  },
+};
