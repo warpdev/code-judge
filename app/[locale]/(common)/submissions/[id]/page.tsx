@@ -1,12 +1,14 @@
 import prisma from "@/lib/prisma";
 import { fetchJudgeApi } from "@/utils/judgeServerUtils";
-import { ISubmissions } from "@/types/judge";
+import { IJudgeStatus } from "@/types/judge";
 import { twJoin } from "tailwind-merge";
 import Link from "next/link";
 import { title } from "@/style/baseStyle";
 import SubmissionCodePanel from "@/components/Submissions/SubmissionCodePanel";
 import { getTranslator } from "next-intl/server";
 import { Spinner } from "@/components/BaseComponents";
+import { getSubmissionAllInfo } from "@/utils/dbUtils";
+import { JUDGE_STATUS } from "@/constants/judge";
 
 const getTextColor = (statusId: number) => {
   switch (statusId) {
@@ -39,32 +41,11 @@ const SubmissionDetailPage = async ({
   };
 }) => {
   const t = await getTranslator(params.locale, "submission");
-  const submission = await prisma.submission.findUnique({
-    where: {
-      id: parseInt(params.id),
-    },
-    include: {
-      problem: true,
-      language: true,
-    },
-  });
+  const submission = await getSubmissionAllInfo(params.id);
 
   if (!submission) {
     return <div>Submission not found</div>;
   }
-
-  const { submissions: judgeSubmissions } = await fetchJudgeApi<{
-    submissions: ISubmissions[];
-  }>(
-    `/submissions/batch?tokens=${submission.submissionTokens.join(
-      ",",
-    )}&base64_encoded=true&fields=status`,
-    {
-      next: {
-        revalidate: 30,
-      },
-    },
-  );
 
   return (
     <div>
@@ -78,9 +59,9 @@ const SubmissionDetailPage = async ({
       >
         {submission.problem.title}
       </Link>
-      {judgeSubmissions ? (
+      {submission.judgeTokens ? (
         <ol className="mt-12 flex flex-col gap-2">
-          {judgeSubmissions?.map((result, index) => (
+          {submission.judgeTokens?.map((result, index) => (
             <li
               key={index}
               className={twJoin(
@@ -89,10 +70,11 @@ const SubmissionDetailPage = async ({
               )}
             >
               <span>Case #{index + 1}</span>
-              <p
-                className={twJoin(getTextColor(result.status.id), "font-bold")}
-              >
-                {result.status.description}
+              <p className={twJoin(getTextColor(result.status), "font-bold")}>
+                {
+                  JUDGE_STATUS.find((status) => status.id === result.status)
+                    ?.description
+                }
               </p>
             </li>
           ))}

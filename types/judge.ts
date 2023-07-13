@@ -3,6 +3,7 @@ export interface IStatus {
   description: string;
 }
 
-export interface ISubmissions {
+export interface IJudgeStatus {
   status: IStatus;
+  token: string;
 }

@@ -28,7 +28,6 @@ export const POST = async (
       problemId: +params.id,
       userId: userInfo.id,
       languageId: langId,
-      submissionTokens: [],
     },
   });
 
@@ -64,13 +63,11 @@ export const POST = async (
       testSets: allTestSets,
     });
 
-    await prisma.submission.update({
-      where: {
-        id: sub.id,
-      },
-      data: {
-        submissionTokens: submitTokens,
-      },
+    await prisma.judgeToken.createMany({
+      data: submitTokens.map((token) => ({
+        submissionId: sub.id,
+        id: token,
+      })),
     });
   }, 0);
 

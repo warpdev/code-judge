@@ -76,19 +76,19 @@ model Problem {
   submission   Submission[]
   Hint         Hint[]
   User         User         @relation(fields: [createdBy], references: [id], onDelete: NoAction)
-  TagMap       TagMap[]
+  tagMap       TagMap[]
 }
 
 model Submission {
-  id               Int      @id @default(autoincrement())
-  problemId        Int
-  userId           String
-  submissionTokens String[]
-  languageId       Int
-  createdAt        DateTime @default(now())
-  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  problem          Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
-  language         Language @relation(fields: [languageId], references: [id])
+  id          Int          @id @default(autoincrement())
+  problemId   Int
+  userId      String
+  languageId  Int
+  createdAt   DateTime     @default(now())
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problem     Problem      @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  language    Language     @relation(fields: [languageId], references: [id])
+  judgeTokens JudgeToken[]
 }
 
 model Hint {
@@ -105,13 +105,13 @@ model Language {
   id             Int          @id
   name           String
   monacoLanguage String
-  Submission     Submission[]
+  submission     Submission[]
 }
 
 model Tag {
   id     Int      @id @default(autoincrement())
   name   String
-  TagMap TagMap[]
+  tagMap TagMap[]
 }
 
 model TagMap {
@@ -120,4 +120,11 @@ model TagMap {
   problemId Int
   problem   Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
   tag       Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+}
+
+model JudgeToken {
+  id           String     @id
+  submissionId Int
+  status       Int        @default(1)
+  submission   Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
 }
