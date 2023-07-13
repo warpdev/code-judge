@@ -1,16 +1,19 @@
 import { BaseProps } from "@/types/common";
 import { twJoin } from "tailwind-merge";
+import { LogoIcon } from "@/components/Icons";
 
 const AppLogo = ({ className }: BaseProps) => {
   return (
     <span
       className={twJoin(
-        "min-w-max select-none font-black text-neutral-800 md:text-2xl",
+        "min-w-max select-none font-black text-neutral-700 md:text-2xl",
+        "flex items-center",
         "text-md",
-        className
+        className,
       )}
     >
-      Code Start
+      <LogoIcon />
+      <span className="min-w-max">Code Start</span>
     </span>
   );
 };
