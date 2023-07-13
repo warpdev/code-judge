@@ -21,7 +21,7 @@ const SubmitPagePanel = ({
 }) => {
   const t = useTranslations("solving");
   const [currentLanguage, setCurrentLanguage] = useState<ILanguage>(
-    availableLangs.find((lang) => lang.monacoLanguage === "python") ||
+    availableLangs.findLast((lang) => lang.monacoLanguage === "python") ||
       availableLangs[0],
   );
   const editorRef = useRef<editor.IStandaloneCodeEditor>(null);
