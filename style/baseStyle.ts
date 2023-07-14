@@ -47,3 +47,5 @@ export const baseTabButton = twJoin(
   "dark:bg-neutral-800 dark:border-neutral-600",
   actionToDark,
 );
+
+export const baseProse = twJoin("prose-base max-w-full dark:prose-invert");

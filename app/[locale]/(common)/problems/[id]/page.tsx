@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { twJoin } from "tailwind-merge";
-import { title } from "@/style/baseStyle";
+import { baseProse, title } from "@/style/baseStyle";
 import { getIsAdmin, getServerUser } from "@/utils/serverUtils";
 import SignInButton from "@/components/Auth/SignInButton";
 import { getProblemInfo } from "@/utils/dbUtils";
@@ -71,9 +71,11 @@ const ProblemDetailPage = async ({
         className={twJoin(
           "rounded-lg bg-neutral-100 p-4",
           "dark:bg-neutral-800",
+          "border-none",
         )}
       >
         <div
+          className={baseProse}
           dangerouslySetInnerHTML={{
             __html: generateHTML(problem.description as any, TiptapExtensions),
           }}
@@ -83,6 +85,7 @@ const ProblemDetailPage = async ({
         <div>
           <h2 className={sectionTitle}>{t("inputFormat")}</h2>
           <div
+            className={baseProse}
             dangerouslySetInnerHTML={{
               __html: generateHTML(
                 problem.inputFormat as any,
@@ -100,6 +103,7 @@ const ProblemDetailPage = async ({
         <div>
           <h2 className={sectionTitle}>{t("outputFormat")}</h2>
           <div
+            className={baseProse}
             dangerouslySetInnerHTML={{
               __html: generateHTML(
                 problem.outputFormat as any,
