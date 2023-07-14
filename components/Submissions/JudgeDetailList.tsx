@@ -63,6 +63,7 @@ const JudgeDetailList = ({
               key={index}
               className={twJoin(
                 "flex flex-col border-neutral-950 py-2",
+                "dark:border-neutral-700",
                 "md:flex-row md:justify-between md:border-b",
               )}
             >

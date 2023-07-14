@@ -4,31 +4,27 @@ import { twJoin, twMerge } from "tailwind-merge";
 import { useCallback, useState } from "react";
 import { Problem } from "@prisma/client";
 import Viewer from "@/components/Editor/Viewer";
-import { actionNeutral } from "@/style/baseStyle";
+import { actionNeutral, actionToDark, baseTabButton } from "@/style/baseStyle";
 import { FileInput, FileOutput, FileText } from "lucide-react";
 
-const tabButton = twJoin(
-  "w-10 h-10 bg-neutral-100",
-  "rounded-md border-2 border-neutral-400 border-l-0 rounded-l-none",
-  actionNeutral
-);
+const tabButton = twJoin(baseTabButton, "border-l-0 rounded-l-none");
 
 const monoContent = twJoin(
   "rounded-md border-2 border-neutral-600 p-2",
   "bg-neutral-900 text-neutral-50",
-  "font-mono whitespace-pre"
+  "font-mono whitespace-pre",
 );
 
 const ProblemInfoPanel = ({ problem }: { problem: Problem }) => {
   const [currentTab, setCurrentTab] = useState<string | undefined>(
-    "description"
+    "description",
   );
 
   const handleClick = useCallback(
     (tab: string) => () => {
       setCurrentTab((prev) => (prev === tab ? undefined : tab));
     },
-    []
+    [],
   );
 
   return (
@@ -41,7 +37,8 @@ const ProblemInfoPanel = ({ problem }: { problem: Problem }) => {
           "border-r border-neutral-700 bg-neutral-100",
           "overflow-y-auto transition-all",
           "px-2 py-4",
-          currentTab ? "ml-0" : "-ml-[360px]"
+          "dark:bg-neutral-900",
+          currentTab ? "ml-0" : "-ml-[360px]",
         )}
       >
         {currentTab === "inputFormat" || currentTab === "outputFormat" ? (
@@ -49,7 +46,7 @@ const ProblemInfoPanel = ({ problem }: { problem: Problem }) => {
             <span>
               <Viewer value={problem[currentTab]} />
             </span>
-            <span className="h-0.5 w-full bg-neutral-400" />
+            <span className="h-0.5 w-full bg-neutral-400 dark:bg-neutral-700" />
             <span className={monoContent}>
               {
                 problem[
@@ -62,7 +59,7 @@ const ProblemInfoPanel = ({ problem }: { problem: Problem }) => {
           <Viewer value={problem.description} />
         )}
       </div>
-      <ul className="py-2">
+      <ul className="space-y-2 py-2">
         <li>
           <button className={tabButton} onClick={handleClick("description")}>
             <FileText className="m-auto h-4 w-4" />

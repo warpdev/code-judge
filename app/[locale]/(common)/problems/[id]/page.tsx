@@ -9,8 +9,13 @@ import { TiptapExtensions } from "@/lib/editorConfigs";
 import Link from "next/link";
 import DeleteProblemButton from "@/components/Problems/DeleteProblemButton";
 import { getTranslator } from "next-intl/server";
+import { greenButton, violetButton } from "@/style/baseComponent";
 
-const sectionTitle = twJoin("mb-4", "text-lg font-bold text-neutral-900");
+const sectionTitle = twJoin(
+  "mb-4",
+  "text-lg font-bold text-neutral-900",
+  "dark:text-neutral-100",
+);
 const monoContent = twJoin(
   "rounded-md border-2 border-neutral-600 p-2",
   "bg-neutral-900 text-neutral-50",
@@ -62,7 +67,12 @@ const ProblemDetailPage = async ({
         </span>
       </div>
       <h2 className="sr-only">Description</h2>
-      <div className="rounded-lg bg-neutral-100 p-4">
+      <div
+        className={twJoin(
+          "rounded-lg bg-neutral-100 p-4",
+          "dark:bg-neutral-800",
+        )}
+      >
         <div
           dangerouslySetInnerHTML={{
             __html: generateHTML(problem.description as any, TiptapExtensions),
@@ -110,27 +120,14 @@ const ProblemDetailPage = async ({
             "flex-col md:flex-row",
           )}
         >
-          <Link
-            className={twMerge(
-              roundButton,
-              "bg-emerald-500 font-bold text-neutral-50",
-              "px-4 py-2",
-              actionToDark,
-            )}
-            href={`/problems/${params.id}/submit`}
-          >
+          <Link className={greenButton} href={`/problems/${params.id}/submit`}>
             {t("startCoding")}
           </Link>
           {isAdmin && (
             <div className="flex items-center justify-end gap-2">
               <DeleteProblemButton problem={problem} locale={params.locale} />
               <Link
-                className={twMerge(
-                  roundButton,
-                  "bg-violet-500 font-bold text-neutral-50",
-                  "px-4 py-2",
-                  actionToDark,
-                )}
+                className={violetButton}
                 href={`/problems/${params.id}/testcase`}
               >
                 {t("editTestCases")}

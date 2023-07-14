@@ -7,7 +7,15 @@ import { UserCheck2 } from "lucide-react";
 import { getTranslator } from "next-intl/server";
 
 const submissionWithExtra = Prisma.validator<Prisma.SubmissionArgs>()({
-  include: { problem: true, user: true, language: true },
+  include: {
+    problem: true,
+    user: {
+      select: {
+        id: true,
+      },
+    },
+    language: true,
+  },
 });
 
 const gridTemplate = twJoin(`grid-cols-[1fr_1fr_1fr_30px]`);
@@ -27,7 +35,10 @@ const SubmissionsListPanel = async ({
       {submissions.map((submission) => (
         <li
           key={submission.id}
-          className="border-b border-neutral-400 first:border-t"
+          className={twJoin(
+            "border-b border-neutral-400 first:border-t",
+            "dark:border-neutral-600",
+          )}
         >
           <Link
             href={`/submissions/${submission.id}`}

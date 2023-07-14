@@ -28,7 +28,8 @@ const TestcaseRow = ({
       <button
         className={twMerge(
           roundButton,
-          "bg-neutral-100 px-2 py-2 text-lg font-bold",
+          "bg-neutral-100 dark:bg-neutral-800",
+          "px-2 py-2 text-lg font-bold",
           "flex w-full items-center justify-between gap-4",
           actionToDark,
           isNew && "justify-center bg-violet-500 text-white",

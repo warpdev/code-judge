@@ -1,5 +1,5 @@
 "use client";
-import { twMerge } from "tailwind-merge";
+import { twJoin, twMerge } from "tailwind-merge";
 import { ChevronDownIcon } from "lucide-react";
 import {
   AccordionContentProps,
@@ -24,7 +24,7 @@ const AccordionItem = ({
   <Item
     className={twMerge(
       "mt-px overflow-hidden first:mt-0 first:rounded-t last:rounded-b focus-within:relative focus-within:z-10 focus-within:shadow-[0_0_0_2px] focus-within:shadow-neutral-900",
-      className
+      className,
     )}
     {...props}
   >
@@ -44,13 +44,18 @@ const AccordionTrigger = ({
     <Trigger
       className={twMerge(
         "group flex h-[45px] flex-1 cursor-default items-center justify-between bg-neutral-50 px-5 text-[15px] leading-none outline-none hover:bg-neutral-200",
-        className
+        "dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700",
+        "transition",
+        className,
       )}
       {...props}
     >
       {children}
       <ChevronDownIcon
-        className="text-neutral-800 transition-transform duration-300 ease-[cubic-bezier(0.87,_0,_0.13,_1)] group-data-[state=open]:rotate-180"
+        className={twJoin(
+          "text-neutral-800 transition-transform duration-300 ease-[cubic-bezier(0.87,_0,_0.13,_1)] group-data-[state=open]:rotate-180",
+          "dark:text-neutral-300",
+        )}
         aria-hidden
       />
     </Trigger>
@@ -68,7 +73,8 @@ const AccordionContent = ({
   <Content
     className={twMerge(
       "overflow-hidden bg-neutral-100 text-[15px] text-neutral-800 data-[state=closed]:animate-slideUp data-[state=open]:animate-slideDown",
-      className
+      "dark:bg-neutral-900 dark:text-neutral-300",
+      className,
     )}
     {...props}
   >

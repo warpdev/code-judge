@@ -10,7 +10,7 @@ const TestcaseListPanel = ({ initProblems }: { initProblems: Problem }) => {
     null,
     {
       fallbackData: initProblems,
-    }
+    },
   );
 
   if (!problem) {
@@ -18,20 +18,22 @@ const TestcaseListPanel = ({ initProblems }: { initProblems: Problem }) => {
   }
 
   return (
-    <ol className="flex flex-col gap-8">
-      {Array.from({ length: problem.testSetSize }, (_, i) => i + 1).map((i) => (
-        <li key={i}>
-          <TestcaseRow problem={problem} caseNumber={i} />
-        </li>
-      ))}
-      <li>
-        <TestcaseRow
-          problem={problem}
-          caseNumber={problem.testSetSize + 1}
-          isNew={true}
-        />
-      </li>
-    </ol>
+    <div className="flex flex-col gap-8">
+      <ol className="grid grid-cols-2 gap-8">
+        {Array.from({ length: problem.testSetSize }, (_, i) => i + 1).map(
+          (i) => (
+            <li key={i}>
+              <TestcaseRow problem={problem} caseNumber={i} />
+            </li>
+          ),
+        )}
+      </ol>
+      <TestcaseRow
+        problem={problem}
+        caseNumber={problem.testSetSize + 1}
+        isNew={true}
+      />
+    </div>
   );
 };
 

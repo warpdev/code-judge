@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { getIsAdmin, getServerUser } from "@/utils/serverUtils";
 import { ResTypes } from "@/constants/response";
-import { getProblems } from "@/utils/dbUtils";
+import { getPublicProblems } from "@/utils/dbUtils";
 import { LOCALE_MAP } from "@/constants/common";
 
 export const POST = async (req: NextRequest, res: NextResponse) => {
@@ -33,7 +33,7 @@ export const GET = async (req: NextRequest) => {
   const locale = searchParams.get("locale") || "all";
   const page = parseInt(searchParams.get("page") || "0");
 
-  const problems = await getProblems({
+  const problems = await getPublicProblems({
     locale: locale,
     pageIndex: page,
   });

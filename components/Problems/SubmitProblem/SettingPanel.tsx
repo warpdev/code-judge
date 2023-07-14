@@ -1,6 +1,7 @@
 "use client";
 
 import { ILanguage } from "@/types/common";
+import { baseSelect } from "@/style/baseComponent";
 
 const SettingPanel = ({
   currentLanguage,
@@ -13,7 +14,7 @@ const SettingPanel = ({
 }) => {
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedLang = allLanguages.find(
-      (lang) => lang.id === parseInt(e.target.value)
+      (lang) => lang.id === parseInt(e.target.value),
     );
     if (selectedLang) {
       setLanguage(selectedLang);
@@ -22,7 +23,11 @@ const SettingPanel = ({
 
   return (
     <div className="flex justify-between">
-      <select onChange={handleLanguageChange} value={currentLanguage.id}>
+      <select
+        onChange={handleLanguageChange}
+        value={currentLanguage.id}
+        className={baseSelect}
+      >
         {allLanguages.map((lang) => {
           return (
             <option key={lang.id} value={lang.id}>

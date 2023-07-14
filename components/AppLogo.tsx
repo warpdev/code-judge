@@ -9,6 +9,7 @@ const AppLogo = ({ className }: BaseProps) => {
         "min-w-max select-none font-black text-neutral-700 md:text-2xl",
         "flex items-center",
         "text-md",
+        "dark:text-neutral-300",
         className,
       )}
     >

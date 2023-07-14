@@ -41,6 +41,7 @@ const SubmissionCodePanel = async ({
           content: (
             <CodeEditor
               height={300}
+              theme="vs-dark"
               language={submission.language.monacoLanguage}
               value={code || ""}
               defaultValue={code || ""}

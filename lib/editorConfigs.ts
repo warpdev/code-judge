@@ -13,6 +13,8 @@ import Highlight from "@tiptap/extension-highlight";
 
 import { InputRule } from "@tiptap/core";
 import { EditorProps } from "@tiptap/pm/view";
+import { twJoin } from "tailwind-merge";
+import { defaultEditor } from "@/style/baseComponent";
 
 export const TiptapExtensions = [
   StarterKit.configure({
@@ -38,14 +40,18 @@ export const TiptapExtensions = [
     },
     codeBlock: {
       HTMLAttributes: {
-        class:
-          "rounded-sm bg-stone-100 p-5 font-mono font-medium text-stone-800",
+        class: twJoin(
+          "rounded-sm bg-neutral-200 p-5 font-mono font-medium text-neutral-800",
+          "dark:bg-neutral-700 dark:text-neutral-200",
+        ),
       },
     },
     code: {
       HTMLAttributes: {
-        class:
-          "rounded-md bg-stone-200 px-1.5 py-1 font-mono font-medium text-black",
+        class: twJoin(
+          "rounded-md bg-neutral-200 px-1.5 py-1 font-mono font-medium text-black",
+          "dark:bg-neutral-700 dark:text-white",
+        ),
         spellcheck: "false",
       },
     },
@@ -128,7 +134,7 @@ export const TiptapExtensions = [
 
 export const TiptapEditorProps: EditorProps = {
   attributes: {
-    class: `prose-base prose-headings:font-display font-default focus:outline-none max-w-full selection:bg-blue-500/30`,
+    class: defaultEditor,
   },
   handleDOMEvents: {
     keydown: (_view, event) => {

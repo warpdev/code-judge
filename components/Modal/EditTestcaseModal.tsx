@@ -2,26 +2,22 @@
 import BaseModal from "@/components/Modal/BaseModal";
 import { Problem } from "@prisma/client";
 import useSWRImmutable from "swr/immutable";
-import { twJoin } from "tailwind-merge";
+import { twJoin, twMerge } from "tailwind-merge";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import {
   actionNeutral,
   actionOpacity,
   actionToDark,
+  baseInput,
+  miniLabel,
   roundButton,
 } from "@/style/baseStyle";
 import axios from "axios";
 import { useSWRConfig } from "swr";
 import { useTranslations } from "next-intl";
 
-const inputStyle = twJoin(
-  "h-40",
-  "border",
-  "border-gray-300",
-  "rounded-md",
-  "p-2",
-);
+const inputStyle = twJoin(baseInput, "h-40");
 
 interface ITestCase {
   input: string;
@@ -78,24 +74,34 @@ const EditTestcaseModal = ({
       <form className="flex flex-col gap-4" onSubmit={handleSubmit(submitData)}>
         <ul className={twJoin("flex w-full flex-col gap-4", "md:flex-row")}>
           <li className={twJoin("flex flex-col gap-2", "w-full", "md:w-1/2")}>
-            <label htmlFor={`input-case-${caseNumber}`}>{t("input")}</label>
+            <label
+              className={twMerge(miniLabel, "text-lg")}
+              htmlFor={`input-case-${caseNumber}`}
+            >
+              {t("input")}
+            </label>
             <textarea
               disabled={isLoading}
               className={twJoin(
                 inputStyle,
-                isLoading && "animate-pulse bg-neutral-300",
+                isLoading && "animate-pulse bg-neutral-300 dark:bg-neutral-300",
               )}
               id={`input-case-${caseNumber}`}
               {...register("input")}
             />
           </li>
           <li className={twJoin("flex flex-col gap-2", "w-full", "md:w-1/2")}>
-            <label htmlFor={`output-case-${caseNumber}`}>{t("output")}</label>
+            <label
+              className={twMerge(miniLabel, "text-lg")}
+              htmlFor={`output-case-${caseNumber}`}
+            >
+              {t("output")}
+            </label>
             <textarea
               disabled={isLoading}
               className={twJoin(
                 inputStyle,
-                isLoading && "animate-pulse bg-neutral-300",
+                isLoading && "animate-pulse bg-neutral-300 dark:bg-neutral-300",
               )}
               id={`output-case-${caseNumber}`}
               {...register("output")}
@@ -109,6 +115,7 @@ const EditTestcaseModal = ({
               roundButton,
               "px-4 py-2",
               "bg-neutral-900 font-bold text-white",
+              "dark:bg-neutral-800",
               actionOpacity,
             )}
             onClick={handleClose}
@@ -119,7 +126,7 @@ const EditTestcaseModal = ({
             className={twJoin(
               roundButton,
               "px-4 py-2",
-              "bg-purple-400 font-bold text-white",
+              "bg-violet-500 font-bold text-white",
               actionToDark,
             )}
           >

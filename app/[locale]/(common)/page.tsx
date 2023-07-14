@@ -14,7 +14,6 @@ const Home = async ({
     <div
       className={twJoin(
         "flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center gap-4 p-24 md:min-h-[calc(100vh-5rem)]",
-        "bg-neutral-200",
       )}
     >
       <h1 className="text-3xl font-black">{t("title")}</h1>

@@ -11,6 +11,7 @@ import { actionOpacity, roundButton } from "@/style/baseStyle";
 import ExtraInfoPanel from "@/components/Problems/SubmitProblem/ExtraInfoPanel";
 import { Hint } from "@prisma/client";
 import { useTranslations } from "next-intl";
+import { greenButton } from "@/style/baseComponent";
 
 const SubmitPagePanel = ({
   availableLangs,
@@ -36,7 +37,11 @@ const SubmitPagePanel = ({
   const handleSubmission = useCallback(async () => {
     const code = editorRef.current?.getValue();
     if (!code) return;
-    const { id: sid } = await submitProblem(id, code, currentLanguage.id);
+    const { id: sid } = await submitProblem(
+      id as string,
+      code,
+      currentLanguage.id,
+    );
     router.push(`/submissions/${sid}`);
   }, [currentLanguage.id, id, router]);
 
@@ -54,15 +59,7 @@ const SubmitPagePanel = ({
         storeKey={`${id}.code`}
         theme="vs-dark"
       />
-      <button
-        onClick={handleSubmission}
-        className={twMerge(
-          roundButton,
-          "bg-emerald-500 font-bold text-neutral-50",
-          "px-4 py-2",
-          actionOpacity,
-        )}
-      >
+      <button onClick={handleSubmission} className={greenButton}>
         {t("submit")}
       </button>
       <ExtraInfoPanel savedHints={savedHints} editor={editor} />

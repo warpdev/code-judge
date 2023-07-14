@@ -74,7 +74,7 @@ const ProblemsList = ({
             className={twJoin(
               roundButton,
               "rounded-full",
-              "border border-neutral-400",
+              "border border-neutral-400 dark:border-neutral-700",
               actionNeutral,
             )}
             onClick={() => setIsFilterOpen(true)}
@@ -90,6 +90,7 @@ const ProblemsList = ({
             className={twJoin(
               "px-1 py-2",
               "border-b border-neutral-400 first:border-t",
+              "dark:border-neutral-600",
               actionNeutral,
               "hover:opacity-80",
             )}

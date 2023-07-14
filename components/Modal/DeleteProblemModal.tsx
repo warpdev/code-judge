@@ -1,10 +1,9 @@
 import { Problem } from "@prisma/client";
 import BaseModal from "@/components/Modal/BaseModal";
-import { twJoin } from "tailwind-merge";
-import { actionToDark, roundButton } from "@/style/baseStyle";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { redButton } from "@/style/baseComponent";
 
 const DeleteProblemModal = ({
   onClose,
@@ -25,14 +24,7 @@ const DeleteProblemModal = ({
       <div>
         <h4>Delete?</h4>
         <p>Are you sure you want to delete this problem?</p>
-        <button
-          className={twJoin(
-            roundButton,
-            "bg-red-500 font-bold text-white",
-            actionToDark
-          )}
-          onClick={handleDelete}
-        >
+        <button className={redButton} onClick={handleDelete}>
           Delete Problem
         </button>
       </div>

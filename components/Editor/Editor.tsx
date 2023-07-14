@@ -6,6 +6,8 @@ import { useDebouncedCallback } from "use-debounce";
 import useStorage from "@/utils/hooks/useStorage";
 import { EditorBubbleMenu } from "@/components/Editor/EditorBubbleMenu";
 import SlashCommand from "@/components/Editor/SlashCommand";
+import { twJoin } from "tailwind-merge";
+import { defaultEditor } from "@/style/baseComponent";
 
 //TODO: add Syntax Highlighting
 const Editor = ({
@@ -33,7 +35,12 @@ const Editor = ({
 
   const editor = useEditor({
     extensions: [...TiptapExtensions, SlashCommand],
-    editorProps: TiptapEditorProps,
+    editorProps: {
+      ...TiptapEditorProps,
+      attributes: {
+        class: twJoin(defaultEditor, "min-h-[160px]"),
+      },
+    },
     onUpdate: (e) => {
       setSaveStatus("Unsaved");
       const selection = e.editor.state.selection;

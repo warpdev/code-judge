@@ -6,6 +6,7 @@ import { actionToDark, roundButton } from "@/style/baseStyle";
 import DeleteProblemModal from "@/components/Modal/DeleteProblemModal";
 import { AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
+import { redButton } from "@/style/baseComponent";
 
 const DeleteProblemButton = ({
   locale,
@@ -19,14 +20,7 @@ const DeleteProblemButton = ({
 
   return (
     <>
-      <button
-        className={twJoin(
-          roundButton,
-          "bg-red-500 font-bold text-white",
-          actionToDark,
-        )}
-        onClick={() => setIsModalOpen(true)}
-      >
+      <button className={redButton} onClick={() => setIsModalOpen(true)}>
         {t("delete")}
       </button>
       <AnimatePresence>

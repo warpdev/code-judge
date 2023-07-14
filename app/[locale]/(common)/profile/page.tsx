@@ -26,7 +26,11 @@ const UserProfilePage = async ({
     },
     include: {
       problem: true,
-      user: true,
+      user: {
+        select: {
+          id: true,
+        },
+      },
       language: true,
     },
   });

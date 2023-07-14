@@ -20,6 +20,7 @@ import useStorage from "@/utils/hooks/useStorage";
 import { useDebouncedCallback } from "use-debounce";
 import { useTranslations } from "next-intl";
 import { LOCALE_MAP, LOCALES } from "@/constants/common";
+import { baseSelect, greenButton } from "@/style/baseComponent";
 
 /*
   title String
@@ -59,21 +60,17 @@ const InputRow = ({
     <div className="flex flex-col gap-2">
       <label htmlFor={id}>{t(label as any)}</label>
       {type === "editor" ? (
-        <div className="rounded border border-neutral-700 p-2">
-          <Controller
-            control={control}
-            render={({ field: { onChange, value } }) => {
-              return (
-                <Editor id={id} onChange={onChange} defaultValue={value} />
-              );
-            }}
-            name={id}
-          />
-        </div>
+        <Controller
+          control={control}
+          render={({ field: { onChange, value } }) => {
+            return <Editor id={id} onChange={onChange} defaultValue={value} />;
+          }}
+          name={id}
+        />
       ) : type === "multiline" ? (
         <textarea
           id={id}
-          className={inputStyle}
+          className={twJoin("h-40", inputStyle)}
           {...register(id, options)}
           placeholder={placeholder}
         />
@@ -138,15 +135,7 @@ const AddProblemForm = () => {
       ))}
       <div className="flex flex-col gap-2">
         <label htmlFor="locale">{t("problem.language")}</label>
-        <select
-          id="locale"
-          {...register("locale")}
-          className={twJoin(
-            "rounded px-2 py-2",
-            "border-2 border-neutral-600",
-            actionToDark,
-          )}
-        >
+        <select id="locale" {...register("locale")} className={baseSelect}>
           {LOCALES.map((locale) => (
             <option key={locale} value={locale}>
               {t(`common.${LOCALE_MAP[locale].name}` as any)}
@@ -155,14 +144,7 @@ const AddProblemForm = () => {
         </select>
       </div>
 
-      <button
-        onClick={handleSubmit(onSubmit)}
-        className={twJoin(
-          roundButton,
-          "bg-emerald-500 py-2 font-bold text-white",
-          actionToDark,
-        )}
-      >
+      <button onClick={handleSubmit(onSubmit)} className={greenButton}>
         Submit
       </button>
     </div>

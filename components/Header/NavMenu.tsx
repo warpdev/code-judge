@@ -27,7 +27,7 @@ const NavMenu = ({ user }: { user?: Session["user"] }) => {
           className={twJoin(
             "absolute left-0 right-0 top-full z-10",
             "md:relative",
-            "bg-white",
+            "bg-white dark:bg-neutral-900",
             "h-screen md:h-auto",
             "shadow-lg md:shadow-none",
             isMenuOpen ? "block" : "hidden",

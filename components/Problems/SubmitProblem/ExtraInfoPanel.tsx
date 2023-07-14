@@ -2,7 +2,12 @@
 
 import { twJoin, twMerge } from "tailwind-merge";
 import { useCallback, useState } from "react";
-import { actionNeutral, actionToDark, roundButton } from "@/style/baseStyle";
+import {
+  actionNeutral,
+  actionToDark,
+  baseTabButton,
+  roundButton,
+} from "@/style/baseStyle";
 import { Lightbulb, Plus } from "lucide-react";
 import { useCompletion } from "ai/react";
 import { toast } from "sonner";
@@ -12,10 +17,11 @@ import type { Hint } from "@prisma/client";
 import useSWR from "swr";
 import { useTranslations } from "next-intl";
 
-const tabButton = twJoin(
-  "w-10 h-10 bg-neutral-100",
-  "rounded-md border-2 border-neutral-400 border-r-0 rounded-r-none",
-  actionNeutral,
+const tabButton = twJoin(baseTabButton, "border-r-0 rounded-r-none");
+
+const hintCard = twJoin(
+  "rounded border border-neutral-600 bg-neutral-50 p-4 shadow-md",
+  "dark:bg-neutral-900",
 );
 
 const ExtraInfoPanel = ({
@@ -85,28 +91,24 @@ const ExtraInfoPanel = ({
           "border-l border-neutral-700 bg-neutral-100",
           "overflow-y-auto transition-all",
           "px-2 py-4",
+          "dark:bg-neutral-900",
           currentTab ? "mr-0" : "-mr-[300px]",
         )}
       >
         <ul className="flex flex-col gap-2">
           {hints?.map((hint) => (
-            <li
-              className="rounded border border-neutral-600 bg-neutral-50 p-4 shadow-md"
-              key={hint.id}
-            >
+            <li className={hintCard} key={hint.id}>
               {hint.content}
             </li>
           ))}
           {completion && isLoading && (
-            <li className="rounded border border-neutral-600 bg-neutral-50 p-4 shadow-lg">
-              {completion}
-            </li>
+            <li className={hintCard}>{completion}</li>
           )}
         </ul>
         <button
           className={twJoin(
             roundButton,
-            "bg-neutral-200",
+            "bg-neutral-200 dark:bg-neutral-800",
             actionToDark,
             "flex w-full items-center justify-center gap-1 px-3 py-2",
             "mt-6",

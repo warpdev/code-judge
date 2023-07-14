@@ -44,6 +44,7 @@ const ProblemFilterView = ({
               "transition duration-300",
               "group",
               "hover:grayscale",
+              "dark:border-blue-800 dark:bg-blue-900 dark:text-blue-300",
             )}
             onClick={() => {
               router.replace(createUrl("locale", "all"));

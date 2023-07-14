@@ -2,7 +2,7 @@ import ProblemsList from "@/components/Problems/ProblemsList";
 import { title } from "@/style/baseStyle";
 import AddProblemButton from "@/components/Problems/AddProblemButton";
 import { getTranslator } from "next-intl/server";
-import { getProblems } from "@/utils/dbUtils";
+import { getPublicProblems } from "@/utils/dbUtils";
 
 const ProblemListPage = async ({
   searchParams,
@@ -16,7 +16,7 @@ const ProblemListPage = async ({
 }) => {
   const currentPage = searchParams.page ? +searchParams.page - 1 : 0;
   const t = await getTranslator(locale, "problem");
-  const problems = await getProblems({
+  const problems = await getPublicProblems({
     pageIndex: currentPage,
     locale: searchParams.locale || locale,
   });

@@ -11,7 +11,11 @@ const SubmissionsPage = async ({
   const t = await getTranslator(locale, "submission");
   const allSubmissions = await prisma.submission.findMany({
     include: {
-      user: true,
+      user: {
+        select: {
+          id: true,
+        },
+      },
       problem: true,
       language: true,
     },

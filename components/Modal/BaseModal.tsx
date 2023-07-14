@@ -22,7 +22,7 @@ const BaseModal = ({
         <RemoveScroll className="w-full" removeScrollBar={false}>
           <motion.div
             style={{ pointerEvents: "auto" }}
-            className="absolute inset-0 -z-10 bg-black/20"
+            className="absolute inset-0 -z-10 bg-black/40"
             initial={{
               opacity: 0.4,
             }}
@@ -36,6 +36,7 @@ const BaseModal = ({
           <motion.div
             className={twMerge(
               "container max-h-screen w-full overflow-y-auto rounded-t-2xl bg-white p-4 md:m-auto md:rounded-2xl md:p-10 md:px-14",
+              "dark:bg-neutral-900",
               className,
             )}
             onClick={(e) => e.stopPropagation()}
