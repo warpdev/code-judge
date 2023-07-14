@@ -12,14 +12,14 @@ export const getProblemInfo = async (id: number | string) => {
   const problem = await prisma.problem.findUnique({
     where: {
       id: +id,
-      OR: [
-        {
-          isPublic: true,
-        },
-        {
-          createdBy: user?.id,
-        },
-      ],
+      // OR: [
+      //   {
+      //     isPublic: true,
+      //   },
+      //   {
+      //     createdBy: user?.id,
+      //   },
+      // ],
     },
   });
   if (!problem) {
