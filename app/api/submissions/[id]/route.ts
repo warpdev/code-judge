@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
+import { getSubmissionAllInfo } from "@/utils/dbUtils";
 
 export const GET = async (
   req: NextRequest,
@@ -7,15 +7,7 @@ export const GET = async (
 ) => {
   const { id } = params;
 
-  const submission = await prisma.submission.findUnique({
-    where: {
-      id: +id,
-    },
-    include: {
-      problem: true,
-      language: true,
-    },
-  });
+  const submission = await getSubmissionAllInfo(id);
 
   return NextResponse.json(submission);
 };
