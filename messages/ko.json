@@ -11,9 +11,12 @@
     "language": "문제 언어",
     "korean": "한국어",
     "english": "영어",
-    "all": "모두"
+    "all": "모두",
+    "public": "공개됨",
+    "private": "비공개"
   },
   "header": {
+    "myProblems": "내 문제들",
     "problems": "문제 풀기",
     "submissions": "채점 현황",
     "profile": "내 정보",
@@ -40,6 +43,10 @@
     "editTestCases": "테스트 케이스 수정",
     "filter": "필터"
   },
+  "myProblem": {
+    "myProblems": "내 문제들",
+    "newProblem": "새 문제 추가"
+  },
   "solving": {
     "submit": "제출하기",
     "submitting": "제출 중 입니다..!",
@@ -57,7 +64,11 @@
     "allSubmissions": "모든 채점 현황",
     "viewDetail": "자세히 보기",
     "submissionDetail": "상세 채점 현황",
-    "yourCode": "제출한 코드"
+    "yourCode": "제출한 코드",
+    "notMyProblem": "내가 만든 문제만 확인 가능합니다😢",
+    "stdin": "입력값",
+    "stdout": "내 코드 출력값",
+    "execTime": "실행 시간"
   },
   "profile": {
     "mySubmissions": "내 채점 현황"

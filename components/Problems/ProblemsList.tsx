@@ -1,17 +1,12 @@
 "use client";
 import { twJoin } from "tailwind-merge";
-import { actionNeutral, actionToDark, roundButton } from "@/style/baseStyle";
+import { actionNeutral } from "@/style/baseStyle";
 import Link from "next/link";
 import { Problem } from "@prisma/client";
 import useSWR from "swr";
-import { useSearchParams } from "next/navigation";
-import { useMemo, useState } from "react";
 import { IProblemFilter } from "@/types/common";
-import ProblemFilterModal from "@/components/Modal/ProblemFilterModal";
-import { AnimatePresence } from "framer-motion";
-import { useTranslations } from "next-intl";
-import ProblemFilterView from "@/components/Problems/ProblemFilterView";
-import { motion } from "framer-motion";
+import ProblemFilterPanel from "@/components/Problems/Filter/ProblemFilterPanel";
+import useCurrentProblemQuery from "@/utils/hooks/useCurrentProblemQuery";
 
 const makeParams = (filter: Record<keyof IProblemFilter, string | null>) => {
   const params = new URLSearchParams();
@@ -30,24 +25,7 @@ const ProblemsList = ({
   initData: Problem[];
   locale: string;
 }) => {
-  const t = useTranslations();
-  const searchParams = useSearchParams();
-  const currentPage = useMemo(() => {
-    const page = searchParams.get("page");
-    if (page) {
-      return +page - 1;
-    } else {
-      return 0;
-    }
-  }, [searchParams]);
-
-  const currentFilter: Record<keyof IProblemFilter, string | null> =
-    useMemo(() => {
-      const localeParam = searchParams.get("locale") || locale;
-      return {
-        locale: localeParam,
-      };
-    }, [locale, searchParams]);
+  const { currentFilter, currentPage } = useCurrentProblemQuery(locale);
 
   const { data: problems } = useSWR<Problem[]>(
     `/api/problem?${makeParams(currentFilter)}&page=${currentPage}`,
@@ -56,33 +34,9 @@ const ProblemsList = ({
     },
   );
 
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
-
   return (
     <section className="mt-8 flex flex-col gap-8">
-      <div className="flex flex-wrap gap-3">
-        <ProblemFilterView currentFilter={currentFilter} />
-        <motion.span
-          layoutId="filter-open-button"
-          layout="position"
-          transition={{
-            duration: 0.25,
-            ease: "easeInOut",
-          }}
-        >
-          <button
-            className={twJoin(
-              roundButton,
-              "rounded-full",
-              "border border-neutral-400 dark:border-neutral-700",
-              actionNeutral,
-            )}
-            onClick={() => setIsFilterOpen(true)}
-          >
-            {t("problem.filter")}
-          </button>
-        </motion.span>
-      </div>
+      <ProblemFilterPanel defaultLocal={locale} />
       <ul className="flex flex-col">
         {problems?.map((problem) => (
           <li
@@ -101,14 +55,6 @@ const ProblemsList = ({
           </li>
         ))}
       </ul>
-      <AnimatePresence key="modal-problem">
-        {isFilterOpen && (
-          <ProblemFilterModal
-            currentFilter={currentFilter}
-            onClose={() => setIsFilterOpen(false)}
-          />
-        )}
-      </AnimatePresence>
     </section>
   );
 };

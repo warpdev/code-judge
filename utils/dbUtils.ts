@@ -2,24 +2,27 @@ import "server-only";
 import prisma from "@/lib/prisma";
 import { LOCALE_MAP, PROBLEM_LIST_PAGE_SIZE } from "@/constants/common";
 import { getBatchSubmission } from "@/utils/judgeServerUtils";
-import { Prisma } from "@prisma/client";
+import { Prisma, Problem } from "@prisma/client";
 import SubmissionGetPayload = Prisma.SubmissionGetPayload;
-import { getServerUser } from "@/utils/serverUtils";
+import { getIsAdmin, getServerUser } from "@/utils/serverUtils";
+import { Session } from "next-auth";
 
-export const getProblemInfo = async (id: number | string) => {
+const publicOrCreatedBy = (user?: Session["user"]) => [
+  {
+    isPublic: true,
+  },
+  {
+    createdBy: user?.id,
+  },
+];
+
+export const getProblemInfo = async (id: number | string): Promise<Problem> => {
   const user = await getServerUser();
 
   const problem = await prisma.problem.findUnique({
     where: {
       id: +id,
-      // OR: [
-      //   {
-      //     isPublic: true,
-      //   },
-      //   {
-      //     createdBy: user?.id,
-      //   },
-      // ],
+      OR: publicOrCreatedBy(user),
     },
   });
   if (!problem) {
@@ -38,7 +41,7 @@ export const getPublicProblems = async ({
   const problems = await prisma.problem.findMany({
     where: {
       locale: LOCALE_MAP[locale as any]?.id,
-      // isPublic: true,
+      isPublic: true,
     },
     skip: pageIndex * PROBLEM_LIST_PAGE_SIZE,
     take: PROBLEM_LIST_PAGE_SIZE,
@@ -83,9 +86,14 @@ export const getSubmissionAllInfo = async (
     }>
   | undefined
 > => {
+  const user = await getServerUser();
+
   let submission = await prisma.submission.findUnique({
     where: {
       id: +id,
+      problem: {
+        OR: publicOrCreatedBy(user),
+      },
     },
     include: {
       problem: true,

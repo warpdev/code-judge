@@ -1,7 +1,7 @@
 import "server-only";
 import { JUDGE_API_URL } from "@/constants/common";
 import { ITestSet } from "@/types/common";
-import { IJudgeStatus } from "@/types/judge";
+import { IJudgeFullStatus, IJudgeStatus } from "@/types/judge";
 
 const JUDGE_HEADER = {
   "Content-Type": "application/json",
@@ -87,6 +87,7 @@ export const postBatchSubmission = async ({
 
 export const getBatchSubmission = async (
   tokens: string[],
+  fullFields = false,
 ): Promise<{
   submissions: IJudgeStatus[];
 }> => {
@@ -95,7 +96,9 @@ export const getBatchSubmission = async (
   }>(
     `/submissions/batch?tokens=${tokens.join(
       ",",
-    )}&base64_encoded=true&fields=status,token`,
+    )}&base64_encoded=true&fields=status,token${
+      fullFields ? ",stdout,stdin,time" : ""
+    }`,
     {
       next: {
         revalidate: 30,
@@ -103,4 +106,18 @@ export const getBatchSubmission = async (
     },
   );
   return submissions;
+};
+
+export const getDetailSubmission = async (
+  token: string,
+): Promise<IJudgeFullStatus> => {
+  const submission = await fetchJudgeApi<IJudgeFullStatus>(
+    `/submissions/${token}?base64_encoded=true&fields=status,token,stdin,stdout,time`,
+    {
+      next: {
+        revalidate: 30,
+      },
+    },
+  );
+  return submission;
 };

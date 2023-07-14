@@ -55,6 +55,7 @@ const AccordionTrigger = ({
         className={twJoin(
           "text-neutral-800 transition-transform duration-300 ease-[cubic-bezier(0.87,_0,_0.13,_1)] group-data-[state=open]:rotate-180",
           "dark:text-neutral-300",
+          "ml-2",
         )}
         aria-hidden
       />
@@ -88,10 +89,11 @@ const Accordion = ({
   ...props
 }: {
   contents: {
-    title: string;
+    title: React.ReactNode | string;
     content: React.ReactNode | string;
   }[];
   className?: string;
+  defaultValue?: string;
 } & RootProps) => (
   <Root type="single" defaultValue="item-1" collapsible {...props}>
     {contents.map(({ title, content }, index) => (

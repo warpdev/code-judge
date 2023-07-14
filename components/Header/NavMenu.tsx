@@ -10,7 +10,6 @@ import { useState } from "react";
 import { RemoveScroll } from "react-remove-scroll";
 import { useTranslations } from "next-intl";
 
-//TODO: More detail ux
 const NavMenu = ({ user }: { user?: Session["user"] }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const t = useTranslations("header");
@@ -41,6 +40,15 @@ const NavMenu = ({ user }: { user?: Session["user"] }) => {
               "items-end md:items-start",
             )}
           >
+            <li key="my-problems">
+              <Link
+                href="/my-problems"
+                className={twJoin(roundButton, actionNeutral)}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {t("myProblems")}
+              </Link>
+            </li>
             {NAV_LINKS.map((link) => (
               <li key={link.name}>
                 <Link

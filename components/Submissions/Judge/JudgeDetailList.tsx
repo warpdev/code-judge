@@ -6,6 +6,8 @@ import { useParams } from "next/navigation";
 import { twJoin } from "tailwind-merge";
 import { JUDGE_STATUS } from "@/constants/judge";
 import { Spinner } from "@/components/BaseComponents";
+import Accordion from "@/components/Accordions/Accordion";
+import JudgeResultPanel from "@/components/Submissions/Judge/JudgeResultPanel";
 
 const getTextColor = (statusId: number) => {
   switch (statusId) {
@@ -31,6 +33,7 @@ const getTextColor = (statusId: number) => {
 
 const JudgeDetailList = ({
   initSubmission,
+  isMyProblem,
 }: {
   initSubmission: SubmissionGetPayload<{
     include: {
@@ -39,6 +42,7 @@ const JudgeDetailList = ({
       judgeTokens: true;
     };
   }>;
+  isMyProblem?: boolean;
 }) => {
   const { id } = useParams();
   const { data: submissionDetail } = useSWR<
@@ -58,24 +62,38 @@ const JudgeDetailList = ({
     <>
       {submissionDetail?.judgeTokens.length ? (
         <ol className="mt-12 flex flex-col gap-2">
-          {submissionDetail.judgeTokens.map((result, index) => (
-            <li
-              key={index}
-              className={twJoin(
-                "flex flex-col border-neutral-950 py-2",
-                "dark:border-neutral-700",
-                "md:flex-row md:justify-between md:border-b",
-              )}
-            >
-              <span>Case #{index + 1}</span>
-              <p className={twJoin(getTextColor(result.status), "font-bold")}>
-                {
-                  JUDGE_STATUS.find((status) => status.id === result.status)
-                    ?.description
-                }
-              </p>
-            </li>
-          ))}
+          <Accordion
+            contents={submissionDetail.judgeTokens.map((result, index) => ({
+              title: (
+                <li
+                  key={index}
+                  className={twJoin(
+                    "flex w-full flex-col border-neutral-950 py-2",
+                    "dark:border-neutral-700",
+                    "md:flex-row md:justify-between",
+                  )}
+                >
+                  <span>Case #{index + 1}</span>
+                  <p
+                    className={twJoin(getTextColor(result.status), "font-bold")}
+                  >
+                    {
+                      JUDGE_STATUS.find((status) => status.id === result.status)
+                        ?.description
+                    }
+                  </p>
+                </li>
+              ),
+              content: (
+                <JudgeResultPanel
+                  tokenId={result.id}
+                  problemId={submissionDetail.problemId}
+                  isMine={isMyProblem}
+                />
+              ),
+            }))}
+            defaultValue=""
+          />
         </ol>
       ) : (
         <Spinner />

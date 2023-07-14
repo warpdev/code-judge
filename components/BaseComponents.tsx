@@ -1,3 +1,5 @@
+import { twMerge } from "tailwind-merge";
+
 export const Spinner = () => (
   <svg
     className="m-auto h-6 w-6 animate-spin"
@@ -20,3 +22,24 @@ export const Spinner = () => (
     ></path>
   </svg>
 );
+
+export const Badge = ({
+  className,
+  children,
+}: {
+  className?: string;
+  children: React.ReactNode;
+}) => {
+  return (
+    <span
+      className={twMerge(
+        "text-sm font-semibold",
+        "flex items-center justify-center gap-1 rounded p-1",
+        "min-w-max bg-opacity-20",
+        className,
+      )}
+    >
+      {children}
+    </span>
+  );
+};
