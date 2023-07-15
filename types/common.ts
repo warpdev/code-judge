@@ -1,4 +1,7 @@
 import { RegisterOptions } from "react-hook-form/dist/types/validator";
+import { LOCALES } from "@/constants/common";
+
+export type ILocale = (typeof LOCALES)[number];
 
 export interface BaseProps {
   className?: string;

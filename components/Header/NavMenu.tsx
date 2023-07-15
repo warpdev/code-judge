@@ -40,15 +40,17 @@ const NavMenu = ({ user }: { user?: Session["user"] }) => {
               "items-end md:items-start",
             )}
           >
-            <li key="my-problems">
-              <Link
-                href="/my-problems"
-                className={twJoin(roundButton, actionNeutral)}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {t("myProblems")}
-              </Link>
-            </li>
+            {user && (
+              <li key="my-problems">
+                <Link
+                  href="/my-problems"
+                  className={twJoin(roundButton, actionNeutral)}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {t("myProblems")}
+                </Link>
+              </li>
+            )}
             {NAV_LINKS.map((link) => (
               <li key={link.name}>
                 <Link

@@ -4,8 +4,9 @@ import { LOCALE_MAP, PROBLEM_LIST_PAGE_SIZE } from "@/constants/common";
 import { getBatchSubmission } from "@/utils/judgeServerUtils";
 import { Prisma, Problem } from "@prisma/client";
 import SubmissionGetPayload = Prisma.SubmissionGetPayload;
-import { getIsAdmin, getServerUser } from "@/utils/serverUtils";
+import { getServerUser } from "@/utils/serverUtils";
 import { Session } from "next-auth";
+import { ILocale } from "@/types/common";
 
 const publicOrCreatedBy = (user?: Session["user"]) => [
   {
@@ -40,7 +41,7 @@ export const getPublicProblems = async ({
 }) => {
   const problems = await prisma.problem.findMany({
     where: {
-      locale: LOCALE_MAP[locale as any]?.id,
+      locale: LOCALE_MAP[locale as ILocale]?.id,
       isPublic: true,
     },
     skip: pageIndex * PROBLEM_LIST_PAGE_SIZE,
@@ -64,7 +65,7 @@ export const getMyProblems = async ({
 
   const problems = await prisma.problem.findMany({
     where: {
-      locale: LOCALE_MAP[locale as any]?.id,
+      locale: LOCALE_MAP[locale as ILocale]?.id,
       createdBy: user.id,
     },
     skip: pageIndex * PROBLEM_LIST_PAGE_SIZE,
@@ -138,4 +139,50 @@ export const getSubmissionAllInfo = async (
   }
 
   return submission;
+};
+
+export const getAllSubmissions = async ({
+  pageIndex,
+  onlyMy,
+  locale,
+}: {
+  pageIndex: number;
+  onlyMy?: boolean;
+  locale?: string;
+}): Promise<
+  Prisma.SubmissionGetPayload<{
+    include: {
+      problem: true;
+      language: true;
+      user: {
+        select: {
+          id: true;
+        };
+      };
+    };
+  }>[]
+> => {
+  const user = await getServerUser();
+
+  const submissions = await prisma.submission.findMany({
+    where: {
+      problem: {
+        OR: publicOrCreatedBy(user),
+      },
+      userId: onlyMy ? user?.id : undefined,
+    },
+    include: {
+      user: {
+        select: {
+          id: true,
+        },
+      },
+      problem: true,
+      language: true,
+    },
+    skip: pageIndex * PROBLEM_LIST_PAGE_SIZE,
+    take: PROBLEM_LIST_PAGE_SIZE,
+  });
+
+  return submissions;
 };

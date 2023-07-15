@@ -19,5 +19,15 @@ export const GET = async (
   }
   const submission = await getDetailSubmission(judgeId);
 
-  return NextResponse.json(submission);
+  if (submission.status.id > 2) {
+  }
+
+  return NextResponse.json(submission, {
+    headers: {
+      "Cache-Control":
+        submission.status.id > 2
+          ? "maxage=31536000,s-maxage=31536000,immutable"
+          : "no-cache",
+    },
+  });
 };

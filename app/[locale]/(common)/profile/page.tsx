@@ -4,9 +4,10 @@ import { title } from "@/style/baseStyle";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import SubmissionsListPanel from "@/components/Submissions/SubmissionsListPanel";
-import prisma from "@/lib/prisma";
 import SignOutButton from "@/components/Auth/SignOutButton";
 import { getTranslator } from "next-intl/server";
+import { headers } from "next/headers";
+import { getAllSubmissions } from "@/utils/dbUtils";
 
 const UserProfilePage = async ({
   params: { locale },
@@ -15,24 +16,17 @@ const UserProfilePage = async ({
 }) => {
   const t = await getTranslator(locale, "profile");
   const user = await getServerUser();
+  const header = headers();
+
+  const nextUrl = "https://" + header.get("host") + "/profile";
 
   if (!user) {
-    redirect("/api/auth/signin?callbackUrl=" + window.location.href);
+    redirect("/api/auth/signin?callbackUrl=" + encodeURIComponent(nextUrl));
   }
 
-  const submissions = await prisma.submission.findMany({
-    where: {
-      userId: user.id,
-    },
-    include: {
-      problem: true,
-      user: {
-        select: {
-          id: true,
-        },
-      },
-      language: true,
-    },
+  const submissions = await getAllSubmissions({
+    pageIndex: 0,
+    onlyMy: true,
   });
 
   return (

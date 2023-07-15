@@ -3,6 +3,8 @@ import { title } from "@/style/baseStyle";
 import AddProblemButton from "@/components/Problems/AddProblemButton";
 import { getTranslator } from "next-intl/server";
 import { getPublicProblems } from "@/utils/dbUtils";
+import { getIsAdmin } from "@/utils/serverUtils";
+import { redirect } from "next/navigation";
 
 const ProblemListPage = async ({
   searchParams,
@@ -20,6 +22,11 @@ const ProblemListPage = async ({
     pageIndex: currentPage,
     locale: searchParams.locale || locale,
   });
+
+  const isAdmin = await getIsAdmin();
+  if (!isAdmin) {
+    redirect("/");
+  }
 
   return (
     <div>

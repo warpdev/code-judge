@@ -30,4 +30,4 @@ export const LOCALE_MAP: Record<
     id: 1,
     name: "korean",
   },
-};
+} as const;
