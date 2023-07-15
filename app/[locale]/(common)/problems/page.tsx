@@ -41,7 +41,7 @@ const ProblemListPage = async ({
         <ProblemFilterPanel defaultLocal={locale} className="flex-1" />
       </div>
       <ProblemsList problems={problems} className="mt-4" />
-      <Navigator totalCount={totalCount} />
+      <Navigator totalCount={totalCount} className="mt-4" />
     </div>
   );
 };

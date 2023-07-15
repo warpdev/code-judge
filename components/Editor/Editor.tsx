@@ -61,7 +61,6 @@ const Editor = ({
       debouncedUpdates(e);
       // }
     },
-    autofocus: "end",
   });
 
   useEffect(() => {

@@ -5,6 +5,7 @@ import { Prisma } from "@prisma/client";
 import { getServerUser } from "@/utils/serverUtils";
 import { UserCheck2 } from "lucide-react";
 import { getTranslator } from "next-intl/server";
+import TimeText from "@/components/TimeText";
 
 const submissionWithExtra = Prisma.validator<Prisma.SubmissionArgs>()({
   include: {
@@ -46,7 +47,7 @@ const SubmissionsListPanel = async ({
           >
             <span className="block">{submission.problem.title}</span>
             <span className="block">{t("viewDetail")}</span>
-            <span>{submission.createdAt.toLocaleString()}</span>
+            <TimeText time={submission.createdAt} />
             <span>
               {userInfo?.id === submission.userId ? (
                 <UserCheck2 className="h-6 w-6" />

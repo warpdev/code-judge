@@ -35,7 +35,7 @@ const MyProblemPage = async ({
         />
       </div>
       <MyProblemList problems={problems} className="mt-4" />
-      <Navigator totalCount={totalCount} />
+      <Navigator totalCount={totalCount} className="mt-4" />
     </div>
   );
 };
