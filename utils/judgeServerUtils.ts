@@ -88,6 +88,8 @@ export const postBatchSubmission = async ({
       }),
     },
   );
+  console.log(tokens);
+
   return tokens.map((token) => token.token);
 };
 
