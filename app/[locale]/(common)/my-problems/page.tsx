@@ -28,7 +28,10 @@ const MyProblemPage = async ({
       <h1 className={title}>{t("myProblems")}</h1>
       <div className="mt-8 flex justify-between gap-2">
         <ProblemFilterPanel defaultLocal="all" className="flex-1" />
-        <AddProblemButton className="h-max min-w-max" />
+        <AddProblemButton
+          className="h-max min-w-max"
+          buttonText={t("newProblem")}
+        />
       </div>
       <MyProblemList initData={problems} className="mt-4" />
     </div>

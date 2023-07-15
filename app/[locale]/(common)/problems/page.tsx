@@ -1,6 +1,5 @@
 import ProblemsList from "@/components/Problems/ProblemsList";
 import { title } from "@/style/baseStyle";
-import AddProblemButton from "@/components/Problems/AddProblemButton";
 import { getTranslator } from "next-intl/server";
 import { getPublicProblems } from "@/utils/dbUtils";
 import { getIsAdmin } from "@/utils/serverUtils";
@@ -35,7 +34,6 @@ const ProblemListPage = async ({
       <h1 className={title}>{t("allProblems")}</h1>
       <div className="mt-8 flex justify-between gap-2">
         <ProblemFilterPanel defaultLocal={locale} className="flex-1" />
-        <AddProblemButton className="h-max min-w-max" />
       </div>
       <ProblemsList initData={problems} locale={locale} className="mt-4" />
     </div>

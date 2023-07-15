@@ -3,7 +3,6 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import { TiptapEditorProps, TiptapExtensions } from "@/lib/editorConfigs";
 import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
-import useStorage from "@/utils/hooks/useStorage";
 import { EditorBubbleMenu } from "@/components/Editor/EditorBubbleMenu";
 import SlashCommand from "@/components/Editor/SlashCommand";
 import { twJoin } from "tailwind-merge";

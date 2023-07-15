@@ -3,8 +3,9 @@ import { twJoin } from "tailwind-merge";
 /** inputs */
 export const baseInput = twJoin(
   "rounded border-neutral-400 border",
-  "bg-neutral-50 px-2 py-1",
+  "bg-neutral-50 px-2 py-2",
   "dark:bg-neutral-950",
+  "leading-snug",
   "transition",
   "focus:outline-none focus:border-emerald-400",
 );

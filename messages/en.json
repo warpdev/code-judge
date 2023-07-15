@@ -74,5 +74,28 @@
   },
   "profile": {
     "mySubmissions": "My Submissions"
+  },
+  "input": {
+    "title": "Title",
+    "locale": "Language",
+    "description": "Description",
+    "memoryLimit": "Memory Limit (KB)",
+    "timeLimit": "Time Limit (ms)",
+    "inputFormat": "Input Format",
+    "outputFormat": "Output Format",
+    "sampleInput": "Sample Input",
+    "sampleOutput": "Sample Output",
+    "submit": "Submit"
+  },
+  "placeholder": {
+    "memoryLimitRange": "1 ~ 512000",
+    "timeLimitRange": "1 ~ 5000"
+  },
+  "error": {
+    "required": "{label} is required",
+    "minLength": "{label} must be greater than {minLength} characters",
+    "maxLength": "{label} must be less than {maxLength} characters",
+    "min": "{label} must be greater than {min}",
+    "max": "{label} must be less than {max}"
   }
 }

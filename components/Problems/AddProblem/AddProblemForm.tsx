@@ -10,17 +10,17 @@ import {
 } from "react-hook-form";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { actionToDark, baseInput, roundButton } from "@/style/baseStyle";
+import { baseInput } from "@/style/baseStyle";
 import { problemInputs } from "@/constants/problem";
-import { IProblemInput } from "@/types/common";
 import React, { useEffect } from "react";
 import Editor from "@/components/Editor/Editor";
 import { twJoin } from "tailwind-merge";
 import useStorage from "@/utils/hooks/useStorage";
 import { useDebouncedCallback } from "use-debounce";
 import { useTranslations } from "next-intl";
-import { LOCALE_MAP, LOCALES } from "@/constants/common";
 import { baseSelect, greenButton } from "@/style/baseComponent";
+import { handleNumberInput } from "@/utils/commonUtils";
+import { IProblemInput } from "@/types/input";
 
 /*
   title String
@@ -35,7 +35,7 @@ import { baseSelect, greenButton } from "@/style/baseComponent";
   sampleOutput String
  */
 type InputValue = Record<
-  (typeof problemInputs)[number]["id"],
+  (typeof problemInputs)[number][number]["id"],
   IProblemInput["type"]
 > & {
   locale?: string;
@@ -45,7 +45,7 @@ const inputStyle = baseInput;
 
 const InputRow = ({
   control,
-  inputProps: { id, label, placeholder, options, type, inputMode },
+  inputProps,
   register,
   error,
 }: {
@@ -54,11 +54,13 @@ const InputRow = ({
   register: UseFormRegister<InputValue>;
   error?: FieldError;
 }) => {
-  const t = useTranslations("problem");
+  const t = useTranslations();
+  const { id, label, placeholder, options, type, inputMode, className } =
+    inputProps;
 
   return (
     <div className="flex flex-col gap-2">
-      <label htmlFor={id}>{t(label as any)}</label>
+      <label htmlFor={id}>{t(`input.${label}` as any)}</label>
       {type === "editor" ? (
         <Controller
           control={control}
@@ -70,19 +72,52 @@ const InputRow = ({
       ) : type === "multiline" ? (
         <textarea
           id={id}
-          className={twJoin("h-40", inputStyle)}
+          className={twJoin("h-40 resize-none", inputStyle, className)}
           {...register(id, options)}
-          placeholder={placeholder}
+          placeholder={placeholder && t(placeholder as any)}
         />
+      ) : type === "select" ? (
+        <select id={id} {...register(id, options)} className={baseSelect}>
+          {inputProps.selectOptions.map((locale) => (
+            <option key={locale.value} value={locale.value}>
+              {t(locale.label as any)}
+            </option>
+          ))}
+        </select>
       ) : (
-        <input
-          className={inputStyle}
-          placeholder={placeholder}
-          inputMode={inputMode}
-          {...register(id, options)}
+        <Controller
+          control={control}
+          rules={options}
+          render={({ field: { onChange, value } }) => {
+            return (
+              <input
+                id={id}
+                className={twJoin(inputStyle, className)}
+                placeholder={placeholder && t(placeholder as any)}
+                inputMode={inputMode}
+                defaultValue={value}
+                onChange={(e) =>
+                  type === "number"
+                    ? handleNumberInput(e, onChange)
+                    : onChange(e)
+                }
+              />
+            );
+          }}
+          name={id}
         />
       )}
-      {error && <span className="text-sm text-red-400">{error.message}</span>}
+      {error && (
+        <span className="text-sm text-red-400">
+          {t(error.message as any, {
+            label: t(`problem.${label}` as any),
+            minLength: (options.minLength as any)?.value,
+            maxLength: (options.maxLength as any)?.value,
+            min: (options.min as any)?.value,
+            max: (options.max as any)?.value,
+          })}
+        </span>
+      )}
     </div>
   );
 };
@@ -123,29 +158,30 @@ const AddProblemForm = () => {
 
   return (
     <div className="flex flex-col gap-4 p-4">
-      {/* register your input into the hook by invoking the "register" function */}
-      {problemInputs.map((input) => (
-        <InputRow
-          key={input.id}
-          register={register}
-          control={control}
-          inputProps={input}
-          error={errors[input.id]}
-        />
-      ))}
-      <div className="flex flex-col gap-2">
-        <label htmlFor="locale">{t("problem.language")}</label>
-        <select id="locale" {...register("locale")} className={baseSelect}>
-          {LOCALES.map((locale) => (
-            <option key={locale} value={locale}>
-              {t(`common.${LOCALE_MAP[locale].name}` as any)}
-            </option>
-          ))}
-        </select>
-      </div>
-
+      {problemInputs.map((inputs, index) => {
+        return (
+          <div
+            className={twJoin(
+              "grid gap-4 p-4 md:auto-cols-fr md:grid-flow-col",
+              "grid-flow-row",
+            )}
+            key={index}
+          >
+            {/* register your input into the hook by invoking the "register" function */}
+            {inputs.map((input) => (
+              <InputRow
+                key={input.id}
+                register={register}
+                control={control}
+                inputProps={input}
+                error={errors[input.id]}
+              />
+            ))}
+          </div>
+        );
+      })}
       <button onClick={handleSubmit(onSubmit)} className={greenButton}>
-        Submit
+        {t("input.submit")}
       </button>
     </div>
   );
