@@ -11,6 +11,7 @@ const SubmissionsPage = async ({
   searchParams: {
     page?: string;
     locale?: string;
+    last?: string;
   };
   params: { locale: string };
 }) => {
@@ -22,7 +23,7 @@ const SubmissionsPage = async ({
   });
 
   return (
-    <div>
+    <div className="flex flex-col gap-4">
       <h1 className={title}>{t("allSubmissions")}</h1>
       <SubmissionsListPanel submissions={allSubmissions} locale={locale} />
       <Navigator />
