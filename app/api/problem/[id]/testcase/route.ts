@@ -2,15 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 import supabase from "@/lib/supabase";
 import { getProblemInfo } from "@/utils/dbUtils";
 import prisma from "@/lib/prisma";
-import { getIsAdmin } from "@/utils/serverUtils";
+import { getIsAdmin, getIsMyProblem, getServerUser } from "@/utils/serverUtils";
 import { ResTypes } from "@/constants/response";
 
 export const POST = async (
   req: NextRequest,
   { params }: { params: { id: string } },
 ) => {
-  const isAdmin = await getIsAdmin();
-  if (!isAdmin) {
+  const user = await getServerUser();
+  if (!user) {
     return ResTypes.NOT_AUTHORIZED;
   }
   const body = await req.json();
@@ -27,6 +27,10 @@ export const POST = async (
   const problemInfo = await getProblemInfo(problemId);
   if (!problemInfo) {
     return ResTypes.NOT_FOUND("Problem not found");
+  }
+  const isMine = getIsMyProblem(problemInfo, user);
+  if (!isMine) {
+    return ResTypes.NOT_AUTHORIZED;
   }
   if ((idx ?? 0) > problemInfo.testSetSize) {
     return ResTypes.NOT_FOUND("Testcase not found");

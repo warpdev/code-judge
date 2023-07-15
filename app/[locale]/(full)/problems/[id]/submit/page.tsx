@@ -20,6 +20,10 @@ const SubmitPage = async ({
   }
 
   const problemInfo = await getProblemInfo(params.id);
+  if (!problemInfo) {
+    redirect("/problems");
+  }
+
   const savedHints = await prisma.hint.findMany({
     where: {
       problemId: problemInfo.id,

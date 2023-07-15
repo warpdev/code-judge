@@ -4,6 +4,7 @@ import { TiptapEditorProps, TiptapExtensions } from "@/lib/editorConfigs";
 import { twMerge } from "tailwind-merge";
 
 import { defaultEditor } from "@/style/baseComponent";
+import { useEffect } from "react";
 
 const Viewer = ({ value }: { value: any }) => {
   const editor = useEditor({
@@ -18,8 +19,13 @@ const Viewer = ({ value }: { value: any }) => {
       },
     },
     content: value,
+
     editable: false,
   });
+
+  useEffect(() => {
+    editor?.commands.setContent(value);
+  }, [editor?.commands, value]);
 
   return <EditorContent editor={editor} />;
 };

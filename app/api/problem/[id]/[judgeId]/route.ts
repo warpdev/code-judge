@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getDetailSubmission } from "@/utils/judgeServerUtils";
-import { getIsAdmin, getServerUser } from "@/utils/serverUtils";
+import { getIsMyProblem, getServerUser } from "@/utils/serverUtils";
 import { getProblemInfo } from "@/utils/dbUtils";
 import { ResTypes } from "@/constants/response";
 
@@ -10,17 +10,18 @@ export const GET = async (
 ) => {
   const { id, judgeId } = params;
   const user = await getServerUser();
-  const isAdmin = await getIsAdmin(user);
 
   const problem = await getProblemInfo(id);
+  if (!problem) {
+    return ResTypes.NOT_FOUND("Problem not found");
+  }
 
-  if (problem.createdBy !== user?.id && !isAdmin) {
+  const isMine = getIsMyProblem(problem, user);
+
+  if (!isMine) {
     return ResTypes.NOT_AUTHORIZED;
   }
   const submission = await getDetailSubmission(judgeId);
-
-  if (submission.status.id > 2) {
-  }
 
   return NextResponse.json(submission, {
     headers: {

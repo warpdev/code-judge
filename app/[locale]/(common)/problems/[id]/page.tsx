@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { twJoin } from "tailwind-merge";
 import { baseProse, title } from "@/style/baseStyle";
-import { getIsAdmin, getServerUser } from "@/utils/serverUtils";
+import { getIsAdmin, getIsMyProblem, getServerUser } from "@/utils/serverUtils";
 import SignInButton from "@/components/Auth/SignInButton";
 import { getProblemInfo } from "@/utils/dbUtils";
 import { generateHTML } from "@tiptap/html";
@@ -39,7 +39,7 @@ const ProblemDetailPage = async ({
     redirect("/problems");
   }
 
-  const isMine = user?.id === problem.createdBy;
+  const isMine = getIsMyProblem(problem, user);
 
   const t = await getTranslator(params.locale, "problem");
 

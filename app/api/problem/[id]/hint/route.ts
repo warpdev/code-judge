@@ -50,6 +50,9 @@ export async function POST(
 
   let { prompt: userCode } = await req.json();
   const problemInfo = await getProblemInfo(params.id);
+  if (!problemInfo) {
+    return ResTypes.NOT_FOUND("Problem not found");
+  }
   const prompt = makeHintUserPrompt(
     LOCALES[problemInfo.locale],
     JSON.stringify(problemInfo.description),

@@ -17,7 +17,13 @@ const publicOrCreatedBy = (user?: Session["user"]) => [
   },
 ];
 
-export const getProblemInfo = async (id: number | string): Promise<Problem> => {
+/**
+ * Get problem detail info (Public or created by user)
+ * @param id Problem id
+ */
+export const getProblemInfo = async (
+  id: number | string,
+): Promise<Problem | null> => {
   const user = await getServerUser();
 
   const problem = await prisma.problem.findUnique({
@@ -26,9 +32,7 @@ export const getProblemInfo = async (id: number | string): Promise<Problem> => {
       OR: publicOrCreatedBy(user),
     },
   });
-  if (!problem) {
-    throw new Error("Problem not found");
-  }
+
   return problem;
 };
 

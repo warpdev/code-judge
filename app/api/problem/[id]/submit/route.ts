@@ -20,7 +20,7 @@ export const POST = async (
     return ResTypes.NOT_AUTHORIZED;
   }
   if (!problemInfo) {
-    return ResTypes.NOT_FOUND("Problem or user not found");
+    return ResTypes.NOT_FOUND("Problem not found");
   }
 
   const sub = await prisma.submission.create({

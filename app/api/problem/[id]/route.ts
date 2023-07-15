@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getProblemInfo } from "@/utils/dbUtils";
 import prisma from "@/lib/prisma";
-import { getIsAdmin } from "@/utils/serverUtils";
+import { getIsAdmin, getIsMyProblem, getServerUser } from "@/utils/serverUtils";
 import { ResTypes } from "@/constants/response";
 import supabase from "@/lib/supabase";
 
@@ -10,6 +10,9 @@ export const GET = async (
   { params }: { params: { id: string } },
 ) => {
   const problemInfo = await getProblemInfo(params.id);
+  if (!problemInfo) {
+    return ResTypes.NOT_FOUND("Problem not found");
+  }
 
   return NextResponse.json(problemInfo);
 };
@@ -18,8 +21,10 @@ export const DELETE = async (
   req: NextRequest,
   { params }: { params: { id: string } },
 ) => {
-  const isAdmin = await getIsAdmin();
-  if (!isAdmin) {
+  const problemInfo = await getProblemInfo(params.id);
+  const user = await getServerUser();
+  const isMine = getIsMyProblem(problemInfo, user);
+  if (!isMine) {
     return ResTypes.NOT_AUTHORIZED;
   }
 

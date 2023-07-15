@@ -1,7 +1,8 @@
-import { getIsAdmin } from "@/utils/serverUtils";
 import { redirect } from "next/navigation";
 import TestcaseListPanel from "@/components/Problems/Testcase/TestcaseListPanel";
 import { getProblemInfo } from "@/utils/dbUtils";
+import { getIsMyProblem, getServerUser } from "@/utils/serverUtils";
+import { headers } from "next/headers";
 
 const EditTestCasePage = async ({
   params,
@@ -10,12 +11,20 @@ const EditTestCasePage = async ({
     id: string;
   };
 }) => {
-  const isAdmin = await getIsAdmin();
-  if (!isAdmin) {
-    redirect("/problems");
+  const header = headers();
+  const user = await getServerUser();
+  const nextUrl = "https://" + header.get("host") + "/profile";
+
+  if (!user) {
+    redirect("/api/auth/signin?callbackUrl=" + encodeURIComponent(nextUrl));
   }
 
   const problems = await getProblemInfo(params.id);
+  const isMine = getIsMyProblem(problems, user);
+
+  if (!isMine) {
+    redirect("/problems");
+  }
 
   return <TestcaseListPanel initProblems={problems} />;
 };
