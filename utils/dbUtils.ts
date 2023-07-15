@@ -81,6 +81,9 @@ export const getMyProblems = async ({
         locale: LOCALE_MAP[locale as ILocale]?.id,
         createdBy: user.id,
       },
+      orderBy: {
+        id: "desc",
+      },
       skip: (pageIndex - 1) * PROBLEM_LIST_PAGE_SIZE,
       take: PROBLEM_LIST_PAGE_SIZE,
     }),
@@ -203,6 +206,9 @@ export const getAllSubmissions = async ({
         },
         problem: true,
         language: true,
+      },
+      orderBy: {
+        id: "desc",
       },
       skip: (pageIndex - 1) * PROBLEM_LIST_PAGE_SIZE,
       take: PROBLEM_LIST_PAGE_SIZE,

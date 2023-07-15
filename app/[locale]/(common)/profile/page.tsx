@@ -41,7 +41,6 @@ const UserProfilePage = async ({
     <div className="flex flex-col gap-4">
       <h1 className={twJoin(title, "mb-4")}>{user.name}</h1>
       <p>{user.email}</p>
-      <p>Role: {user.role}</p>
       {user.image && (
         <Image
           className="rounded-full"
