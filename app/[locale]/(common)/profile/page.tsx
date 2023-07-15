@@ -52,7 +52,7 @@ const UserProfilePage = async ({
         />
       )}
       <h2 className={twJoin(title, "mt-8")}>{t("mySubmissions")}</h2>
-      <SubmissionsListPanel submissions={submissions} locale={locale} />
+      <SubmissionsListPanel submissions={submissions} userInfo={user} />
       <Navigator totalCount={totalCount} />
       <div className="flex justify-end">
         <SignOutButton
