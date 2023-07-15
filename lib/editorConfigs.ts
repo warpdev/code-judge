@@ -41,7 +41,7 @@ export const TiptapExtensions = [
     codeBlock: {
       HTMLAttributes: {
         class: twJoin(
-          "rounded-sm bg-neutral-200 p-5 font-mono font-medium text-neutral-800",
+          "rounded-sm bg-neutral-200 p-5 font-mono font-medium text-neutral-800 overflow-x-auto",
           "dark:bg-neutral-700 dark:text-neutral-200",
         ),
       },
@@ -49,7 +49,7 @@ export const TiptapExtensions = [
     code: {
       HTMLAttributes: {
         class: twJoin(
-          "rounded-md bg-neutral-200 px-1.5 py-1 font-mono font-medium text-black overflow-x-auto",
+          "rounded-md bg-neutral-200 px-1.5 py-1 font-mono font-medium text-black",
           "dark:bg-neutral-700 dark:text-white",
         ),
         spellcheck: "false",
