@@ -37,7 +37,7 @@ export const getProblemInfo = async (
 };
 
 export const getPublicProblems = async ({
-  pageIndex,
+  pageIndex = 1,
   locale,
 }: {
   pageIndex: number;
@@ -65,7 +65,7 @@ export const getPublicProblems = async ({
 };
 
 export const getMyProblems = async ({
-  pageIndex,
+  pageIndex = 1,
   locale,
 }: {
   pageIndex: number;

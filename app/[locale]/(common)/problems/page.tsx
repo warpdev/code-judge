@@ -18,12 +18,10 @@ const ProblemListPage = async ({
   const currentPage =
     searchParams.page && +searchParams.page > 0 ? +searchParams.page : 1;
   const t = await getTranslator(locale, "problem");
-  console.log(searchParams.locale);
   const [problems, totalCount] = await getPublicProblems({
     pageIndex: currentPage,
     locale: searchParams.locale || locale,
   });
-  console.log(problems);
 
   return (
     <div>
@@ -31,7 +29,11 @@ const ProblemListPage = async ({
       <div className="mt-8 flex justify-between gap-2">
         <ProblemFilterPanel defaultLocal={locale} className="flex-1" />
       </div>
-      <ProblemsList problems={problems} className="mt-4" />
+      <ProblemsList
+        problems={problems}
+        locale={searchParams.locale || locale}
+        className="mt-4"
+      />
       <Navigator totalCount={totalCount} className="mt-4" />
     </div>
   );

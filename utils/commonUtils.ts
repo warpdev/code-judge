@@ -1,5 +1,5 @@
 import { PROMPTS } from "@/constants/prompts";
-import { ILocale } from "@/types/common";
+import { ILocale, IProblemFilter } from "@/types/common";
 
 export const makeHintUserPrompt = (
   locale: ILocale,
@@ -25,4 +25,16 @@ export const handleNumberInput = (
   const value = e.target.value.replace(/\D+/g, "");
   e.target.value = value;
   setValue(e);
+};
+
+export const makeParams = (
+  filter: Record<keyof IProblemFilter, string | null>,
+) => {
+  const params = new URLSearchParams();
+  Object.entries(filter).forEach(([key, value]) => {
+    if (value) {
+      params.set(key, value);
+    }
+  });
+  return params;
 };

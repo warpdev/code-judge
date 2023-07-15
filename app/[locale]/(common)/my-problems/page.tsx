@@ -34,7 +34,11 @@ const MyProblemPage = async ({
           buttonText={t("newProblem")}
         />
       </div>
-      <MyProblemList problems={problems} className="mt-4" />
+      <MyProblemList
+        problems={problems}
+        className="mt-4"
+        locale={searchParams.locale || "all"}
+      />
       <Navigator totalCount={totalCount} className="mt-4" />
     </div>
   );
