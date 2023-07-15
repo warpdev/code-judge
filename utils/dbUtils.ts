@@ -2,24 +2,28 @@ import "server-only";
 import prisma from "@/lib/prisma";
 import { LOCALE_MAP, PROBLEM_LIST_PAGE_SIZE } from "@/constants/common";
 import { getBatchSubmission } from "@/utils/judgeServerUtils";
-import { Prisma } from "@prisma/client";
+import { Prisma, Problem } from "@prisma/client";
 import SubmissionGetPayload = Prisma.SubmissionGetPayload;
 import { getServerUser } from "@/utils/serverUtils";
+import { Session } from "next-auth";
+import { ILocale } from "@/types/common";
 
-export const getProblemInfo = async (id: number | string) => {
+const publicOrCreatedBy = (user?: Session["user"]) => [
+  {
+    isPublic: true,
+  },
+  {
+    createdBy: user?.id,
+  },
+];
+
+export const getProblemInfo = async (id: number | string): Promise<Problem> => {
   const user = await getServerUser();
 
   const problem = await prisma.problem.findUnique({
     where: {
       id: +id,
-      // OR: [
-      //   {
-      //     isPublic: true,
-      //   },
-      //   {
-      //     createdBy: user?.id,
-      //   },
-      // ],
+      OR: publicOrCreatedBy(user),
     },
   });
   if (!problem) {
@@ -37,10 +41,10 @@ export const getPublicProblems = async ({
 }) => {
   const problems = await prisma.problem.findMany({
     where: {
-      locale: LOCALE_MAP[locale as any]?.id,
-      // isPublic: true,
+      locale: LOCALE_MAP[locale as ILocale]?.id,
+      isPublic: true,
     },
-    skip: pageIndex * PROBLEM_LIST_PAGE_SIZE,
+    skip: (pageIndex - 1) * PROBLEM_LIST_PAGE_SIZE,
     take: PROBLEM_LIST_PAGE_SIZE,
   });
 
@@ -61,10 +65,10 @@ export const getMyProblems = async ({
 
   const problems = await prisma.problem.findMany({
     where: {
-      locale: LOCALE_MAP[locale as any]?.id,
+      locale: LOCALE_MAP[locale as ILocale]?.id,
       createdBy: user.id,
     },
-    skip: pageIndex * PROBLEM_LIST_PAGE_SIZE,
+    skip: (pageIndex - 1) * PROBLEM_LIST_PAGE_SIZE,
     take: PROBLEM_LIST_PAGE_SIZE,
   });
 
@@ -83,9 +87,14 @@ export const getSubmissionAllInfo = async (
     }>
   | undefined
 > => {
+  const user = await getServerUser();
+
   let submission = await prisma.submission.findUnique({
     where: {
       id: +id,
+      problem: {
+        OR: publicOrCreatedBy(user),
+      },
     },
     include: {
       problem: true,
@@ -130,4 +139,50 @@ export const getSubmissionAllInfo = async (
   }
 
   return submission;
+};
+
+export const getAllSubmissions = async ({
+  pageIndex,
+  onlyMy,
+  locale,
+}: {
+  pageIndex: number;
+  onlyMy?: boolean;
+  locale?: string;
+}): Promise<
+  Prisma.SubmissionGetPayload<{
+    include: {
+      problem: true;
+      language: true;
+      user: {
+        select: {
+          id: true;
+        };
+      };
+    };
+  }>[]
+> => {
+  const user = await getServerUser();
+
+  const submissions = await prisma.submission.findMany({
+    where: {
+      problem: {
+        OR: publicOrCreatedBy(user),
+      },
+      userId: onlyMy ? user?.id : undefined,
+    },
+    include: {
+      user: {
+        select: {
+          id: true,
+        },
+      },
+      problem: true,
+      language: true,
+    },
+    skip: (pageIndex - 1) * PROBLEM_LIST_PAGE_SIZE,
+    take: PROBLEM_LIST_PAGE_SIZE,
+  });
+
+  return submissions;
 };

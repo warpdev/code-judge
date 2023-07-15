@@ -1,104 +1,152 @@
-import { IProblemInput } from "@/types/common";
+import { LOCALE_MAP, LOCALES } from "@/constants/common";
+import { IProblemInput } from "@/types/input";
 
-export const problemInputs: IProblemInput[] = [
-  {
-    id: "title",
-    label: "title",
-    type: "text",
-    options: {
-      required: {
-        value: true,
-        message: "Title is required",
-      },
-      maxLength: {
-        value: 100,
-        message: "Title must be less than 100 characters",
-      },
-    },
-  },
-  {
-    id: "description",
-    label: "description",
-    type: "editor",
-    options: {
-      required: {
-        value: true,
-        message: "Description is required",
+export const problemInputs: IProblemInput[][] = [
+  [
+    {
+      id: "title",
+      label: "title",
+      type: "text",
+      options: {
+        required: {
+          value: true,
+          message: "error.required",
+        },
+        maxLength: {
+          value: 100,
+          message: "error.maxLength",
+        },
       },
     },
-  },
-  {
-    id: "inputFormat",
-    label: "inputFormat",
-    type: "editor",
-    options: {
-      required: {
-        value: true,
-        message: "Input is required",
+    {
+      id: "locale",
+      label: "language",
+      type: "select",
+      options: {
+        required: {
+          value: true,
+          message: "error.required",
+        },
+      },
+      selectOptions: LOCALES.map((locale) => ({
+        label: `common.${LOCALE_MAP[locale].name}`,
+        value: locale,
+      })),
+    },
+  ],
+  [
+    {
+      id: "timeLimit",
+      label: "timeLimit",
+      type: "number",
+      inputMode: "numeric",
+      placeholder: "placeholder.timeLimitRange",
+      options: {
+        required: {
+          value: true,
+          message: "error.required",
+        },
+        min: {
+          value: 1,
+          message: "error.min",
+        },
+        max: {
+          value: 5000,
+          message: "error.max",
+        },
+        setValueAs: (value: string | number) => {
+          return value ? parseInt(String(value).replace(/\D+/g, "")) : "";
+        },
       },
     },
-  },
-  {
-    id: "outputFormat",
-    label: "outputFormat",
-    type: "editor",
-    options: {
-      required: {
-        value: true,
-        message: "Output is required",
+    {
+      id: "memoryLimit",
+      label: "memoryLimit",
+      type: "number",
+      inputMode: "numeric",
+      placeholder: "placeholder.memoryLimitRange",
+      options: {
+        required: {
+          value: true,
+          message: "error.required",
+        },
+        min: {
+          value: 1,
+          message: "error.min",
+        },
+        max: {
+          value: 512000,
+          message: "error.max",
+        },
+        setValueAs: (value: string | number) => {
+          return value ? parseInt(String(value).replace(/\D+/g, "")) : "";
+        },
       },
     },
-  },
-  {
-    id: "sampleInput",
-    label: "sampleInput",
-    type: "multiline",
-    options: {
-      required: {
-        value: true,
-        message: "Sample Input is required",
+  ],
+  [
+    {
+      id: "description",
+      label: "description",
+      type: "editor",
+      options: {
+        required: {
+          value: true,
+          message: "error.required",
+        },
       },
     },
-  },
-  {
-    id: "sampleOutput",
-    label: "sampleOutput",
-    type: "multiline",
-    options: {
-      required: {
-        value: true,
-        message: "Sample Output is required",
+  ],
+  [
+    {
+      id: "inputFormat",
+      label: "inputFormat",
+      type: "editor",
+      options: {
+        required: {
+          value: true,
+          message: "error.required",
+        },
       },
     },
-  },
-  {
-    id: "timeLimit",
-    label: "timeLimit",
-    type: "number",
-    inputMode: "numeric",
-    options: {
-      required: {
-        value: true,
-        message: "Time Limit is required",
-      },
-      setValueAs: (value: string | number) => {
-        return value ? parseInt(String(value).replace(/\D+/g, "")) : "";
+  ],
+  [
+    {
+      id: "outputFormat",
+      label: "outputFormat",
+      type: "editor",
+      options: {
+        required: {
+          value: true,
+          message: "error.required",
+        },
       },
     },
-  },
-  {
-    id: "memoryLimit",
-    label: "memoryLimit",
-    type: "number",
-    inputMode: "numeric",
-    options: {
-      required: {
-        value: true,
-        message: "Memory Limit is required",
+  ],
+  [
+    {
+      id: "sampleInput",
+      label: "sampleInput",
+      type: "multiline",
+      options: {
+        required: {
+          value: true,
+          message: "error.required",
+        },
       },
-      setValueAs: (value: string | number) => {
-        return value ? parseInt(String(value).replace(/\D+/g, "")) : "";
-      },
+      className: "font-mono",
     },
-  },
+    {
+      id: "sampleOutput",
+      label: "sampleOutput",
+      type: "multiline",
+      options: {
+        required: {
+          value: true,
+          message: "error.required",
+        },
+      },
+      className: "font-mono",
+    },
+  ],
 ];

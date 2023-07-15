@@ -1,4 +1,3 @@
-//TODO: move to json
 import Link from "next/link";
 import AppLogo from "@/components/AppLogo";
 import { getServerUser } from "@/utils/serverUtils";

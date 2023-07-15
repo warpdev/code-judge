@@ -1,5 +1,5 @@
 "use client";
-import { IProblemFilter } from "@/types/common";
+import { ILocale, IProblemFilter } from "@/types/common";
 import { twJoin } from "tailwind-merge";
 import { roundButton } from "@/style/baseStyle";
 import { LOCALE_MAP } from "@/constants/common";
@@ -18,7 +18,7 @@ const ProblemFilterView = ({
   const t = useTranslations();
   const lang = useMemo(() => {
     if (currentFilter.locale) {
-      return LOCALE_MAP[currentFilter.locale]?.name;
+      return LOCALE_MAP[currentFilter.locale as ILocale]?.name;
     }
   }, [currentFilter.locale]);
 

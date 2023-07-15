@@ -11,9 +11,14 @@
     "language": "Language",
     "korean": "Korean",
     "english": "English",
-    "all": "All"
+    "all": "All",
+    "public": "Public",
+    "private": "Private",
+    "next": "Next",
+    "previous": "Previous"
   },
   "header": {
+    "myProblems": "My Problems",
     "problems": "Problems",
     "submissions": "Submissions",
     "profile": "Profile",
@@ -40,6 +45,10 @@
     "editTestCases": "Edit Test Cases",
     "filter": "Filter"
   },
+  "myProblem": {
+    "myProblems": "My Problems",
+    "newProblem": "New Problem"
+  },
   "solving": {
     "submit": "Submit",
     "submitting": "Submitting...",
@@ -57,9 +66,36 @@
     "allSubmissions": "All Submissions",
     "viewDetail": "View Detail",
     "submissionDetail": "Submission Detail",
-    "yourCode": "Your Code"
+    "yourCode": "Your Code",
+    "notMyProblem": "You can only view detail your own problems😢",
+    "stdin": "Input",
+    "stdout": "Output of your code",
+    "execTime": "Execution Time"
   },
   "profile": {
     "mySubmissions": "My Submissions"
+  },
+  "input": {
+    "title": "Title",
+    "locale": "Language",
+    "description": "Description",
+    "memoryLimit": "Memory Limit (KB)",
+    "timeLimit": "Time Limit (ms)",
+    "inputFormat": "Input Format",
+    "outputFormat": "Output Format",
+    "sampleInput": "Sample Input",
+    "sampleOutput": "Sample Output",
+    "submit": "Submit"
+  },
+  "placeholder": {
+    "memoryLimitRange": "1 ~ 512000",
+    "timeLimitRange": "1 ~ 5000"
+  },
+  "error": {
+    "required": "{label} is required",
+    "minLength": "{label} must be greater than {minLength} characters",
+    "maxLength": "{label} must be less than {maxLength} characters",
+    "min": "{label} must be greater than {min}",
+    "max": "{label} must be less than {max}"
   }
 }

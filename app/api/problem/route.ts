@@ -4,6 +4,7 @@ import { getIsAdmin, getServerUser } from "@/utils/serverUtils";
 import { ResTypes } from "@/constants/response";
 import { getPublicProblems } from "@/utils/dbUtils";
 import { LOCALE_MAP } from "@/constants/common";
+import { ILocale } from "@/types/common";
 
 export const POST = async (req: NextRequest, res: NextResponse) => {
   const body = await req.json();
@@ -17,7 +18,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
       ...body,
       memoryLimit: parseInt(body.memoryLimit),
       timeLimit: parseInt(body.timeLimit),
-      locale: LOCALE_MAP[body.locale].id,
+      locale: LOCALE_MAP[body.locale as ILocale].id,
       createdBy: user!.id,
     },
     select: {

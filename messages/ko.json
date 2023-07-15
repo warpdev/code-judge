@@ -11,9 +11,14 @@
     "language": "문제 언어",
     "korean": "한국어",
     "english": "영어",
-    "all": "모두"
+    "all": "모두",
+    "public": "공개됨",
+    "private": "비공개",
+    "next": "다음",
+    "previous": "이전"
   },
   "header": {
+    "myProblems": "내 문제들",
     "problems": "문제 풀기",
     "submissions": "채점 현황",
     "profile": "내 정보",
@@ -40,6 +45,10 @@
     "editTestCases": "테스트 케이스 수정",
     "filter": "필터"
   },
+  "myProblem": {
+    "myProblems": "내 문제들",
+    "newProblem": "새 문제"
+  },
   "solving": {
     "submit": "제출하기",
     "submitting": "제출 중 입니다..!",
@@ -57,9 +66,36 @@
     "allSubmissions": "모든 채점 현황",
     "viewDetail": "자세히 보기",
     "submissionDetail": "상세 채점 현황",
-    "yourCode": "제출한 코드"
+    "yourCode": "제출한 코드",
+    "notMyProblem": "내가 만든 문제만 확인 가능합니다😢",
+    "stdin": "입력값",
+    "stdout": "내 코드 출력값",
+    "execTime": "실행 시간"
   },
   "profile": {
     "mySubmissions": "내 채점 현황"
+  },
+  "input": {
+    "title": "제목",
+    "language": "작성된 언어",
+    "description": "설명",
+    "memoryLimit": "메모리 제한 (KB)",
+    "timeLimit": "실행시간 제한 (ms)",
+    "inputFormat": "입력 형식",
+    "outputFormat": "출력 형식",
+    "sampleInput": "입력 예시",
+    "sampleOutput": "출력 예시",
+    "submit": "완료"
+  },
+  "placeholder": {
+    "memoryLimitRange": "1 ~ 512000",
+    "timeLimitRange": "1 ~ 5000"
+  },
+  "error": {
+    "required": "{label}을(를) 입력해주세요.",
+    "minLength": "{label}은(는) {minLength}자 이상 입력해주세요.",
+    "maxLength": "{label}은(는) {maxLength}자 이하로 입력해주세요.",
+    "min": "{label}은(는) {min} 이상이어야 합니다.",
+    "max": "{label}은(는) {max} 이하여야 합니다."
   }
 }

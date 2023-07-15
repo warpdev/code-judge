@@ -9,6 +9,7 @@ import prisma from "@/lib/prisma";
 import { getServerUser } from "@/utils/serverUtils";
 import { NextResponse } from "next/server";
 import { ResTypes } from "@/constants/response";
+import { LOCALES } from "@/constants/common";
 
 const config = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -61,7 +62,7 @@ export async function POST(
     messages: [
       {
         role: "system",
-        content: PROMPTS["hint"],
+        content: PROMPTS["hint"][LOCALES[problemInfo.locale]],
       },
       {
         role: "user",

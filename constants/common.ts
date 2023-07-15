@@ -1,4 +1,4 @@
-export const PROBLEM_LIST_PAGE_SIZE = 10;
+export const PROBLEM_LIST_PAGE_SIZE = 2;
 
 export const JUDGE_API_URL = process.env.JUDGE_HOST || "";
 
@@ -13,7 +13,7 @@ export const NAV_LINKS = [
   },
 ];
 
-export const LOCALES = ["en", "ko"];
+export const LOCALES = ["en", "ko"] as const;
 
 export const LOCALE_MAP: Record<
   (typeof LOCALES)[number],
@@ -30,4 +30,4 @@ export const LOCALE_MAP: Record<
     id: 1,
     name: "korean",
   },
-};
+} as const;

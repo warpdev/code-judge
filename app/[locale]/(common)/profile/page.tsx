@@ -4,35 +4,37 @@ import { title } from "@/style/baseStyle";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import SubmissionsListPanel from "@/components/Submissions/SubmissionsListPanel";
-import prisma from "@/lib/prisma";
 import SignOutButton from "@/components/Auth/SignOutButton";
 import { getTranslator } from "next-intl/server";
+import { headers } from "next/headers";
+import { getAllSubmissions } from "@/utils/dbUtils";
+import Navigator from "@/components/Navigator";
 
 const UserProfilePage = async ({
+  searchParams,
   params: { locale },
 }: {
+  searchParams: {
+    page?: string;
+    locale?: string;
+  };
   params: { locale: string };
 }) => {
+  const currentPage =
+    searchParams.page && +searchParams.page > 0 ? +searchParams.page : 1;
   const t = await getTranslator(locale, "profile");
   const user = await getServerUser();
+  const header = headers();
+
+  const nextUrl = "https://" + header.get("host") + "/profile";
 
   if (!user) {
-    redirect("/api/auth/signin?callbackUrl=" + window.location.href);
+    redirect("/api/auth/signin?callbackUrl=" + encodeURIComponent(nextUrl));
   }
 
-  const submissions = await prisma.submission.findMany({
-    where: {
-      userId: user.id,
-    },
-    include: {
-      problem: true,
-      user: {
-        select: {
-          id: true,
-        },
-      },
-      language: true,
-    },
+  const submissions = await getAllSubmissions({
+    pageIndex: currentPage,
+    onlyMy: true,
   });
 
   return (
@@ -52,6 +54,7 @@ const UserProfilePage = async ({
       )}
       <h2 className={twJoin(title, "mt-8")}>{t("mySubmissions")}</h2>
       <SubmissionsListPanel submissions={submissions} locale={locale} />
+      <Navigator />
       <div className="flex justify-end">
         <SignOutButton
           locale={locale}

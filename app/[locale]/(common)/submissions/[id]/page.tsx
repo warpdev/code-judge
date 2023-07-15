@@ -4,7 +4,8 @@ import { title } from "@/style/baseStyle";
 import SubmissionCodePanel from "@/components/Submissions/SubmissionCodePanel";
 import { getTranslator } from "next-intl/server";
 import { getSubmissionAllInfo } from "@/utils/dbUtils";
-import JudgeDetailList from "@/components/Submissions/JudgeDetailList";
+import JudgeDetailList from "@/components/Submissions/Judge/JudgeDetailList";
+import { getServerUser } from "@/utils/serverUtils";
 
 const SubmissionDetailPage = async ({
   params,
@@ -15,11 +16,14 @@ const SubmissionDetailPage = async ({
   };
 }) => {
   const t = await getTranslator(params.locale, "submission");
+  const user = await getServerUser();
   const submission = await getSubmissionAllInfo(params.id);
 
   if (!submission) {
     return <div>Submission not found</div>;
   }
+
+  const isMyProblem = submission.problem.createdBy === user?.id;
 
   return (
     <div>
@@ -33,7 +37,7 @@ const SubmissionDetailPage = async ({
       >
         {submission.problem.title}
       </Link>
-      <JudgeDetailList initSubmission={submission} />
+      <JudgeDetailList initSubmission={submission} isMyProblem={isMyProblem} />
       <SubmissionCodePanel submission={submission} locale={params.locale} />
     </div>
   );

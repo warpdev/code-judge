@@ -39,6 +39,8 @@ const ProblemDetailPage = async ({
     redirect("/problems");
   }
 
+  const isMine = user?.id === problem.createdBy;
+
   const t = await getTranslator(params.locale, "problem");
 
   const memoryLimit = t("memoryLimit").split(" ");
@@ -57,7 +59,7 @@ const ProblemDetailPage = async ({
           <span>
             <span>{memoryLimit[0]}</span>{" "}
             <span className="sr-only md:not-sr-only">{memoryLimit[1]}</span> :{" "}
-            {problem.memoryLimit} MB
+            {problem.memoryLimit} KB
           </span>
           <span>
             <span>{timeLimit[0]}</span>{" "}
@@ -127,7 +129,7 @@ const ProblemDetailPage = async ({
           <Link className={greenButton} href={`/problems/${params.id}/submit`}>
             {t("startCoding")}
           </Link>
-          {isAdmin && (
+          {(isMine || isAdmin) && (
             <div className="flex items-center justify-end gap-2">
               <DeleteProblemButton problem={problem} locale={params.locale} />
               <Link

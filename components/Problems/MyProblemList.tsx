@@ -15,24 +15,26 @@ const makeParams = (filter: Record<keyof IProblemFilter, string | null>) => {
   return params;
 };
 
-const ProblemsList = ({
+const MyProblemList = ({
   className,
   initData,
-  locale,
-}: BaseProps & {
-  initData: Problem[];
-  locale: string;
-}) => {
-  const { currentFilter, currentPage } = useCurrentProblemQuery(locale);
+}: BaseProps & { initData: Problem[] }) => {
+  const { currentFilter, currentPage } = useCurrentProblemQuery("all");
 
   const { data: problems } = useSWR<Problem[]>(
-    `/api/problem?${makeParams(currentFilter)}&page=${currentPage}`,
+    `/api/problem/my?${makeParams(currentFilter)}&page=${currentPage}`,
     {
       fallbackData: initData,
     },
   );
 
-  return <BaseProblemList problems={problems} className={className} />;
+  return (
+    <BaseProblemList
+      problems={problems}
+      className={className}
+      showBadge={true}
+    />
+  );
 };
 
-export default ProblemsList;
+export default MyProblemList;
