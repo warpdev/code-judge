@@ -49,7 +49,7 @@ export const TiptapExtensions = [
     code: {
       HTMLAttributes: {
         class: twJoin(
-          "rounded-md bg-neutral-200 px-1.5 py-1 font-mono font-medium text-black",
+          "rounded-md bg-neutral-200 px-1.5 py-1 font-mono font-medium text-black overflow-x-auto",
           "dark:bg-neutral-700 dark:text-white",
         ),
         spellcheck: "false",
