@@ -59,6 +59,7 @@ export const getPublicProblems = async ({
       },
     }),
   ]);
+  console.log(problemsData);
 
   return problemsData;
 };

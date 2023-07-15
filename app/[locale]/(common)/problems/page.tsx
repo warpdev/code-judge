@@ -18,10 +18,12 @@ const ProblemListPage = async ({
   const currentPage =
     searchParams.page && +searchParams.page > 0 ? +searchParams.page : 1;
   const t = await getTranslator(locale, "problem");
+  console.log(searchParams.locale);
   const [problems, totalCount] = await getPublicProblems({
     pageIndex: currentPage,
     locale: searchParams.locale || locale,
   });
+  console.log(problems);
 
   return (
     <div>
