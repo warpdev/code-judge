@@ -7,6 +7,7 @@ import useSWR from "swr";
 import { IProblemFilter } from "@/types/common";
 import ProblemFilterPanel from "@/components/Problems/Filter/ProblemFilterPanel";
 import useCurrentProblemQuery from "@/utils/hooks/useCurrentProblemQuery";
+import PageNavigator from "@/components/Navigator";
 
 const makeParams = (filter: Record<keyof IProblemFilter, string | null>) => {
   const params = new URLSearchParams();
@@ -55,6 +56,7 @@ const ProblemsList = ({
           </li>
         ))}
       </ul>
+      <PageNavigator />
     </section>
   );
 };

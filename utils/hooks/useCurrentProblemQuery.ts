@@ -9,9 +9,9 @@ const useCurrentProblemQuery = (defaultLocal: string) => {
   const currentPage = useMemo(() => {
     const page = searchParams.get("page");
     if (page) {
-      return +page - 1;
+      return +page;
     } else {
-      return 0;
+      return 1;
     }
   }, [searchParams]);
 

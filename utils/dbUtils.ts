@@ -44,7 +44,7 @@ export const getPublicProblems = async ({
       locale: LOCALE_MAP[locale as ILocale]?.id,
       isPublic: true,
     },
-    skip: pageIndex * PROBLEM_LIST_PAGE_SIZE,
+    skip: (pageIndex - 1) * PROBLEM_LIST_PAGE_SIZE,
     take: PROBLEM_LIST_PAGE_SIZE,
   });
 
@@ -68,7 +68,7 @@ export const getMyProblems = async ({
       locale: LOCALE_MAP[locale as ILocale]?.id,
       createdBy: user.id,
     },
-    skip: pageIndex * PROBLEM_LIST_PAGE_SIZE,
+    skip: (pageIndex - 1) * PROBLEM_LIST_PAGE_SIZE,
     take: PROBLEM_LIST_PAGE_SIZE,
   });
 
@@ -180,7 +180,7 @@ export const getAllSubmissions = async ({
       problem: true,
       language: true,
     },
-    skip: pageIndex * PROBLEM_LIST_PAGE_SIZE,
+    skip: (pageIndex - 1) * PROBLEM_LIST_PAGE_SIZE,
     take: PROBLEM_LIST_PAGE_SIZE,
   });
 

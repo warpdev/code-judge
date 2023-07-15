@@ -10,6 +10,7 @@ import ProblemFilterPanel from "@/components/Problems/Filter/ProblemFilterPanel"
 import useCurrentProblemQuery from "@/utils/hooks/useCurrentProblemQuery";
 import { Badge } from "@/components/BaseComponents";
 import { Lock, Unlock } from "lucide-react";
+import PageNavigator from "@/components/Navigator";
 
 const makeParams = (filter: Record<keyof IProblemFilter, string | null>) => {
   const params = new URLSearchParams();
@@ -76,6 +77,7 @@ const MyProblemList = ({ initData }: { initData: Problem[] }) => {
           </li>
         ))}
       </ul>
+      <PageNavigator />
     </section>
   );
 };
