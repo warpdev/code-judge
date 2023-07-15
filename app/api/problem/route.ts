@@ -9,13 +9,14 @@ import { ILocale } from "@/types/common";
 export const POST = async (req: NextRequest, res: NextResponse) => {
   const body = await req.json();
   const user = await getServerUser();
-  if (!(await getIsAdmin(user))) {
+  if (!user) {
     return ResTypes.NOT_AUTHORIZED;
   }
 
   const problem = await prisma.problem.create({
     data: {
       ...body,
+      isPublic: false,
       memoryLimit: parseInt(body.memoryLimit),
       timeLimit: parseInt(body.timeLimit),
       locale: LOCALE_MAP[body.locale as ILocale].id,
