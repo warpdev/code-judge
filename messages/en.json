@@ -1,9 +1,5 @@
 {
   "common": {
-    "problem": "Problem",
-    "problems": "Problems",
-    "submission": "Submission",
-    "submissions": "Submissions",
     "profile": "Profile",
     "signIn": "Sign In",
     "signOut": "Sign Out",
@@ -19,23 +15,23 @@
   },
   "header": {
     "myProblems": "My Problems",
-    "problems": "Problems",
+    "problems": "Public Problems",
     "submissions": "Submissions",
-    "profile": "Profile",
+    "profile": "My Profile",
     "signIn": "Sign In"
   },
   "main": {
-    "title": "Community based Problem Solving Platform",
-    "subTitle": "Coming soon..."
+    "title": "My Personal Coding Learning Notes",
+    "subTitle": "Test operation until the official launch."
   },
   "problem": {
-    "allProblems": "All Problems",
+    "allProblems": "Public Problems",
     "addProblem": "Add Problem",
-    "language": "Language",
+    "language": "Written Language",
     "title": "Title",
     "description": "Description",
     "memoryLimit": "Memory Limit",
-    "timeLimit": "Time Limit",
+    "timeLimit": "Execution Time Limit",
     "inputFormat": "Input Format",
     "outputFormat": "Output Format",
     "sampleInput": "Sample Input",
@@ -51,11 +47,11 @@
   },
   "solving": {
     "submit": "Submit",
-    "submitting": "Submitting...",
-    "getNewHint": "Get a new hint"
+    "submitting": "Submitting..!",
+    "getNewHint": "Get New Hint"
   },
   "testcase": {
-    "addTestCase": "Add Test Case",
+    "addTestCase": "Add New Test Case",
     "editTestCase": "Edit Test Case",
     "input": "Input",
     "output": "Output",
@@ -66,10 +62,10 @@
     "allSubmissions": "All Submissions",
     "viewDetail": "View Detail",
     "submissionDetail": "Submission Detail",
-    "yourCode": "Your Code",
-    "notMyProblem": "You can only view detail your own problems😢",
-    "stdin": "Input",
-    "stdout": "Output of your code",
+    "yourCode": "Your Submitted Code",
+    "notMyProblem": "You can only check the problems created by you😢",
+    "stdin": "Input Value",
+    "stdout": "My Code Output",
     "execTime": "Execution Time"
   },
   "profile": {
@@ -77,10 +73,10 @@
   },
   "input": {
     "title": "Title",
-    "locale": "Language",
+    "language": "Written Language",
     "description": "Description",
     "memoryLimit": "Memory Limit (KB)",
-    "timeLimit": "Time Limit (ms)",
+    "timeLimit": "Execution Time Limit (ms)",
     "inputFormat": "Input Format",
     "outputFormat": "Output Format",
     "sampleInput": "Sample Input",
@@ -92,10 +88,16 @@
     "timeLimitRange": "1 ~ 5000"
   },
   "error": {
-    "required": "{label} is required",
-    "minLength": "{label} must be greater than {minLength} characters",
-    "maxLength": "{label} must be less than {maxLength} characters",
-    "min": "{label} must be greater than {min}",
-    "max": "{label} must be less than {max}"
+    "required": "Please enter {label}.",
+    "minLength": "{label} must be at least {minLength} characters.",
+    "maxLength": "{label} must be less than {maxLength} characters.",
+    "min": "{label} must be at least {min}.",
+    "max": "{label} must be less than {max}."
+  },
+  "deleteModal": {
+    "title": "Are you sure you want to delete?",
+    "content": "Deleted problems cannot be restored.\nAll submissions related to the problem will also be deleted.",
+    "confirm": "Delete",
+    "cancel": "Cancel"
   }
 }

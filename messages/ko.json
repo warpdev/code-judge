@@ -1,9 +1,5 @@
 {
   "common": {
-    "problem": "문제",
-    "problems": "문제들",
-    "submission": "제출",
-    "submissions": "채점 목록",
     "profile": "프로필",
     "signIn": "로그인",
     "signOut": "로그아웃",
@@ -18,18 +14,18 @@
     "previous": "이전"
   },
   "header": {
-    "myProblems": "내 문제들",
-    "problems": "문제 풀기",
+    "myProblems": "내 문제",
+    "problems": "공개 문제",
     "submissions": "채점 현황",
     "profile": "내 정보",
     "signIn": "로그인"
   },
   "main": {
-    "title": "모두에게 열린 코딩 문제 풀이 사이트",
+    "title": "나만의 코딩 학습 노트",
     "subTitle": "정식 오픈 전까지는 테스트 운영 중입니다."
   },
   "problem": {
-    "allProblems": "모든 문제들",
+    "allProblems": "공개 문제들",
     "addProblem": "문제 추가",
     "language": "작성된 언어",
     "title": "제목",
@@ -97,5 +93,11 @@
     "maxLength": "{label}은(는) {maxLength}자 이하로 입력해주세요.",
     "min": "{label}은(는) {min} 이상이어야 합니다.",
     "max": "{label}은(는) {max} 이하여야 합니다."
+  },
+  "deleteModal": {
+    "title": "정말로 삭제하시겠습니까?",
+    "content": "삭제된 문제는 복구할 수 없습니다.\n문제와 관련된 모든 채점 현황도 함께 삭제됩니다.",
+    "confirm": "삭제",
+    "cancel": "취소"
   }
 }

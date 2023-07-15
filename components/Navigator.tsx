@@ -23,7 +23,10 @@ const Navigator = ({
   );
 
   const isLast = useMemo(() => {
-    return !!totalCount && currentPage * PROBLEM_LIST_PAGE_SIZE >= totalCount;
+    return (
+      totalCount === 0 ||
+      (!!totalCount && currentPage * PROBLEM_LIST_PAGE_SIZE >= totalCount)
+    );
   }, [currentPage, totalCount]);
 
   return (

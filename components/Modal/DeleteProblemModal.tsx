@@ -1,9 +1,13 @@
+"use client";
 import { Problem } from "@prisma/client";
 import BaseModal from "@/components/Modal/BaseModal";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { redButton } from "@/style/baseComponent";
+import { useTranslations } from "next-intl";
+import { twJoin } from "tailwind-merge";
+import { actionOpacity, roundButton } from "@/style/baseStyle";
 
 const DeleteProblemModal = ({
   onClose,
@@ -13,6 +17,7 @@ const DeleteProblemModal = ({
   problem: Problem;
 }) => {
   const router = useRouter();
+  const t = useTranslations("deleteModal");
   const handleDelete = async () => {
     await axios.delete(`/api/problem/${problem.id}`);
     toast("Problem deleted");
@@ -20,13 +25,28 @@ const DeleteProblemModal = ({
   };
 
   return (
-    <BaseModal onClose={onClose}>
-      <div>
-        <h4>Delete?</h4>
-        <p>Are you sure you want to delete this problem?</p>
-        <button className={redButton} onClick={handleDelete}>
-          Delete Problem
-        </button>
+    <BaseModal onClose={onClose} className="max-w-xl">
+      <div className="flex flex-col gap-4">
+        <h4 className="text-lg font-bold">{t("title")}</h4>
+        <p>{t("content")}</p>
+        <div className="mt-4 flex justify-between">
+          <button
+            type="button"
+            className={twJoin(
+              roundButton,
+              "px-4 py-2",
+              "bg-neutral-900 font-bold text-white",
+              "dark:bg-neutral-800",
+              actionOpacity,
+            )}
+            onClick={onClose}
+          >
+            {t("cancel")}
+          </button>
+          <button className={redButton} onClick={handleDelete}>
+            {t("confirm")}
+          </button>
+        </div>
       </div>
     </BaseModal>
   );
