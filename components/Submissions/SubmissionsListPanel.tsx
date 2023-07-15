@@ -1,11 +1,13 @@
+"use client";
 import { twJoin } from "tailwind-merge";
 import { actionNeutral } from "@/style/baseStyle";
 import Link from "next/link";
 import { Prisma } from "@prisma/client";
-import { getServerUser } from "@/utils/serverUtils";
 import { UserCheck2 } from "lucide-react";
-import { getTranslator } from "next-intl/server";
 import TimeText from "@/components/TimeText";
+import { Session } from "next-auth";
+import usePageIndex from "@/utils/hooks/usePageIndex";
+import useSWR from "swr";
 
 const submissionWithExtra = Prisma.validator<Prisma.SubmissionArgs>()({
   include: {
@@ -21,19 +23,23 @@ const submissionWithExtra = Prisma.validator<Prisma.SubmissionArgs>()({
 
 const gridTemplate = twJoin(`grid-cols-[1fr_auto_30px]`);
 
-const SubmissionsListPanel = async ({
-  submissions,
-  locale,
+const SubmissionsListPanel = ({
+  userInfo,
+  submissions: initData,
 }: {
+  userInfo?: Session["user"];
   submissions: Prisma.SubmissionGetPayload<typeof submissionWithExtra>[];
-  locale: string;
 }) => {
-  const t = await getTranslator(locale, "submission");
-  const userInfo = await getServerUser();
+  const { currentPage } = usePageIndex();
+  const { data: submissions } = useSWR<
+    Prisma.SubmissionGetPayload<typeof submissionWithExtra>[]
+  >(`/api/submissions?page=${currentPage}`, {
+    fallbackData: initData,
+  });
 
   return (
     <ul className="flex flex-col">
-      {submissions.map((submission) => (
+      {submissions?.map((submission) => (
         <li
           key={submission.id}
           className={twJoin(
@@ -56,7 +62,10 @@ const SubmissionsListPanel = async ({
             <span className="block place-self-start">
               {submission.problem.title}
             </span>
-            <TimeText time={submission.createdAt} className="text-right" />
+            <TimeText
+              time={new Date(submission.createdAt)}
+              className="text-right"
+            />
             <span>
               {userInfo?.id === submission.userId ? (
                 <UserCheck2 className="h-6 w-6" />

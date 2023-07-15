@@ -3,6 +3,7 @@ import SubmissionsListPanel from "@/components/Submissions/SubmissionsListPanel"
 import { getTranslator } from "next-intl/server";
 import { getAllSubmissions } from "@/utils/dbUtils";
 import Navigator from "@/components/Navigator";
+import { getServerUser } from "@/utils/serverUtils";
 
 const SubmissionsPage = async ({
   searchParams,
@@ -22,10 +23,12 @@ const SubmissionsPage = async ({
     pageIndex: currentPage,
   });
 
+  const user = await getServerUser();
+
   return (
     <div className="flex flex-col gap-4">
       <h1 className={title}>{t("allSubmissions")}</h1>
-      <SubmissionsListPanel submissions={allSubmissions} locale={locale} />
+      <SubmissionsListPanel submissions={allSubmissions} userInfo={user} />
       <Navigator totalCount={totalCount} />
     </div>
   );
