@@ -19,7 +19,7 @@ const submissionWithExtra = Prisma.validator<Prisma.SubmissionArgs>()({
   },
 });
 
-const gridTemplate = twJoin(`grid-cols-[1fr_1fr_1fr_30px]`);
+const gridTemplate = twJoin(`grid-cols-[1fr_auto_30px]`);
 
 const SubmissionsListPanel = async ({
   submissions,
@@ -43,11 +43,20 @@ const SubmissionsListPanel = async ({
         >
           <Link
             href={`/submissions/${submission.id}`}
-            className={twJoin("grid", gridTemplate, "px-1 py-2", actionNeutral)}
+            className={twJoin(
+              "grid",
+              gridTemplate,
+              "place-items-center",
+              "gap-2",
+              "px-1 py-2",
+              actionNeutral,
+              "text-sm md:text-base",
+            )}
           >
-            <span className="block">{submission.problem.title}</span>
-            <span className="block">{t("viewDetail")}</span>
-            <TimeText time={submission.createdAt} />
+            <span className="block place-self-start">
+              {submission.problem.title}
+            </span>
+            <TimeText time={submission.createdAt} className="text-right" />
             <span>
               {userInfo?.id === submission.userId ? (
                 <UserCheck2 className="h-6 w-6" />

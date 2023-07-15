@@ -33,7 +33,7 @@ const SubmissionDetailPage = async ({
       </h1>
       <Link
         href={`/problems/${submission.problem.id}`}
-        className={twJoin(title, "underline")}
+        className={twJoin(title, "mt-4 block underline")}
       >
         {submission.problem.title}
       </Link>

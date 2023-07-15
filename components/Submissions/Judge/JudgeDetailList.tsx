@@ -61,16 +61,16 @@ const JudgeDetailList = ({
   return (
     <>
       {submissionDetail?.judgeTokens.length ? (
-        <ol className="mt-12 flex flex-col gap-2">
+        <ol className="mt-6 flex flex-col gap-2">
           <Accordion
             contents={submissionDetail.judgeTokens.map((result, index) => ({
               title: (
                 <li
                   key={index}
                   className={twJoin(
-                    "flex w-full flex-col border-neutral-950 py-2",
+                    "flex w-full border-neutral-950 py-2",
                     "dark:border-neutral-700",
-                    "md:flex-row md:justify-between",
+                    "flex-row justify-between",
                   )}
                 >
                   <span>Case #{index + 1}</span>
