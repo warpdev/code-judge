@@ -71,7 +71,7 @@ export const problemInputs: IProblemInput[][] = [
           message: "error.required",
         },
         min: {
-          value: 1,
+          value: 2,
           message: "error.min",
         },
         max: {

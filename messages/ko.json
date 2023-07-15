@@ -84,7 +84,7 @@
     "submit": "완료"
   },
   "placeholder": {
-    "memoryLimitRange": "1 ~ 512",
+    "memoryLimitRange": "2 ~ 512",
     "timeLimitRange": "1 ~ 5000"
   },
   "error": {

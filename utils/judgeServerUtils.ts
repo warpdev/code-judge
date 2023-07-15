@@ -83,7 +83,7 @@ export const postBatchSubmission = async ({
           stdin: btoa(testSet.input),
           expected_output: btoa(testSet.output),
           cpu_time_limit: timeLimit / 1000,
-          memory_limit: memoryLimit * 1000,
+          memory_limit: memoryLimit * 1024,
         })),
       }),
     },
