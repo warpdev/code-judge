@@ -66,7 +66,8 @@
     "notMyProblem": "You can only check the problems created by you😢",
     "stdin": "Input Value",
     "stdout": "My Code Output",
-    "execTime": "Execution Time"
+    "execTime": "Execution Time",
+    "execMemory": "Memory Usage"
   },
   "profile": {
     "mySubmissions": "My Submissions"

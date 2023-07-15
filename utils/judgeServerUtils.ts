@@ -104,7 +104,7 @@ export const getBatchSubmission = async (
     `/submissions/batch?tokens=${tokens.join(
       ",",
     )}&base64_encoded=true&fields=status,token${
-      fullFields ? ",stdout,stdin,time" : ""
+      fullFields ? ",stdout,stdin,time,memory" : ""
     }`,
     {
       next: {
@@ -119,7 +119,7 @@ export const getDetailSubmission = async (
   token: string,
 ): Promise<IJudgeFullStatus> => {
   const submission = await fetchJudgeApi<IJudgeFullStatus>(
-    `/submissions/${token}?base64_encoded=true&fields=status,token,stdin,stdout,time`,
+    `/submissions/${token}?base64_encoded=true&fields=status,token,stdin,stdout,time,memory`,
     {
       next: {
         revalidate: 30,

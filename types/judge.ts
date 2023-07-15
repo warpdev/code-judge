@@ -14,4 +14,5 @@ export interface IJudgeFullStatus {
   time: number;
   stdout: string;
   stdin: string;
+  memory: number;
 }
