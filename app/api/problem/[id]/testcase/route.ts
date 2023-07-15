@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import supabase from "@/lib/supabase";
 import { getProblemInfo } from "@/utils/dbUtils";
 import prisma from "@/lib/prisma";
-import { getIsAdmin, getIsMyProblem, getServerUser } from "@/utils/serverUtils";
+import { getIsMyProblem, getServerUser } from "@/utils/serverUtils";
 import { ResTypes } from "@/constants/response";
 
 export const POST = async (
@@ -76,8 +76,14 @@ export const GET = async (
   req: NextRequest,
   { params }: { params: { id: string } },
 ) => {
-  const isAdmin = await getIsAdmin();
-  if (!isAdmin) {
+  const user = await getServerUser();
+  if (!user) {
+    return ResTypes.NOT_AUTHORIZED;
+  }
+
+  const problemInfo = await getProblemInfo(params.id);
+  const isMine = getIsMyProblem(problemInfo, user);
+  if (!isMine) {
     return ResTypes.NOT_AUTHORIZED;
   }
 

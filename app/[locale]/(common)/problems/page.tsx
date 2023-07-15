@@ -2,9 +2,10 @@ import ProblemsList from "@/components/Problems/ProblemsList";
 import { title } from "@/style/baseStyle";
 import { getTranslator } from "next-intl/server";
 import { getPublicProblems } from "@/utils/dbUtils";
-import { getIsAdmin } from "@/utils/serverUtils";
+import { getServerUser } from "@/utils/serverUtils";
 import { redirect } from "next/navigation";
 import ProblemFilterPanel from "@/components/Problems/Filter/ProblemFilterPanel";
+import { headers } from "next/headers";
 
 const ProblemListPage = async ({
   searchParams,
@@ -16,6 +17,7 @@ const ProblemListPage = async ({
   };
   params: { locale: string };
 }) => {
+  const header = headers();
   const currentPage =
     searchParams.page && +searchParams.page > 0 ? +searchParams.page : 1;
   const t = await getTranslator(locale, "problem");
@@ -24,9 +26,11 @@ const ProblemListPage = async ({
     locale: searchParams.locale || locale,
   });
 
-  const isAdmin = await getIsAdmin();
-  if (!isAdmin) {
-    redirect("/");
+  const nextUrl = "https://" + header.get("host") + "/problems";
+
+  const user = await getServerUser();
+  if (!user) {
+    redirect("/api/auth/signin?callbackUrl=" + encodeURIComponent(nextUrl));
   }
 
   return (

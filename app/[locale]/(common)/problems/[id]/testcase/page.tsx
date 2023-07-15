@@ -2,7 +2,6 @@ import { redirect } from "next/navigation";
 import TestcaseListPanel from "@/components/Problems/Testcase/TestcaseListPanel";
 import { getProblemInfo } from "@/utils/dbUtils";
 import { getIsMyProblem, getServerUser } from "@/utils/serverUtils";
-import { headers } from "next/headers";
 
 const EditTestCasePage = async ({
   params,
@@ -11,12 +10,10 @@ const EditTestCasePage = async ({
     id: string;
   };
 }) => {
-  const header = headers();
   const user = await getServerUser();
-  const nextUrl = "https://" + header.get("host") + "/profile";
 
   if (!user) {
-    redirect("/api/auth/signin?callbackUrl=" + encodeURIComponent(nextUrl));
+    redirect("/api/auth/signin");
   }
 
   const problems = await getProblemInfo(params.id);
