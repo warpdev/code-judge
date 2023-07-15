@@ -26,15 +26,21 @@ export const actionOpacity = twJoin(
 
 export const actionToDark = twJoin(
   "transition",
-  "enabled:hover:brightness-90",
-  "enabled:active:brightness-80",
+  "hover:brightness-90",
+  "active:brightness-80",
+);
+
+export const actionToLight = twJoin(
+  "transition",
+  "hover:brightness-110",
+  "active:brightness-120",
 );
 
 export const actionBorderNeutral = twJoin(
   "transition",
   "border-2 border-transparent",
-  "enabled:hover:border-neutral-400",
-  "enabled:active:border-neutral-500",
+  "hover:border-neutral-400",
+  "active:border-neutral-500",
 );
 
 /** texts */

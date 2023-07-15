@@ -1,24 +1,29 @@
 "use client";
 import ProblemFilterView from "@/components/Problems/Filter/ProblemFilterView";
 import { AnimatePresence, motion } from "framer-motion";
-import { twJoin } from "tailwind-merge";
+import { twJoin, twMerge } from "tailwind-merge";
 import { actionNeutral, roundButton } from "@/style/baseStyle";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import ProblemFilterModal from "@/components/Modal/ProblemFilterModal";
 import useCurrentProblemQuery from "@/utils/hooks/useCurrentProblemQuery";
+import { BaseProps } from "@/types/common";
 
-const ProblemFilterPanel = ({ defaultLocal }: { defaultLocal: string }) => {
+const ProblemFilterPanel = ({
+  className,
+  defaultLocal,
+}: BaseProps & { defaultLocal: string }) => {
   const t = useTranslations();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const { currentFilter } = useCurrentProblemQuery(defaultLocal);
 
   return (
-    <div className="flex flex-wrap gap-3">
+    <div
+      className={twMerge("flex flex-nowrap gap-3 overflow-x-auto", className)}
+    >
       <ProblemFilterView currentFilter={currentFilter} />
       <motion.span
-        layoutId="filter-open-button"
         layout="position"
         transition={{
           duration: 0.25,

@@ -3,6 +3,7 @@ import AddProblemButton from "@/components/Problems/AddProblemButton";
 import { getTranslator } from "next-intl/server";
 import { getMyProblems } from "@/utils/dbUtils";
 import MyProblemList from "@/components/Problems/MyProblemList";
+import ProblemFilterPanel from "@/components/Problems/Filter/ProblemFilterPanel";
 
 const MyProblemPage = async ({
   searchParams,
@@ -23,12 +24,13 @@ const MyProblemPage = async ({
   });
 
   return (
-    <div>
+    <div className="flex flex-col">
       <h1 className={title}>{t("myProblems")}</h1>
-      <MyProblemList initData={problems} />
-      <div className="mt-4 flex justify-end">
-        <AddProblemButton />
+      <div className="mt-8 flex justify-between gap-2">
+        <ProblemFilterPanel defaultLocal="all" className="flex-1" />
+        <AddProblemButton className="h-max min-w-max" />
       </div>
+      <MyProblemList initData={problems} className="mt-4" />
     </div>
   );
 };

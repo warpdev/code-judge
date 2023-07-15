@@ -1,13 +1,9 @@
 "use client";
-import { twJoin } from "tailwind-merge";
-import { actionNeutral } from "@/style/baseStyle";
-import Link from "next/link";
 import { Problem } from "@prisma/client";
 import useSWR from "swr";
-import { IProblemFilter } from "@/types/common";
-import ProblemFilterPanel from "@/components/Problems/Filter/ProblemFilterPanel";
+import { BaseProps, IProblemFilter } from "@/types/common";
 import useCurrentProblemQuery from "@/utils/hooks/useCurrentProblemQuery";
-import PageNavigator from "@/components/Navigator";
+import BaseProblemList from "@/components/Problems/BaseProblemList";
 
 const makeParams = (filter: Record<keyof IProblemFilter, string | null>) => {
   const params = new URLSearchParams();
@@ -20,9 +16,10 @@ const makeParams = (filter: Record<keyof IProblemFilter, string | null>) => {
 };
 
 const ProblemsList = ({
+  className,
   initData,
   locale,
-}: {
+}: BaseProps & {
   initData: Problem[];
   locale: string;
 }) => {
@@ -35,30 +32,7 @@ const ProblemsList = ({
     },
   );
 
-  return (
-    <section className="mt-8 flex flex-col gap-8">
-      <ProblemFilterPanel defaultLocal={locale} />
-      <ul className="flex flex-col">
-        {problems?.map((problem) => (
-          <li
-            key={problem.id}
-            className={twJoin(
-              "px-1 py-2",
-              "border-b border-neutral-400 first:border-t",
-              "dark:border-neutral-600",
-              actionNeutral,
-              "hover:opacity-80",
-            )}
-          >
-            <Link className="block w-full" href={`/problems/${problem.id}`}>
-              {problem.title}
-            </Link>
-          </li>
-        ))}
-      </ul>
-      <PageNavigator />
-    </section>
-  );
+  return <BaseProblemList problems={problems} className={className} />;
 };
 
 export default ProblemsList;
