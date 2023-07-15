@@ -9,7 +9,7 @@ const usePageIndex = () => {
 
   const currentPage = useMemo(() => {
     const page = searchParams.get("page");
-    if (page) {
+    if (page && +page > 0) {
       return +page;
     } else {
       return 1;

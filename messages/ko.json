@@ -13,7 +13,9 @@
     "english": "영어",
     "all": "모두",
     "public": "공개됨",
-    "private": "비공개"
+    "private": "비공개",
+    "next": "다음",
+    "previous": "이전"
   },
   "header": {
     "myProblems": "내 문제들",

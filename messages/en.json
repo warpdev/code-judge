@@ -13,7 +13,9 @@
     "english": "English",
     "all": "All",
     "public": "Public",
-    "private": "Private"
+    "private": "Private",
+    "next": "Next",
+    "previous": "Previous"
   },
   "header": {
     "myProblems": "My Problems",

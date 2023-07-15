@@ -8,12 +8,20 @@ import SignOutButton from "@/components/Auth/SignOutButton";
 import { getTranslator } from "next-intl/server";
 import { headers } from "next/headers";
 import { getAllSubmissions } from "@/utils/dbUtils";
+import Navigator from "@/components/Navigator";
 
 const UserProfilePage = async ({
+  searchParams,
   params: { locale },
 }: {
+  searchParams: {
+    page?: string;
+    locale?: string;
+  };
   params: { locale: string };
 }) => {
+  const currentPage =
+    searchParams.page && +searchParams.page > 0 ? +searchParams.page : 1;
   const t = await getTranslator(locale, "profile");
   const user = await getServerUser();
   const header = headers();
@@ -25,7 +33,7 @@ const UserProfilePage = async ({
   }
 
   const submissions = await getAllSubmissions({
-    pageIndex: 0,
+    pageIndex: currentPage,
     onlyMy: true,
   });
 
@@ -46,6 +54,7 @@ const UserProfilePage = async ({
       )}
       <h2 className={twJoin(title, "mt-8")}>{t("mySubmissions")}</h2>
       <SubmissionsListPanel submissions={submissions} locale={locale} />
+      <Navigator />
       <div className="flex justify-end">
         <SignOutButton
           locale={locale}

@@ -1,8 +1,13 @@
 "use client";
 import usePageIndex from "@/utils/hooks/usePageIndex";
 import { useCallback } from "react";
+import { BaseProps } from "@/types/common";
+import { twJoin, twMerge } from "tailwind-merge";
+import { actionToDark, roundButton } from "@/style/baseStyle";
+import { useTranslations } from "next-intl";
 
-const PageNavigator = () => {
+const PageNavigator = ({ className }: BaseProps) => {
+  const t = useTranslations("common");
   const { currentPage, changePage } = usePageIndex();
   const handleClick = useCallback(
     (page: number) => () => {
@@ -12,19 +17,40 @@ const PageNavigator = () => {
   );
 
   return (
-    <div className="flex items-center justify-center gap-2">
+    <div
+      className={twMerge("flex items-center justify-center gap-3", className)}
+    >
       <button
-        className="rounded bg-neutral-100 p-2 dark:bg-neutral-800"
+        className={twJoin(
+          roundButton,
+          "bg-neutral-100 dark:bg-neutral-800",
+          actionToDark,
+          "disabled:opacity-50",
+        )}
         onClick={handleClick(currentPage - 1)}
+        disabled={currentPage === 1}
       >
-        Prev
+        {t("previous")}
       </button>
-      <span>{currentPage}</span>
+      <span
+        className={twJoin(
+          "flex items-center justify-center",
+          "rounded border border-emerald-500",
+          "h-8 w-8 text-center",
+        )}
+      >
+        {currentPage}
+      </span>
       <button
-        className="rounded bg-neutral-100 p-2 dark:bg-neutral-800"
+        className={twJoin(
+          roundButton,
+          "bg-neutral-100 dark:bg-neutral-800",
+          actionToDark,
+          "disabled:opacity-50",
+        )}
         onClick={handleClick(currentPage + 1)}
       >
-        Next
+        {t("next")}
       </button>
     </div>
   );
