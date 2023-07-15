@@ -5,6 +5,7 @@ import { getProblemInfo } from "@/utils/dbUtils";
 import { getServerUser } from "@/utils/serverUtils";
 import { ResTypes } from "@/constants/response";
 import supabase from "@/lib/supabase";
+import { revalidateSubmissions } from "@/utils/revalidateUtils";
 
 export const POST = async (
   req: NextRequest,
@@ -76,5 +77,6 @@ export const POST = async (
   if (!codeUploadResult) {
     return ResTypes.OTHER_ERROR;
   }
+  revalidateSubmissions();
   return NextResponse.json(sub);
 };

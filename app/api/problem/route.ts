@@ -6,6 +6,7 @@ import { getPublicProblems } from "@/utils/dbUtils";
 import { LOCALE_MAP } from "@/constants/common";
 import { ILocale } from "@/types/common";
 import supabase from "@/lib/supabase";
+import { revalidateProblems } from "@/utils/revalidateUtils";
 
 export const POST = async (req: NextRequest, res: NextResponse) => {
   const body = await req.json();
@@ -54,6 +55,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     return ResTypes.OTHER_ERROR;
   }
 
+  revalidateProblems();
   return NextResponse.json(problem);
 };
 

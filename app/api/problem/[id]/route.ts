@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getProblemInfo } from "@/utils/dbUtils";
 import prisma from "@/lib/prisma";
-import { getIsAdmin, getIsMyProblem, getServerUser } from "@/utils/serverUtils";
+import { getIsMyProblem, getServerUser } from "@/utils/serverUtils";
 import { ResTypes } from "@/constants/response";
 import supabase from "@/lib/supabase";
+import { revalidateProblems } from "@/utils/revalidateUtils";
 
 export const GET = async (
   req: NextRequest,
@@ -44,5 +45,6 @@ export const DELETE = async (
     return ResTypes.OTHER_ERROR;
   }
 
+  revalidateProblems();
   return NextResponse.json(problem);
 };
