@@ -1,19 +1,21 @@
+import { PROMPTS } from "@/constants/prompts";
+import { ILocale } from "@/types/common";
+
 export const makeHintUserPrompt = (
+  locale: ILocale,
   problem: string,
   code: string,
   inputFormat: string,
   outputFormat: string,
 ) => {
-  return `문제: ${problem.replaceAll(
-    "\\n",
-    "\n",
-  )}\n\n현재 코드: ${code.replaceAll(
-    "\\n",
-    "\n",
-  )}\n\n입력 전제 조건: ${inputFormat.replaceAll(
-    "\\n",
-    "\n",
-  )}\n\n출력 형식: ${outputFormat.replaceAll("\\n", "\n")}\n\n`;
+  const prompt = PROMPTS.user[locale];
+  return `${prompt.problem}: ${problem.replaceAll("\\n", "\n")}\n\n${
+    prompt.code
+  }: ${code.replaceAll("\\n", "\n")}\n\n${
+    prompt.input
+  }: ${inputFormat.replaceAll("\\n", "\n")}\n\n${
+    prompt.output
+  }: ${outputFormat.replaceAll("\\n", "\n")}\n\n`;
 };
 
 export const handleNumberInput = (

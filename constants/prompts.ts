@@ -17,4 +17,18 @@ export const PROMPTS = {
       "Rather than suggesting a completely different solution, provide a hint in the direction that the user is currently working on." +
       "You must not provide a direct code modification method.",
   },
+  user: {
+    ko: {
+      problem: "문제 설명",
+      code: "현재 코드",
+      input: "입력 형식 (stdin)",
+      output: "출력 형식 (stdout)",
+    },
+    en: {
+      problem: "Problem Description",
+      code: "Current Code",
+      input: "Input Format (stdin)",
+      output: "Output Format (stdout)",
+    },
+  },
 };

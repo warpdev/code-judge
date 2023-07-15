@@ -51,6 +51,7 @@ export async function POST(
   let { prompt: userCode } = await req.json();
   const problemInfo = await getProblemInfo(params.id);
   const prompt = makeHintUserPrompt(
+    LOCALES[problemInfo.locale],
     JSON.stringify(problemInfo.description),
     userCode,
     JSON.stringify(problemInfo.inputFormat),
