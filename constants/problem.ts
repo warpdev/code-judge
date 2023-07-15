@@ -75,7 +75,7 @@ export const problemInputs: IProblemInput[][] = [
           message: "error.min",
         },
         max: {
-          value: 512000,
+          value: 512,
           message: "error.max",
         },
         setValueAs: (value: string | number) => {
