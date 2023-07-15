@@ -13,7 +13,7 @@ export const NAV_LINKS = [
   },
 ];
 
-export const LOCALES = ["en", "ko"];
+export const LOCALES = ["en", "ko"] as const;
 
 export const LOCALE_MAP: Record<
   (typeof LOCALES)[number],
