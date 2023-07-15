@@ -32,7 +32,7 @@ const UserProfilePage = async ({
     redirect("/api/auth/signin?callbackUrl=" + encodeURIComponent(nextUrl));
   }
 
-  const submissions = await getAllSubmissions({
+  const [submissions, totalCount] = await getAllSubmissions({
     pageIndex: currentPage,
     onlyMy: true,
   });
@@ -54,7 +54,7 @@ const UserProfilePage = async ({
       )}
       <h2 className={twJoin(title, "mt-8")}>{t("mySubmissions")}</h2>
       <SubmissionsListPanel submissions={submissions} locale={locale} />
-      <Navigator />
+      <Navigator totalCount={totalCount} />
       <div className="flex justify-end">
         <SignOutButton
           locale={locale}

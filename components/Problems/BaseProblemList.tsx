@@ -5,7 +5,6 @@ import { actionNeutral } from "@/style/baseStyle";
 import Link from "next/link";
 import { Badge } from "@/components/BaseComponents";
 import { Lock, Unlock } from "lucide-react";
-import PageNavigator from "@/components/Navigator";
 import { BaseProps } from "@/types/common";
 import { useTranslations } from "next-intl";
 
@@ -66,7 +65,6 @@ const BaseProblemList = ({
           </li>
         ))}
       </ul>
-      <PageNavigator />
     </section>
   );
 };

@@ -4,6 +4,7 @@ import { getTranslator } from "next-intl/server";
 import { getMyProblems } from "@/utils/dbUtils";
 import MyProblemList from "@/components/Problems/MyProblemList";
 import ProblemFilterPanel from "@/components/Problems/Filter/ProblemFilterPanel";
+import Navigator from "@/components/Navigator";
 
 const MyProblemPage = async ({
   searchParams,
@@ -18,7 +19,7 @@ const MyProblemPage = async ({
   const currentPage =
     searchParams.page && +searchParams.page > 0 ? +searchParams.page : 1;
   const t = await getTranslator(locale, "myProblem");
-  const problems = await getMyProblems({
+  const [problems, totalCount] = await getMyProblems({
     pageIndex: currentPage,
     locale: searchParams.locale || "all",
   });
@@ -33,7 +34,8 @@ const MyProblemPage = async ({
           buttonText={t("newProblem")}
         />
       </div>
-      <MyProblemList initData={problems} className="mt-4" />
+      <MyProblemList problems={problems} className="mt-4" />
+      <Navigator totalCount={totalCount} />
     </div>
   );
 };

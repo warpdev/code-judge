@@ -1,12 +1,18 @@
 "use client";
 import usePageIndex from "@/utils/hooks/usePageIndex";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { BaseProps } from "@/types/common";
 import { twJoin, twMerge } from "tailwind-merge";
 import { actionToDark, roundButton } from "@/style/baseStyle";
 import { useTranslations } from "next-intl";
+import { PROBLEM_LIST_PAGE_SIZE } from "@/constants/common";
 
-const PageNavigator = ({ className }: BaseProps) => {
+const Navigator = ({
+  className,
+  totalCount,
+}: BaseProps & {
+  totalCount?: number;
+}) => {
   const t = useTranslations("common");
   const { currentPage, changePage } = usePageIndex();
   const handleClick = useCallback(
@@ -15,6 +21,10 @@ const PageNavigator = ({ className }: BaseProps) => {
     },
     [changePage],
   );
+
+  const isLast = useMemo(() => {
+    return !!totalCount && currentPage * PROBLEM_LIST_PAGE_SIZE >= totalCount;
+  }, [currentPage, totalCount]);
 
   return (
     <div
@@ -49,6 +59,7 @@ const PageNavigator = ({ className }: BaseProps) => {
           "disabled:opacity-50",
         )}
         onClick={handleClick(currentPage + 1)}
+        disabled={isLast}
       >
         {t("next")}
       </button>
@@ -56,4 +67,4 @@ const PageNavigator = ({ className }: BaseProps) => {
   );
 };
 
-export default PageNavigator;
+export default Navigator;

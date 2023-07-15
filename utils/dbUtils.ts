@@ -42,17 +42,25 @@ export const getPublicProblems = async ({
 }: {
   pageIndex: number;
   locale?: string;
-}) => {
-  const problems = await prisma.problem.findMany({
-    where: {
-      locale: LOCALE_MAP[locale as ILocale]?.id,
-      isPublic: true,
-    },
-    skip: (pageIndex - 1) * PROBLEM_LIST_PAGE_SIZE,
-    take: PROBLEM_LIST_PAGE_SIZE,
-  });
+}): Promise<[Problem[], number]> => {
+  const problemsData = await prisma.$transaction([
+    prisma.problem.findMany({
+      where: {
+        locale: LOCALE_MAP[locale as ILocale]?.id,
+        isPublic: true,
+      },
+      skip: (pageIndex - 1) * PROBLEM_LIST_PAGE_SIZE,
+      take: PROBLEM_LIST_PAGE_SIZE,
+    }),
+    prisma.problem.count({
+      where: {
+        locale: LOCALE_MAP[locale as ILocale]?.id,
+        isPublic: true,
+      },
+    }),
+  ]);
 
-  return problems;
+  return problemsData;
 };
 
 export const getMyProblems = async ({
@@ -61,20 +69,28 @@ export const getMyProblems = async ({
 }: {
   pageIndex: number;
   locale?: string;
-}) => {
+}): Promise<[Problem[], number]> => {
   const user = await getServerUser();
   if (!user) {
     throw new Error("User not found");
   }
 
-  const problems = await prisma.problem.findMany({
-    where: {
-      locale: LOCALE_MAP[locale as ILocale]?.id,
-      createdBy: user.id,
-    },
-    skip: (pageIndex - 1) * PROBLEM_LIST_PAGE_SIZE,
-    take: PROBLEM_LIST_PAGE_SIZE,
-  });
+  const problems = await prisma.$transaction([
+    prisma.problem.findMany({
+      where: {
+        locale: LOCALE_MAP[locale as ILocale]?.id,
+        createdBy: user.id,
+      },
+      skip: (pageIndex - 1) * PROBLEM_LIST_PAGE_SIZE,
+      take: PROBLEM_LIST_PAGE_SIZE,
+    }),
+    prisma.problem.count({
+      where: {
+        locale: LOCALE_MAP[locale as ILocale]?.id,
+        createdBy: user.id,
+      },
+    }),
+  ]);
 
   return problems;
 };
@@ -154,39 +170,52 @@ export const getAllSubmissions = async ({
   onlyMy?: boolean;
   locale?: string;
 }): Promise<
-  Prisma.SubmissionGetPayload<{
-    include: {
-      problem: true;
-      language: true;
-      user: {
-        select: {
-          id: true;
+  [
+    Prisma.SubmissionGetPayload<{
+      include: {
+        problem: true;
+        language: true;
+        user: {
+          select: {
+            id: true;
+          };
         };
       };
-    };
-  }>[]
+    }>[],
+    number,
+  ]
 > => {
   const user = await getServerUser();
 
-  const submissions = await prisma.submission.findMany({
-    where: {
-      problem: {
-        OR: publicOrCreatedBy(user),
-      },
-      userId: onlyMy ? user?.id : undefined,
-    },
-    include: {
-      user: {
-        select: {
-          id: true,
+  const submissionData = await prisma.$transaction([
+    prisma.submission.findMany({
+      where: {
+        problem: {
+          OR: publicOrCreatedBy(user),
         },
+        userId: onlyMy ? user?.id : undefined,
       },
-      problem: true,
-      language: true,
-    },
-    skip: (pageIndex - 1) * PROBLEM_LIST_PAGE_SIZE,
-    take: PROBLEM_LIST_PAGE_SIZE,
-  });
+      include: {
+        user: {
+          select: {
+            id: true,
+          },
+        },
+        problem: true,
+        language: true,
+      },
+      skip: (pageIndex - 1) * PROBLEM_LIST_PAGE_SIZE,
+      take: PROBLEM_LIST_PAGE_SIZE,
+    }),
+    prisma.submission.count({
+      where: {
+        problem: {
+          OR: publicOrCreatedBy(user),
+        },
+        userId: onlyMy ? user?.id : undefined,
+      },
+    }),
+  ]);
 
-  return submissions;
+  return submissionData;
 };

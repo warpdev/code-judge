@@ -6,6 +6,7 @@ import { getServerUser } from "@/utils/serverUtils";
 import { redirect } from "next/navigation";
 import ProblemFilterPanel from "@/components/Problems/Filter/ProblemFilterPanel";
 import { headers } from "next/headers";
+import Navigator from "@/components/Navigator";
 
 const ProblemListPage = async ({
   searchParams,
@@ -21,7 +22,7 @@ const ProblemListPage = async ({
   const currentPage =
     searchParams.page && +searchParams.page > 0 ? +searchParams.page : 1;
   const t = await getTranslator(locale, "problem");
-  const problems = await getPublicProblems({
+  const [problems, totalCount] = await getPublicProblems({
     pageIndex: currentPage,
     locale: searchParams.locale || locale,
   });
@@ -39,7 +40,8 @@ const ProblemListPage = async ({
       <div className="mt-8 flex justify-between gap-2">
         <ProblemFilterPanel defaultLocal={locale} className="flex-1" />
       </div>
-      <ProblemsList initData={problems} locale={locale} className="mt-4" />
+      <ProblemsList problems={problems} className="mt-4" />
+      <Navigator totalCount={totalCount} />
     </div>
   );
 };

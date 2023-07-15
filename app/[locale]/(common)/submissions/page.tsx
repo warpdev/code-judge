@@ -18,7 +18,7 @@ const SubmissionsPage = async ({
   const currentPage =
     searchParams.page && +searchParams.page > 0 ? +searchParams.page : 1;
   const t = await getTranslator(locale, "submission");
-  const allSubmissions = await getAllSubmissions({
+  const [allSubmissions, totalCount] = await getAllSubmissions({
     pageIndex: currentPage,
   });
 
@@ -26,7 +26,7 @@ const SubmissionsPage = async ({
     <div className="flex flex-col gap-4">
       <h1 className={title}>{t("allSubmissions")}</h1>
       <SubmissionsListPanel submissions={allSubmissions} locale={locale} />
-      <Navigator />
+      <Navigator totalCount={totalCount} />
     </div>
   );
 };

@@ -6,7 +6,7 @@ export const GET = async (req: NextRequest) => {
   const locale = searchParams.get("locale") || "all";
   const page = parseInt(searchParams.get("page") || "0");
 
-  const problems = await getMyProblems({
+  const [problems] = await getMyProblems({
     locale: locale,
     pageIndex: page,
   });
