@@ -75,7 +75,7 @@
     "title": "Title",
     "language": "Written Language",
     "description": "Description",
-    "memoryLimit": "Memory Limit (KB)",
+    "memoryLimit": "Memory Limit (MB)",
     "timeLimit": "Execution Time Limit (ms)",
     "inputFormat": "Input Format",
     "outputFormat": "Output Format",

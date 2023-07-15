@@ -62,10 +62,14 @@ export const postBatchSubmission = async ({
   langId,
   code,
   testSets,
+  timeLimit,
+  memoryLimit,
 }: {
   langId: number;
   code: string;
   testSets: ITestSet[];
+  timeLimit: number;
+  memoryLimit: number;
 }): Promise<string[]> => {
   const encodedCode = btoa(code);
   const tokens = await fetchJudgeApi<{ token: string }[]>(
@@ -78,6 +82,8 @@ export const postBatchSubmission = async ({
           source_code: encodedCode,
           stdin: btoa(testSet.input),
           expected_output: btoa(testSet.output),
+          cpu_time_limit: timeLimit / 1000,
+          memory_limit: memoryLimit * 1000,
         })),
       }),
     },

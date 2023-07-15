@@ -61,6 +61,8 @@ export const POST = async (
       langId,
       code,
       testSets: allTestSets,
+      timeLimit: problemInfo.timeLimit,
+      memoryLimit: problemInfo.memoryLimit,
     });
 
     await prisma.judgeToken.createMany({

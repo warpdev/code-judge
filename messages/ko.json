@@ -75,7 +75,7 @@
     "title": "제목",
     "language": "작성된 언어",
     "description": "설명",
-    "memoryLimit": "메모리 제한 (KB)",
+    "memoryLimit": "메모리 제한 (MB)",
     "timeLimit": "실행시간 제한 (ms)",
     "inputFormat": "입력 형식",
     "outputFormat": "출력 형식",
