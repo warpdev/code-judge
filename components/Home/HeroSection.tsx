@@ -10,26 +10,44 @@ const iconCircle = twJoin(
   "shadow-[inset_0_2px_0_0_#fff3]",
 );
 
-const circlePanel = twJoin("flex flex-col items-center gap-2 absolute");
+const circlePanel = twJoin(
+  "flex flex-col items-center gap-2",
+  "static md:absolute",
+);
 
 const HeroSection = async ({ locale }: { locale: string }) => {
   const t = await getTranslator(locale, "main.hero");
   const user = await getServerUser();
 
   return (
-    <section className="flex h-content-screen min-h-[300px] items-center">
-      <div className="flex w-full flex-row items-center justify-between">
+    <section className="flex h-content-screen min-h-[450px] items-center">
+      <div
+        className={twJoin(
+          "flex w-full items-center justify-between",
+          "flex-col md:flex-row",
+        )}
+      >
         <div className="flex flex-col gap-8">
           <h2
             className={twJoin(
               "whitespace-pre-line leading-relaxed",
-              "text-4xl font-black",
+              "text-2xl font-black md:text-4xl",
+              "text-center md:text-left",
             )}
           >
             {t("title")}
           </h2>
-          <p className={twJoin("text-xl text-neutral-500")}>{t("subTitle")}</p>
-          <div className="flex gap-4">
+          <p
+            className={twJoin(
+              "text-neutral-500",
+              "text-base md:text-xl",
+              "text-center md:text-left",
+              "whitespace-pre-line md:whitespace-normal",
+            )}
+          >
+            {t("subTitle")}
+          </p>
+          <div className="flex justify-center gap-4 md:justify-start">
             {user ? (
               <Link
                 href="/my-problems"
@@ -49,7 +67,13 @@ const HeroSection = async ({ locale }: { locale: string }) => {
             )}
           </div>
         </div>
-        <div className="relative flex h-96 w-96">
+        <div
+          className={twJoin(
+            "relative flex",
+            "md:mt-0 md:h-96 md:w-96",
+            "mt-16 w-full justify-center gap-4",
+          )}
+        >
           <div className={twJoin(circlePanel, "left-0 top-0")}>
             <Sparkles className={twJoin(iconCircle, "bg-blue-400")} />
             <span className="font-bold">{t("aiTutor")}</span>
@@ -61,7 +85,7 @@ const HeroSection = async ({ locale }: { locale: string }) => {
           <div
             className={twJoin(
               circlePanel,
-              "bottom-0 left-1/2 -translate-x-1/2 transform",
+              "bottom-0 left-1/2 md:-translate-x-1/2 md:transform",
             )}
           >
             <GraduationCap className={twJoin(iconCircle)} />
