@@ -21,6 +21,7 @@ const SubmissionsPage = async ({
   const t = await getTranslator(locale, "submission");
   const [allSubmissions, totalCount] = await getAllSubmissions({
     pageIndex: currentPage,
+    onlyMy: true,
   });
 
   const user = await getServerUser();
@@ -28,7 +29,11 @@ const SubmissionsPage = async ({
   return (
     <div className="flex flex-col gap-4">
       <h1 className={title}>{t("allSubmissions")}</h1>
-      <SubmissionsListPanel submissions={allSubmissions} userInfo={user} />
+      <SubmissionsListPanel
+        submissions={allSubmissions}
+        userInfo={user}
+        onlyMine={true}
+      />
       <Navigator totalCount={totalCount} />
     </div>
   );

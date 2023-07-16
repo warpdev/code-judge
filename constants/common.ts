@@ -8,7 +8,7 @@ export const NAV_LINKS = [
     href: "/problems",
   },
   {
-    name: "submissions",
+    name: "mySubmissions",
     href: "/submissions",
   },
 ];

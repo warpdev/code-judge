@@ -17,6 +17,7 @@
     "myProblems": "My Problems",
     "problems": "Public Problems",
     "submissions": "Submissions",
+    "mySubmissions": "My Submissions",
     "profile": "My Profile",
     "signIn": "Sign In"
   },
@@ -77,7 +78,8 @@
     "execMemory": "Memory Usage"
   },
   "profile": {
-    "mySubmissions": "My Submissions"
+    "mySubmissions": "My Submissions",
+    "feedback": "The detailed profile is being prepared.\nIf you have any suggestions, please leave your feedback <link>here!</link>"
   },
   "input": {
     "title": "Title",

@@ -26,14 +26,16 @@ const gridTemplate = twJoin(`grid-cols-[1fr_auto_30px]`);
 const SubmissionsListPanel = ({
   userInfo,
   submissions: initData,
+  onlyMine = false,
 }: {
   userInfo?: Session["user"];
   submissions: Prisma.SubmissionGetPayload<typeof submissionWithExtra>[];
+  onlyMine?: boolean;
 }) => {
   const { currentPage } = usePageIndex();
   const { data: submissions } = useSWR<
     Prisma.SubmissionGetPayload<typeof submissionWithExtra>[]
-  >(`/api/submissions?page=${currentPage}`, {
+  >(`/api/submissions?onlyMine=${onlyMine}page=${currentPage}`, {
     fallbackData: initData,
   });
 

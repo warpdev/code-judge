@@ -9,6 +9,7 @@ import { getTranslator } from "next-intl/server";
 import { headers } from "next/headers";
 import { getAllSubmissions } from "@/utils/dbUtils";
 import Navigator from "@/components/Navigator";
+import ProfileDashboard from "@/components/Profile/ProfileDashboard";
 
 const UserProfilePage = async ({
   searchParams,
@@ -32,28 +33,32 @@ const UserProfilePage = async ({
     redirect("/api/auth/signin?callbackUrl=" + encodeURIComponent(nextUrl));
   }
 
-  const [submissions, totalCount] = await getAllSubmissions({
-    pageIndex: currentPage,
-    onlyMy: true,
-  });
-
   return (
     <div className="flex flex-col gap-4">
-      <h1 className={twJoin(title, "mb-4")}>{user.name}</h1>
-      <p>{user.email}</p>
-      {user.image && (
-        <Image
-          className="rounded-full"
-          src={user.image}
-          unoptimized
-          alt="user image"
-          width={250}
-          height={250}
-        />
-      )}
-      <h2 className={twJoin(title, "mt-8")}>{t("mySubmissions")}</h2>
-      <SubmissionsListPanel submissions={submissions} userInfo={user} />
-      <Navigator totalCount={totalCount} />
+      <div
+        className={twJoin(
+          "flex flex-col md:flex-row md:items-center",
+          "gap-4 md:gap-8",
+        )}
+      >
+        <span className="flex items-center gap-2">
+          {user.image && (
+            <Image
+              className="rounded-full"
+              src={user.image}
+              unoptimized
+              alt="user image"
+              width={40}
+              height={40}
+            />
+          )}
+          <h1 className={twJoin(title)}>{user.name}</h1>
+        </span>
+        <span className="text-sm text-neutral-400 dark:text-neutral-500">
+          {user.email}
+        </span>
+      </div>
+      <ProfileDashboard />
       <div className="flex justify-end">
         <SignOutButton
           locale={locale}

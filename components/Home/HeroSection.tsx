@@ -7,7 +7,7 @@ import { GraduationCap, Sparkles, Sticker } from "lucide-react";
 
 const iconCircle = twJoin(
   "h-16 w-16 rounded-full p-4 overflow-visible",
-  "shadow-[inset_0_2px_0_0_#fff3]",
+  "dark:shadow-[inset_0_2px_0_0_#fff3] text-neutral-50",
 );
 
 const circlePanel = twJoin(
@@ -98,7 +98,7 @@ const HeroSection = async ({ locale }: { locale: string }) => {
               "animation-delay-1000",
             )}
           >
-            <GraduationCap className={twJoin(iconCircle)} />
+            <GraduationCap className={twJoin(iconCircle, "bg-neutral-950")} />
             <span className="font-bold">{t("completeLearning")}</span>
           </li>
         </ul>
