@@ -1,5 +1,4 @@
-import { getTranslator } from "next-intl/server";
-import { twJoin } from "tailwind-merge";
+import HeroSection from "@/components/Home/HeroSection";
 
 const Home = async ({
   params,
@@ -8,16 +7,9 @@ const Home = async ({
     locale: string;
   };
 }) => {
-  const t = await getTranslator(params.locale, "main");
-
   return (
-    <div
-      className={twJoin(
-        "flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center gap-4 p-24 md:min-h-[calc(100vh-5rem)]",
-      )}
-    >
-      <h1 className="text-3xl font-black">{t("title")}</h1>
-      <h2 className="text-2xl">{t("subTitle")}</h2>
+    <div>
+      <HeroSection locale={params.locale} />
     </div>
   );
 };

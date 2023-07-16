@@ -31,3 +31,9 @@ export const defaultEditor = twJoin(
   "prose-base prose-headings:font-display font-default focus:outline-none max-w-full selection:bg-blue-500/30",
   "dark:prose-invert",
 );
+
+export const ctaButton = twJoin(
+  roundButton,
+  "bg-emerald-500 font-bold text-neutral-50",
+  actionToDark,
+);

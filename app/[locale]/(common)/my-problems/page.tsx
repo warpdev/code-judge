@@ -3,8 +3,9 @@ import AddProblemButton from "@/components/Problems/AddProblemButton";
 import { getTranslator } from "next-intl/server";
 import { getMyProblems } from "@/utils/dbUtils";
 import MyProblemList from "@/components/Problems/MyProblemList";
-import ProblemFilterPanel from "@/components/Problems/Filter/ProblemFilterPanel";
 import Navigator from "@/components/Navigator";
+import { getServerUser } from "@/utils/serverUtils";
+import { redirect } from "next/navigation";
 
 const MyProblemPage = async ({
   searchParams,
@@ -19,8 +20,14 @@ const MyProblemPage = async ({
   const currentPage =
     searchParams.page && +searchParams.page > 0 ? +searchParams.page : 1;
   const t = await getTranslator(locale, "myProblem");
+  const user = await getServerUser();
+  if (!user) {
+    redirect("/api/auth/signin");
+  }
+
   const [problems, totalCount] = await getMyProblems({
     pageIndex: currentPage,
+    user: user,
     locale: searchParams.locale || "all",
   });
 

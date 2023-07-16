@@ -59,23 +59,19 @@ export const getPublicProblems = async ({
       },
     }),
   ]);
-  console.log(problemsData);
 
   return problemsData;
 };
 
 export const getMyProblems = async ({
   pageIndex = 1,
+  user,
   locale,
 }: {
   pageIndex: number;
+  user: Session["user"];
   locale?: string;
 }): Promise<[Problem[], number]> => {
-  const user = await getServerUser();
-  if (!user) {
-    throw new Error("User not found");
-  }
-
   const problems = await prisma.$transaction([
     prisma.problem.findMany({
       where: {

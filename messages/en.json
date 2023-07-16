@@ -21,8 +21,15 @@
     "signIn": "Sign In"
   },
   "main": {
-    "title": "My Personal Coding Learning Notes",
-    "subTitle": "Test operation until the official launch."
+    "hero": {
+      "title": "Coding Journey with Your AI Tutor,\nYou're Not Alone Anymore.",
+      "subTitle": "Every problem you solve elsewhere, another learning begins here.",
+      "dashboard": "Go to My Learning",
+      "try": "Try Now",
+      "aiTutor": "AI Tutor",
+      "detailFeedback": "Detailed Feedback",
+      "completeLearning": "Proper Learning"
+    }
   },
   "problem": {
     "allProblems": "Public Problems",

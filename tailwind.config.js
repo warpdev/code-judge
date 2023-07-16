@@ -36,6 +36,9 @@ module.exports = {
       brightness: {
         80: ".8",
       },
+      height: {
+        "content-screen": "calc(100vh - 144px)",
+      },
     },
   },
   plugins: [
