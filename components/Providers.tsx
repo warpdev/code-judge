@@ -14,6 +14,7 @@ export const Providers = ({ children }: Props) => {
       <SWRConfig
         value={{
           fetcher: (resource, init) =>
+            //TODO: check cache
             fetch(resource, init).then((res) => res.json()),
         }}
       >

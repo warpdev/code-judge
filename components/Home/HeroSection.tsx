@@ -29,7 +29,7 @@ const HeroSection = async ({ locale }: { locale: string }) => {
         )}
       >
         <div className="flex flex-col gap-8">
-          <h2
+          <h1
             className={twJoin(
               "whitespace-pre-line leading-relaxed",
               "text-2xl font-black md:text-4xl",
@@ -37,7 +37,7 @@ const HeroSection = async ({ locale }: { locale: string }) => {
             )}
           >
             {t("title")}
-          </h2>
+          </h1>
           <p
             className={twJoin(
               "text-neutral-500",
@@ -68,7 +68,7 @@ const HeroSection = async ({ locale }: { locale: string }) => {
             )}
           </div>
         </div>
-        <div
+        <ul
           className={twJoin(
             "relative grid md:flex",
             "grid-cols-3 text-center text-sm md:text-base",
@@ -76,11 +76,11 @@ const HeroSection = async ({ locale }: { locale: string }) => {
             "mt-16 w-full gap-4",
           )}
         >
-          <div className={twJoin(circlePanel, "left-0 top-0")}>
+          <li className={twJoin(circlePanel, "left-0 top-0")}>
             <Sparkles className={twJoin(iconCircle, "bg-blue-400")} />
             <span className="font-bold">{t("aiTutor")}</span>
-          </div>
-          <div
+          </li>
+          <li
             className={twJoin(
               circlePanel,
               "right-0 top-0",
@@ -89,8 +89,8 @@ const HeroSection = async ({ locale }: { locale: string }) => {
           >
             <Sticker className={twJoin(iconCircle, "bg-pink-400")} />
             <span className="font-bold">{t("detailFeedback")}</span>
-          </div>
-          <div
+          </li>
+          <li
             className={twMerge(
               circlePanel,
               "bottom-0 left-1/2 md:-translate-x-1/2 md:transform",
@@ -100,8 +100,8 @@ const HeroSection = async ({ locale }: { locale: string }) => {
           >
             <GraduationCap className={twJoin(iconCircle)} />
             <span className="font-bold">{t("completeLearning")}</span>
-          </div>
-        </div>
+          </li>
+        </ul>
       </div>
     </section>
   );
