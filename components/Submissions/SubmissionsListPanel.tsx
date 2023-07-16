@@ -35,7 +35,7 @@ const SubmissionsListPanel = ({
   const { currentPage } = usePageIndex();
   const { data: submissions } = useSWR<
     Prisma.SubmissionGetPayload<typeof submissionWithExtra>[]
-  >(`/api/submissions?onlyMine=${onlyMine}page=${currentPage}`, {
+  >(`/api/submissions?onlyMine=${onlyMine}&page=${currentPage}`, {
     fallbackData: initData,
   });
 
