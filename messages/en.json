@@ -47,7 +47,8 @@
     "submit": "Submit",
     "startCoding": "Start Coding!",
     "editTestCases": "Edit Test Cases",
-    "filter": "Filter"
+    "filter": "Filter",
+    "seconds": "s"
   },
   "myProblem": {
     "myProblems": "My Problems",
@@ -85,8 +86,8 @@
     "title": "Title",
     "language": "Written Language",
     "description": "Description",
-    "memoryLimit": "Memory Limit (MB)",
-    "timeLimit": "Execution Time Limit (ms)",
+    "memoryLimit": "Memory Limit (MiB)",
+    "timeLimit": "Execution Time Limit (s)",
     "inputFormat": "Input Format",
     "outputFormat": "Output Format",
     "sampleInput": "Sample Input",
@@ -95,9 +96,10 @@
   },
   "placeholder": {
     "memoryLimitRange": "2 ~ 512",
-    "timeLimitRange": "1 ~ 5000"
+    "timeLimitRange": "0.01 ~ 5"
   },
   "error": {
+    "default": "Something went wrong. Please try again later.",
     "required": "Please enter {label}.",
     "minLength": "{label} must be at least {minLength} characters.",
     "maxLength": "{label} must be less than {maxLength} characters.",

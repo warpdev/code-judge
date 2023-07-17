@@ -1,4 +1,5 @@
 import { twMerge } from "tailwind-merge";
+import { BaseProps } from "@/types/common";
 
 export const Spinner = () => (
   <svg

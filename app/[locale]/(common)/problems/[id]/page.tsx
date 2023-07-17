@@ -59,12 +59,12 @@ const ProblemDetailPage = async ({
           <span>
             <span>{memoryLimit[0]}</span>{" "}
             <span className="sr-only md:not-sr-only">{memoryLimit[1]}</span> :{" "}
-            {problem.memoryLimit} MB
+            {problem.memoryLimit} MiB
           </span>
           <span>
             <span>{timeLimit[0]}</span>{" "}
             <span className="sr-only md:not-sr-only">{timeLimit[1]}</span> :{" "}
-            {problem.timeLimit} ms
+            {problem.timeLimit / 1000} {t("seconds")}
           </span>
         </span>
       </div>

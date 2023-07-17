@@ -4,20 +4,45 @@ import { getServerUser } from "@/utils/serverUtils";
 import { ResTypes } from "@/constants/response";
 import { getPublicProblems } from "@/utils/dbUtils";
 import { LOCALE_MAP, LOCALES } from "@/constants/common";
-import { ILocale } from "@/types/common";
 import supabase from "@/lib/supabase";
 import { revalidateProblems } from "@/utils/revalidateUtils";
 import { z } from "zod";
 
+const BaseDocSchema = z
+  .object({
+    type: z.optional(z.string()),
+    attrs: z.optional(z.record(z.any())),
+    marks: z.optional(
+      z.array(
+        z
+          .object({
+            type: z.string(),
+            attrs: z.optional(z.record(z.any())),
+          })
+          .catchall(z.any()),
+      ),
+    ),
+    text: z.optional(z.string()),
+  })
+  .catchall(z.any());
+
+type DocContent = z.infer<typeof BaseDocSchema> & {
+  content?: DocContent[];
+};
+
+const DocSchema: z.ZodType<DocContent> = BaseDocSchema.extend({
+  content: z.lazy(() => z.optional(DocSchema.array())),
+});
+
 const ProblemSchema = z.object({
   title: z.string().min(1).max(100),
-  description: z.string(),
-  inputFormat: z.string(),
-  outputFormat: z.string(),
+  description: DocSchema,
+  inputFormat: DocSchema,
+  outputFormat: DocSchema,
   sampleInput: z.string(),
   sampleOutput: z.string(),
   memoryLimit: z.coerce.number(),
-  timeLimit: z.coerce.number(),
+  timeLimit: z.coerce.number().transform((v) => v * 1000),
   locale: z.enum(LOCALES),
 });
 
@@ -32,6 +57,7 @@ export const POST = async (req: NextRequest) => {
   if (!user) {
     return ResTypes.NOT_AUTHORIZED;
   }
+  console.log(body);
 
   const problem = await prisma.problem.create({
     data: {

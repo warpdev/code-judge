@@ -6,6 +6,8 @@ import { IJudgeFullStatus } from "@/types/judge";
 import { Spinner } from "@/components/BaseComponents";
 import { twJoin } from "tailwind-merge";
 import { baseInput } from "@/style/baseStyle";
+import prettyBytes from "pretty-bytes";
+import ErrorPanel from "@/components/ErrorPanel";
 
 const JudgeResultPanel = ({
   problemId,
@@ -28,14 +30,21 @@ const JudgeResultPanel = ({
         <span>{t("submission.notMyProblem")}</span>
       ) : isLoading ? (
         <Spinner />
+      ) : !data ? (
+        <ErrorPanel />
       ) : (
         <>
           <div className="flex w-full justify-between">
             <span>
-              {t("submission.execMemory")} : {data?.memory}KB
+              {t("submission.execMemory")} :{" "}
+              {prettyBytes((data?.memory || 0) * 1024, {
+                binary: true,
+              })}
             </span>
             <span>
-              {t("submission.execTime")} : {data?.time}s
+              {`${t("submission.execTime")} : ${data?.time} ${t(
+                "problem.seconds",
+              )}`}
             </span>
           </div>
           <div className="flex h-full w-full flex-col gap-4 md:flex-row">

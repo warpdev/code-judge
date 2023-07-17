@@ -55,8 +55,16 @@ const InputRow = ({
   error?: FieldError;
 }) => {
   const t = useTranslations();
-  const { id, label, placeholder, options, type, inputMode, className } =
-    inputProps;
+  const {
+    id,
+    label,
+    allowDecimal,
+    placeholder,
+    options,
+    type,
+    inputMode,
+    className,
+  } = inputProps;
 
   return (
     <div className="flex flex-col gap-2">
@@ -98,7 +106,7 @@ const InputRow = ({
                 defaultValue={value}
                 onChange={(e) =>
                   type === "number"
-                    ? handleNumberInput(e, onChange)
+                    ? handleNumberInput(e, onChange, allowDecimal)
                     : onChange(e)
                 }
               />

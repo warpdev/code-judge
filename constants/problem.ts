@@ -47,17 +47,18 @@ export const problemInputs: IProblemInput[][] = [
           message: "error.required",
         },
         min: {
-          value: 1,
+          value: 0.01,
           message: "error.min",
         },
         max: {
-          value: 5000,
+          value: 5,
           message: "error.max",
         },
         setValueAs: (value: string | number) => {
-          return value ? parseInt(String(value).replace(/\D+/g, "")) : "";
+          return value ? parseInt(String(value).replace(/[^\d.]/g, "")) : "";
         },
       },
+      allowDecimal: true,
     },
     {
       id: "memoryLimit",
@@ -82,6 +83,7 @@ export const problemInputs: IProblemInput[][] = [
           return value ? parseInt(String(value).replace(/\D+/g, "")) : "";
         },
       },
+      allowDecimal: false,
     },
   ],
   [

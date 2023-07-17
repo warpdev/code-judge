@@ -29,7 +29,7 @@ export const ResTypes = {
   BAD_REQUEST: (message: string) =>
     NextResponse.json(
       {
-        error: message,
+        error: JSON.parse(message),
       },
       {
         status: 400,

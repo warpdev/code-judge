@@ -1,5 +1,6 @@
 import { PROMPTS } from "@/constants/prompts";
 import { ILocale, IProblemFilter } from "@/types/common";
+import { z } from "zod";
 
 export const makeHintUserPrompt = (
   locale: ILocale,
@@ -21,8 +22,10 @@ export const makeHintUserPrompt = (
 export const handleNumberInput = (
   e: React.ChangeEvent<HTMLInputElement>,
   setValue: (e: React.ChangeEvent<HTMLInputElement>) => void,
+  allowDecimal: boolean = false,
 ) => {
-  const value = e.target.value.replace(/\D+/g, "");
+  const regex = allowDecimal ? /[^\d.]/g : /[^\d]/g;
+  const value = e.target.value.replace(regex, "").split(".", 2).join(".");
   e.target.value = value;
   setValue(e);
 };

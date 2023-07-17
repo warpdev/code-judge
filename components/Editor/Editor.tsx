@@ -62,6 +62,7 @@ const Editor = ({
       // }
     },
   });
+  editor?.getJSON();
 
   useEffect(() => {
     if (editor && defaultValue && !hydrated) {

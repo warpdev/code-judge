@@ -19,4 +19,5 @@ export type IProblemInput = {
   inputMode?: "text" | "numeric";
   options: RegisterOptions;
   className?: string;
+  allowDecimal?: boolean;
 } & IInputType;
