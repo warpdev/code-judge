@@ -3,13 +3,31 @@ import prisma from "@/lib/prisma";
 import { getServerUser } from "@/utils/serverUtils";
 import { ResTypes } from "@/constants/response";
 import { getPublicProblems } from "@/utils/dbUtils";
-import { LOCALE_MAP } from "@/constants/common";
+import { LOCALE_MAP, LOCALES } from "@/constants/common";
 import { ILocale } from "@/types/common";
 import supabase from "@/lib/supabase";
 import { revalidateProblems } from "@/utils/revalidateUtils";
+import { z } from "zod";
 
-export const POST = async (req: NextRequest, res: NextResponse) => {
-  const body = await req.json();
+const ProblemSchema = z.object({
+  title: z.string().min(1).max(100),
+  description: z.string(),
+  inputFormat: z.string(),
+  outputFormat: z.string(),
+  sampleInput: z.string(),
+  sampleOutput: z.string(),
+  memoryLimit: z.coerce.number(),
+  timeLimit: z.coerce.number(),
+  locale: z.enum(LOCALES),
+});
+
+export const POST = async (req: NextRequest) => {
+  const _body = await req.json();
+  const result = ProblemSchema.safeParse(_body);
+  if (!result.success) {
+    return ResTypes.BAD_REQUEST(result.error.message);
+  }
+  const body = result.data;
   const user = await getServerUser();
   if (!user) {
     return ResTypes.NOT_AUTHORIZED;
@@ -24,10 +42,10 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
       sampleInput: body.sampleInput,
       sampleOutput: body.sampleOutput,
       isPublic: false,
-      memoryLimit: parseInt(body.memoryLimit),
-      timeLimit: parseInt(body.timeLimit),
-      locale: LOCALE_MAP[body.locale as ILocale].id,
-      createdBy: user!.id,
+      memoryLimit: body.memoryLimit,
+      timeLimit: body.timeLimit,
+      locale: LOCALE_MAP[body.locale].id,
+      createdBy: user.id,
       testSetSize: 1,
     },
     select: {

@@ -3,12 +3,22 @@ import { getDetailSubmission } from "@/utils/judgeServerUtils";
 import { getIsMyProblem, getServerUser } from "@/utils/serverUtils";
 import { getProblemInfo } from "@/utils/dbUtils";
 import { ResTypes } from "@/constants/response";
+import { ProblemParamsSchema } from "@/app/api/schemas";
+import { z } from "zod";
+
+const ParamsSchema = ProblemParamsSchema.extend({
+  judgeId: z.string(),
+});
 
 export const GET = async (
   req: NextRequest,
-  { params }: { params: { id: string; judgeId: string } },
+  { params: _params }: { params: { id: string; judgeId: string } },
 ) => {
-  const { id, judgeId } = params;
+  const params = ParamsSchema.safeParse(_params);
+  if (!params.success) {
+    return ResTypes.BAD_REQUEST(params.error.message);
+  }
+  const { id, judgeId } = params.data;
   const user = await getServerUser();
 
   const problem = await getProblemInfo(id);

@@ -10,16 +10,26 @@ import { getServerUser } from "@/utils/serverUtils";
 import { NextResponse } from "next/server";
 import { ResTypes } from "@/constants/response";
 import { LOCALES } from "@/constants/common";
+import { ProblemParamsSchema } from "@/app/api/schemas";
+import { z } from "zod";
 
 const config = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
 const openai = new OpenAIApi(config);
 
+const HintSchema = z.object({
+  prompt: z.string(),
+});
+
 export async function POST(
   req: Request,
-  { params }: { params: { id: string } },
+  { params: _params }: { params: { id: string } },
 ): Promise<Response> {
+  const params = ProblemParamsSchema.safeParse(_params);
+  if (!params.success) {
+    return ResTypes.BAD_REQUEST(params.error.message);
+  }
   const userInfo = await getServerUser();
   if (!userInfo) return ResTypes.NOT_AUTHORIZED;
   if (
@@ -48,8 +58,8 @@ export async function POST(
     }
   }
 
-  let { prompt: userCode } = await req.json();
-  const problemInfo = await getProblemInfo(params.id);
+  let { prompt: userCode } = HintSchema.parse(await req.json());
+  const problemInfo = await getProblemInfo(params.data.id);
   if (!problemInfo) {
     return ResTypes.NOT_FOUND("Problem not found");
   }
@@ -100,14 +110,18 @@ export async function POST(
 
 export const GET = async (
   req: Request,
-  { params }: { params: { id: string } },
+  { params: _params }: { params: { id: string } },
 ) => {
+  const params = ProblemParamsSchema.safeParse(_params);
+  if (!params.success) {
+    return ResTypes.BAD_REQUEST(params.error.message);
+  }
   const userInfo = await getServerUser();
   if (!userInfo) return ResTypes.NOT_AUTHORIZED;
 
   const hints = await prisma.hint.findMany({
     where: {
-      problemId: +params.id,
+      problemId: params.data.id,
       userId: userInfo.id,
     },
   });

@@ -7,6 +7,7 @@ import SubmissionGetPayload = Prisma.SubmissionGetPayload;
 import { getServerUser } from "@/utils/serverUtils";
 import { Session } from "next-auth";
 import { ILocale } from "@/types/common";
+import { z } from "zod";
 
 const publicOrCreatedBy = (user?: Session["user"]) => [
   {
@@ -25,10 +26,11 @@ export const getProblemInfo = async (
   id: number | string,
 ): Promise<Problem | null> => {
   const user = await getServerUser();
+  const problemId = z.coerce.number().parse(id);
 
   const problem = await prisma.problem.findUnique({
     where: {
-      id: +id,
+      id: problemId,
       OR: publicOrCreatedBy(user),
     },
   });
@@ -108,10 +110,11 @@ export const getSubmissionAllInfo = async (
   | undefined
 > => {
   const user = await getServerUser();
+  const submissionId = z.coerce.number().parse(id);
 
   let submission = await prisma.submission.findUnique({
     where: {
-      id: +id,
+      id: submissionId,
       problem: {
         OR: publicOrCreatedBy(user),
       },

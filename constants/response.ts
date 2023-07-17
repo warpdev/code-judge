@@ -7,7 +7,7 @@ export const ResTypes = {
     },
     {
       status: 401,
-    }
+    },
   ),
   OTHER_ERROR: NextResponse.json(
     {
@@ -15,7 +15,7 @@ export const ResTypes = {
     },
     {
       status: 500,
-    }
+    },
   ),
   NOT_FOUND: (message: string) =>
     NextResponse.json(
@@ -24,6 +24,15 @@ export const ResTypes = {
       },
       {
         status: 404,
-      }
+      },
+    ),
+  BAD_REQUEST: (message: string) =>
+    NextResponse.json(
+      {
+        error: message,
+      },
+      {
+        status: 400,
+      },
     ),
 };

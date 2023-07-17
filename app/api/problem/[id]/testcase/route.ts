@@ -4,11 +4,16 @@ import { getProblemInfo } from "@/utils/dbUtils";
 import prisma from "@/lib/prisma";
 import { getIsMyProblem, getServerUser } from "@/utils/serverUtils";
 import { ResTypes } from "@/constants/response";
+import { ProblemParamsSchema } from "@/app/api/schemas";
 
 export const POST = async (
   req: NextRequest,
-  { params }: { params: { id: string } },
+  { params: _params }: { params: { id: string } },
 ) => {
+  const params = ProblemParamsSchema.safeParse(_params);
+  if (!params.success) {
+    return ResTypes.BAD_REQUEST(params.error.message);
+  }
   const user = await getServerUser();
   if (!user) {
     return ResTypes.NOT_AUTHORIZED;
@@ -20,7 +25,7 @@ export const POST = async (
     input,
     output,
   }: { input: string; output: string; idx?: number } = body;
-  const { id: problemId } = params;
+  const { id: problemId } = params.data;
 
   const isEdit = idx !== undefined;
 
@@ -74,21 +79,26 @@ export const POST = async (
 
 export const GET = async (
   req: NextRequest,
-  { params }: { params: { id: string } },
+  { params: _params }: { params: { id: string } },
 ) => {
+  const params = ProblemParamsSchema.safeParse(_params);
+  if (!params.success) {
+    return ResTypes.BAD_REQUEST(params.error.message);
+  }
   const user = await getServerUser();
   if (!user) {
     return ResTypes.NOT_AUTHORIZED;
   }
 
-  const problemInfo = await getProblemInfo(params.id);
+  const { id: problemId } = params.data;
+
+  const problemInfo = await getProblemInfo(problemId);
   const isMine = getIsMyProblem(problemInfo, user);
   if (!isMine) {
     return ResTypes.NOT_AUTHORIZED;
   }
 
   const { searchParams } = new URL(req.url);
-  const { id: problemId } = params;
   const idx = parseInt(searchParams.get("idx") ?? "");
   if (isNaN(idx)) {
     return NextResponse.json(
