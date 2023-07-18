@@ -183,6 +183,11 @@ export const getAllSubmissions = async ({
             id: true;
           };
         };
+        judgeTokens: {
+          select: {
+            status: true;
+          };
+        };
       };
     }>[],
     number,
@@ -206,6 +211,11 @@ export const getAllSubmissions = async ({
         },
         problem: true,
         language: true,
+        judgeTokens: {
+          select: {
+            status: true,
+          },
+        },
       },
       orderBy: {
         id: "desc",

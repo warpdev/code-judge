@@ -8,6 +8,7 @@ import TimeText from "@/components/TimeText";
 import { Session } from "next-auth";
 import usePageIndex from "@/utils/hooks/usePageIndex";
 import useSWR from "swr";
+import ScoreBadge from "@/components/ScoreBadge";
 
 const submissionWithExtra = Prisma.validator<Prisma.SubmissionArgs>()({
   include: {
@@ -18,6 +19,11 @@ const submissionWithExtra = Prisma.validator<Prisma.SubmissionArgs>()({
       },
     },
     language: true,
+    judgeTokens: {
+      select: {
+        status: true,
+      },
+    },
   },
 });
 
@@ -69,11 +75,7 @@ const SubmissionsListPanel = ({
               className="text-right"
             />
             <span>
-              {userInfo?.id === submission.userId ? (
-                <UserCheck2 className="h-6 w-6" />
-              ) : (
-                ""
-              )}
+              <ScoreBadge statuses={submission.judgeTokens} />
             </span>
           </Link>
         </li>
