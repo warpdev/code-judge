@@ -33,11 +33,16 @@ module.exports = {
           from: { opacity: 0 },
           to: { opacity: 1 },
         },
+        slideIn: {
+          from: { transform: "translateY(-4px)", opacity: 0.4 },
+          to: { transform: "translateY(0)", opacity: 1 },
+        },
       },
       animation: {
         slideDown: "slideDown 300ms cubic-bezier(0.87, 0, 0.13, 1)",
         slideUp: "slideUp 300ms cubic-bezier(0.87, 0, 0.13, 1)",
         fadeIn: "fadeIn 300ms ease-out forwards",
+        slideIn: "slideIn 170ms ease-out forwards",
       },
       brightness: {
         80: ".8",

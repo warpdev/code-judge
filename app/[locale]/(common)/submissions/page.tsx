@@ -28,7 +28,7 @@ const SubmissionsPage = async ({
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className={title}>{t("allSubmissions")}</h1>
+      <h1 className={title}>{t("mySubmissions")}</h1>
       <SubmissionsListPanel
         submissions={allSubmissions}
         userInfo={user}

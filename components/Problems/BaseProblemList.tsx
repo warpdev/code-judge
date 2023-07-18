@@ -1,12 +1,13 @@
 "use client";
 import { Problem } from "@prisma/client";
 import { twJoin, twMerge } from "tailwind-merge";
-import { actionNeutral } from "@/style/baseStyle";
+import { actionNeutral, miniLabel } from "@/style/baseStyle";
 import Link from "next/link";
 import { Badge } from "@/components/BaseComponents";
 import { Lock, Unlock } from "lucide-react";
 import { BaseProps } from "@/types/common";
 import { useTranslations } from "next-intl";
+import Tooltip from "@/components/Tooltip";
 
 const BaseProblemList = ({
   className,
@@ -42,24 +43,30 @@ const BaseProblemList = ({
             >
               <span>{problem.title}</span>
               {showBadge && (
-                <Badge
-                  className={
-                    problem.isPublic
-                      ? "bg-emerald-500 text-emerald-500"
-                      : "bg-amber-600 text-amber-600"
+                <Tooltip
+                  trigger={
+                    <Badge
+                      className={
+                        problem.isPublic
+                          ? "bg-emerald-500 text-emerald-500"
+                          : "bg-amber-600 text-amber-600"
+                      }
+                    >
+                      {problem.isPublic ? (
+                        <Unlock className="h-4 w-4" />
+                      ) : (
+                        <Lock className="h-4 w-4" />
+                      )}
+                      <span>
+                        {problem.isPublic
+                          ? t("common.public")
+                          : t("common.private")}
+                      </span>
+                    </Badge>
                   }
                 >
-                  {problem.isPublic ? (
-                    <Unlock className="h-4 w-4" />
-                  ) : (
-                    <Lock className="h-4 w-4" />
-                  )}
-                  <span>
-                    {problem.isPublic
-                      ? t("common.public")
-                      : t("common.private")}
-                  </span>
-                </Badge>
+                  <span className={miniLabel}>{t("tooltip.privateTag")}</span>
+                </Tooltip>
               )}
             </Link>
           </li>

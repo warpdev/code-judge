@@ -69,6 +69,7 @@
   },
   "submission": {
     "allSubmissions": "All Submissions",
+    "mySubmissions": "My Submissions",
     "viewDetail": "View Detail",
     "submissionDetail": "Submission Detail",
     "yourCode": "Your Submitted Code",
@@ -111,5 +112,8 @@
     "content": "Deleted problems cannot be restored.\nAll submissions related to the problem will also be deleted.",
     "confirm": "Delete",
     "cancel": "Cancel"
+  },
+  "tooltip": {
+    "privateTag": "This problem is only visible to you.\nProblem sharing feature will be provided soon!"
   }
 }
