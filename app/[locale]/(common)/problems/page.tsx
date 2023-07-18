@@ -4,6 +4,7 @@ import { getTranslator } from "next-intl/server";
 import { getPublicProblems } from "@/utils/dbUtils";
 import ProblemFilterPanel from "@/components/Problems/Filter/ProblemFilterPanel";
 import Navigator from "@/components/Navigator";
+import { redirect } from "next/navigation";
 
 const ProblemListPage = async ({
   searchParams,
@@ -17,6 +18,8 @@ const ProblemListPage = async ({
 }) => {
   const currentPage =
     searchParams.page && +searchParams.page > 0 ? +searchParams.page : 1;
+  //TODO: remove
+  redirect("/my-problems");
   const t = await getTranslator(locale, "problem");
   const [problems, totalCount] = await getPublicProblems({
     pageIndex: currentPage,
