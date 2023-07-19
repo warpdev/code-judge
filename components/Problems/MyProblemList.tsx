@@ -13,7 +13,7 @@ const MyProblemList = ({
   const { currentPage } = useCurrentProblemQuery(locale);
 
   const { data: problems } = useSWR<Problem[]>(
-    `/api/my-problem?page=${currentPage}`,
+    `/api/problem/my?page=${currentPage}`,
     {
       fallbackData: initData,
     },

@@ -1,17 +1,23 @@
 "use client";
 import { ILanguage } from "@/types/common";
-import SettingPanel from "@/components/Problems/SubmitProblem/SettingPanel";
 import CodeEditor from "@/components/CodeEditor";
 import { useCallback, useRef, useState } from "react";
 import type { editor } from "monaco-editor";
 import { submitProblem } from "@/utils/judgeClientUtils";
 import { useParams, useRouter } from "next/navigation";
-import { twMerge } from "tailwind-merge";
-import { actionOpacity, roundButton } from "@/style/baseStyle";
 import ExtraInfoPanel from "@/components/Problems/SubmitProblem/ExtraInfoPanel";
 import { Hint } from "@prisma/client";
 import { useTranslations } from "next-intl";
 import { greenButton } from "@/style/baseComponent";
+import useLocalStorage from "@/utils/hooks/useLocalStorage";
+import dynamic from "next/dynamic";
+
+const SettingPanel = dynamic(
+  () => import("@/components/Problems/SubmitProblem/SettingPanel"),
+  {
+    ssr: false,
+  },
+);
 
 const SubmitPagePanel = ({
   availableLangs,
@@ -21,7 +27,8 @@ const SubmitPagePanel = ({
   savedHints: Hint[];
 }) => {
   const t = useTranslations("solving");
-  const [currentLanguage, setCurrentLanguage] = useState<ILanguage>(
+  const [currentLanguage, setCurrentLanguage] = useLocalStorage<ILanguage>(
+    "currentLanguage",
     availableLangs.findLast((lang) => lang.monacoLanguage === "python") ||
       availableLangs[0],
   );

@@ -21,6 +21,7 @@ import { useTranslations } from "next-intl";
 import { baseSelect, greenButton } from "@/style/baseComponent";
 import { handleNumberInput } from "@/utils/commonUtils";
 import { IProblemInput } from "@/types/input";
+import { ILocale } from "@/types/common";
 
 /*
   title String
@@ -86,9 +87,9 @@ const InputRow = ({
         />
       ) : type === "select" ? (
         <select id={id} {...register(id, options)} className={baseSelect}>
-          {inputProps.selectOptions.map((locale) => (
-            <option key={locale.value} value={locale.value}>
-              {t(locale.label as any)}
+          {inputProps.selectOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {t(option.label as any)}
             </option>
           ))}
         </select>
@@ -130,7 +131,7 @@ const InputRow = ({
   );
 };
 
-const AddProblemForm = () => {
+const AddProblemForm = ({ locale }: { locale: ILocale }) => {
   const t = useTranslations();
   const {
     storedValue: content,
@@ -144,7 +145,12 @@ const AddProblemForm = () => {
     watch,
     formState: { errors },
   } = useForm<InputValue>({
-    defaultValues: async () => ((await rawGet()) as InputValue) ?? {},
+    defaultValues: async () => {
+      return {
+        locale,
+        ...(((await rawGet()) as InputValue) ?? {}),
+      } as InputValue;
+    },
   });
 
   const setDebouncedContent = useDebouncedCallback((value: any) => {
