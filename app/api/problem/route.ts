@@ -57,7 +57,6 @@ export const POST = async (req: NextRequest) => {
   if (!user) {
     return ResTypes.NOT_AUTHORIZED;
   }
-  console.log(body);
 
   const problem = await prisma.problem.create({
     data: {

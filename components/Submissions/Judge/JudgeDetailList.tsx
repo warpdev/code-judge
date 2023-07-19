@@ -1,6 +1,5 @@
 "use client";
 import { Prisma } from "@prisma/client";
-import SubmissionGetPayload = Prisma.SubmissionGetPayload;
 import useSWR from "swr";
 import { useParams } from "next/navigation";
 import { twJoin } from "tailwind-merge";
@@ -8,6 +7,7 @@ import { JUDGE_STATUS } from "@/constants/judge";
 import { Spinner } from "@/components/BaseComponents";
 import Accordion from "@/components/Accordions/Accordion";
 import JudgeResultPanel from "@/components/Submissions/Judge/JudgeResultPanel";
+import { IAllDetailedSubmissions } from "@/types/dbTypes";
 
 const getTextColor = (statusId: number) => {
   switch (statusId) {
@@ -35,28 +35,17 @@ const JudgeDetailList = ({
   initSubmission,
   isMyProblem,
 }: {
-  initSubmission: SubmissionGetPayload<{
-    include: {
-      problem: true;
-      language: true;
-      judgeTokens: true;
-    };
-  }>;
+  initSubmission: IAllDetailedSubmissions;
   isMyProblem?: boolean;
 }) => {
   const { id } = useParams();
-  const { data: submissionDetail } = useSWR<
-    SubmissionGetPayload<{
-      include: {
-        problem: true;
-        language: true;
-        judgeTokens: true;
-      };
-    }>
-  >(`/api/submissions/${id}`, {
-    fallbackData: initSubmission,
-    refreshInterval: 5000,
-  });
+  const { data: submissionDetail } = useSWR<IAllDetailedSubmissions>(
+    `/api/submissions/${id}`,
+    {
+      fallbackData: initSubmission,
+      refreshInterval: 5000,
+    },
+  );
 
   return (
     <>

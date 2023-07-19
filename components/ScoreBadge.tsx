@@ -1,8 +1,9 @@
 import { Badge } from "@/components/BaseComponents";
 import { twJoin } from "tailwind-merge";
+import { getScore } from "@/utils/commonUtils";
 
 const ScoreBadge = ({ statuses }: { statuses: { status: number }[] }) => {
-  const correct = statuses.filter((s) => s.status === 3).length;
+  const correct = getScore(statuses);
   const total = statuses.length;
 
   const badgeColor = twJoin(

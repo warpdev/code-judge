@@ -3,17 +3,21 @@ import * as Tooltip from "@radix-ui/react-tooltip";
 import { twJoin } from "tailwind-merge";
 
 const TooltipDemo = ({
+  side = "top",
   trigger,
   children,
+  includeWrapper = true,
 }: {
+  side?: "top" | "bottom" | "left" | "right";
   trigger: React.ReactNode;
   children: React.ReactNode;
+  includeWrapper?: boolean;
 }) => {
   return (
     <Tooltip.Provider delayDuration={100}>
       <Tooltip.Root>
         <Tooltip.Trigger asChild>
-          <span tabIndex={0}>{trigger}</span>
+          {includeWrapper ? <span tabIndex={0}>{trigger}</span> : trigger}
         </Tooltip.Trigger>
         <Tooltip.Portal>
           <Tooltip.Content
@@ -25,6 +29,7 @@ const TooltipDemo = ({
               "animate-slideIn",
             )}
             sideOffset={8}
+            side={side}
           >
             {children}
             <Tooltip.Arrow

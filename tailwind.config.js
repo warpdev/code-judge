@@ -45,6 +45,7 @@ module.exports = {
         slideIn: "slideIn 170ms ease-out forwards",
       },
       brightness: {
+        85: ".85",
         80: ".8",
       },
       height: {

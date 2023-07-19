@@ -1,6 +1,7 @@
 import { PROMPTS } from "@/constants/prompts";
 import { ILocale, IProblemFilter } from "@/types/common";
 import { z } from "zod";
+import { isAxiosError } from "axios";
 
 export const makeHintUserPrompt = (
   locale: ILocale,
@@ -40,4 +41,19 @@ export const makeParams = (
     }
   });
   return params;
+};
+
+export const getScore = (
+  statuses: {
+    status: number;
+  }[],
+) => {
+  return statuses.filter((s) => s.status === 3).length;
+};
+
+export const getErrorMessage = (error: any): string => {
+  if (isAxiosError(error)) {
+    return error.response?.data?.message;
+  }
+  return error.message;
 };

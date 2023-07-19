@@ -17,18 +17,22 @@ const DeleteProblemModal = ({
   problem: Problem;
 }) => {
   const router = useRouter();
-  const t = useTranslations("deleteModal");
+  const t = useTranslations();
   const handleDelete = async () => {
-    await axios.delete(`/api/problem/${problem.id}`);
-    toast("Problem deleted");
-    router.replace("/problems");
+    try {
+      await axios.delete(`/api/problem/${problem.id}`);
+      toast.success(t("toast.deleteProblem.success"));
+      router.replace("/problems");
+    } catch (e) {
+      toast.error(t("toast.deleteProblem.fail"));
+    }
   };
 
   return (
     <BaseModal onClose={onClose} className="max-w-xl">
       <div className="flex flex-col gap-4">
-        <h4 className="text-lg font-bold">{t("title")}</h4>
-        <p>{t("content")}</p>
+        <h4 className="text-lg font-bold">{t("deleteModal.title")}</h4>
+        <p>{t("deleteModal.content")}</p>
         <div className="mt-4 flex justify-between">
           <button
             type="button"
@@ -41,10 +45,10 @@ const DeleteProblemModal = ({
             )}
             onClick={onClose}
           >
-            {t("cancel")}
+            {t("deleteModal.cancel")}
           </button>
           <button className={redButton} onClick={handleDelete}>
-            {t("confirm")}
+            {t("deleteModal.confirm")}
           </button>
         </div>
       </div>

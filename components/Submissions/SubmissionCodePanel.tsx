@@ -2,20 +2,15 @@ import { getServerUser } from "@/utils/serverUtils";
 import supabase from "@/lib/supabase";
 import Accordion from "@/components/Accordions/Accordion";
 import CodeEditor from "@/components/CodeEditor";
-import { Prisma } from "@prisma/client";
-import SubmissionGetPayload = Prisma.SubmissionGetPayload;
 import { getTranslator } from "next-intl/server";
+import { IAllDetailedSubmissions } from "@/types/dbTypes";
+import SetToAnswerButton from "@/components/Submissions/SetToAnswerButton";
 
 const SubmissionCodePanel = async ({
   submission,
   locale,
 }: {
-  submission: SubmissionGetPayload<{
-    include: {
-      problem: true;
-      language: true;
-    };
-  }>;
+  submission: IAllDetailedSubmissions;
   locale: string;
 }) => {
   const userInfo = await getServerUser();
@@ -33,26 +28,28 @@ const SubmissionCodePanel = async ({
   const code = await data?.text();
 
   return (
-    <Accordion
-      className="mt-8"
-      contents={[
-        {
-          title: t("yourCode"),
-          content: (
-            <CodeEditor
-              height={300}
-              theme="vs-dark"
-              language={submission.language.monacoLanguage}
-              value={code || ""}
-              defaultValue={code || ""}
-              options={{
-                readOnly: true,
-              }}
-            />
-          ),
-        },
-      ]}
-    />
+    <div className="mt-8 flex flex-col gap-4">
+      <Accordion
+        contents={[
+          {
+            title: t("yourCode"),
+            content: (
+              <CodeEditor
+                height={300}
+                theme="vs-dark"
+                language={submission.language.monacoLanguage}
+                value={code || ""}
+                defaultValue={code || ""}
+                options={{
+                  readOnly: true,
+                }}
+              />
+            ),
+          },
+        ]}
+      />
+      {code && <SetToAnswerButton submission={submission} />}
+    </div>
   );
 };
 

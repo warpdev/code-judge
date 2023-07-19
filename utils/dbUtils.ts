@@ -3,11 +3,11 @@ import prisma from "@/lib/prisma";
 import { LOCALE_MAP, PROBLEM_LIST_PAGE_SIZE } from "@/constants/common";
 import { getBatchSubmission } from "@/utils/judgeServerUtils";
 import { Prisma, Problem } from "@prisma/client";
-import SubmissionGetPayload = Prisma.SubmissionGetPayload;
 import { getServerUser } from "@/utils/serverUtils";
 import { Session } from "next-auth";
 import { ILocale } from "@/types/common";
 import { z } from "zod";
+import { IAllDetailedSubmissions } from "@/types/dbTypes";
 
 const publicOrCreatedBy = (user?: Session["user"]) => [
   {
@@ -99,16 +99,7 @@ export const getMyProblems = async ({
 
 export const getSubmissionAllInfo = async (
   id: number | string,
-): Promise<
-  | SubmissionGetPayload<{
-      include: {
-        problem: true;
-        language: true;
-        judgeTokens: true;
-      };
-    }>
-  | undefined
-> => {
+): Promise<IAllDetailedSubmissions | undefined> => {
   const user = await getServerUser();
   const submissionId = z.coerce.number().parse(id);
 

@@ -74,6 +74,7 @@ model Problem {
   createdAt    DateTime     @default(now())
   createdBy    String
   isPublic     Boolean      @default(false)
+  answerId     Int?
   submission   Submission[]
   Hint         Hint[]
   User         User         @relation(fields: [createdBy], references: [id], onDelete: NoAction)

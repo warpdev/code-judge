@@ -27,8 +27,8 @@ export const actionOpacity = twJoin(
 
 export const actionToDark = twJoin(
   "transition",
-  "hover:brightness-90",
-  "active:brightness-80",
+  "hover:brightness-90 dark:hover:brightness-85",
+  "active:brightness-80 dark:active:brightness-75",
 );
 
 export const actionToLight = twJoin(

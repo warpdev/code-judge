@@ -77,7 +77,8 @@
     "stdin": "Input Value",
     "stdout": "My Code Output",
     "execTime": "Execution Time",
-    "execMemory": "Memory Usage"
+    "execMemory": "Memory Usage",
+    "setToAnswer": "Set this code as the answer"
   },
   "profile": {
     "mySubmissions": "My Submissions",
@@ -115,5 +116,15 @@
   },
   "tooltip": {
     "privateTag": "This problem is only visible to you.\nProblem sharing feature will be provided soon!"
+  },
+  "toast": {
+    "deleteProblem": {
+      "success": "The problem has been deleted.",
+      "fail": "Failed to delete the problem. Please try again later."
+    },
+    "setToAnswer": {
+      "success": "The code has been set as the answer!",
+      "fail": "Failed to set the code as the answer. Please try again later."
+    }
   }
 }
