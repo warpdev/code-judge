@@ -2,6 +2,13 @@ import React from "react";
 import * as Tooltip from "@radix-ui/react-tooltip";
 import { twJoin } from "tailwind-merge";
 
+const animateMap = {
+  top: "animate-slideInTop",
+  bottom: "animate-slideInBottom",
+  left: "animate-slideInLeft",
+  right: "animate-slideInRight",
+};
+
 const TooltipDemo = ({
   side = "top",
   trigger,
@@ -26,7 +33,7 @@ const TooltipDemo = ({
               "text-neutral-700 dark:text-neutral-300",
               "whitespace-pre-line",
               "rounded-md p-2",
-              "animate-slideIn",
+              animateMap[side],
             )}
             sideOffset={8}
             side={side}

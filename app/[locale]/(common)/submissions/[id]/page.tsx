@@ -26,14 +26,14 @@ const SubmissionDetailPage = async ({
   const isMyProblem = submission.problem.createdBy === user?.id;
 
   return (
-    <div>
+    <div className="flex flex-col gap-4">
       <h1>
         <span>{t("submissionDetail")}</span>
         <span className="sr-only"> - {submission?.problem.title}</span>
       </h1>
       <Link
         href={`/problems/${submission.problem.id}`}
-        className={twJoin(title, "mt-4 block underline")}
+        className={twJoin(title, "self-start underline")}
       >
         {submission.problem.title}
       </Link>

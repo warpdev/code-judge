@@ -1,9 +1,9 @@
 import { twMerge } from "tailwind-merge";
 import { BaseProps } from "@/types/common";
 
-export const Spinner = () => (
+export const Spinner = ({ className }: BaseProps) => (
   <svg
-    className="m-auto h-6 w-6 animate-spin"
+    className={twMerge("m-auto h-6 w-6 animate-spin", className)}
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
@@ -27,8 +27,7 @@ export const Spinner = () => (
 export const Badge = ({
   className,
   children,
-}: {
-  className?: string;
+}: BaseProps & {
   children: React.ReactNode;
 }) => {
   return (

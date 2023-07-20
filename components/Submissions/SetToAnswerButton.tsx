@@ -9,13 +9,18 @@ import { toast } from "sonner";
 import { getScore } from "@/utils/commonUtils";
 import Tooltip from "@/components/Tooltip";
 import { miniLabel } from "@/style/baseStyle";
+import { BaseProps } from "@/types/common";
+import { useState } from "react";
+import { Spinner } from "@/components/BaseComponents";
 
 const SetToAnswerButton = ({
+  className,
   submission,
-}: {
+}: BaseProps & {
   submission: IAllDetailedSubmissions;
 }) => {
   const t = useTranslations();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const isComplete =
     submission.judgeTokens.length >= 10 &&
@@ -25,6 +30,7 @@ const SetToAnswerButton = ({
     if (!isComplete) {
       return;
     }
+    setIsSubmitting(true);
     try {
       const { data } = await axios.post(
         `/api/problem/${submission.problemId}/answer`,
@@ -36,22 +42,27 @@ const SetToAnswerButton = ({
     } catch (e) {
       toast.error(t("toast.setToAnswer.fail"));
     }
+    setIsSubmitting(false);
   };
 
   return (
     <Tooltip
-      side="bottom"
+      side="left"
       includeWrapper={false}
       trigger={
         <button
           className={twJoin(
             greenButton,
+            "relative",
+            "flex items-center justify-center gap-2",
             "md:self-end",
-            "disabled:pointer-events-none disabled:grayscale",
+            "disabled:grayscale",
+            className,
           )}
           onClick={handleClick}
-          disabled={!isComplete}
+          disabled={!isComplete || isSubmitting}
         >
+          {isSubmitting && <Spinner className="absolute" />}
           {t("submission.setToAnswer")}
         </button>
       }

@@ -15,7 +15,7 @@ const ScoreBadge = ({ statuses }: { statuses: { status: number }[] }) => {
   );
 
   return (
-    <Badge className={badgeColor}>
+    <Badge className={twJoin(badgeColor, "place-self-stretch")}>
       {correct}/{total}
     </Badge>
   );

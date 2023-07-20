@@ -1,10 +1,10 @@
 import { getServerUser } from "@/utils/serverUtils";
 import supabase from "@/lib/supabase";
 import Accordion from "@/components/Accordions/Accordion";
-import CodeEditor from "@/components/CodeEditor";
 import { getTranslator } from "next-intl/server";
 import { IAllDetailedSubmissions } from "@/types/dbTypes";
 import SetToAnswerButton from "@/components/Submissions/SetToAnswerButton";
+import CodeEditor from "@/components/CodeEditor";
 
 const SubmissionCodePanel = async ({
   submission,
@@ -48,7 +48,6 @@ const SubmissionCodePanel = async ({
           },
         ]}
       />
-      {code && <SetToAnswerButton submission={submission} />}
     </div>
   );
 };

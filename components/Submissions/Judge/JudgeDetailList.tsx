@@ -8,6 +8,7 @@ import { Spinner } from "@/components/BaseComponents";
 import Accordion from "@/components/Accordions/Accordion";
 import JudgeResultPanel from "@/components/Submissions/Judge/JudgeResultPanel";
 import { IAllDetailedSubmissions } from "@/types/dbTypes";
+import SetToAnswerButton from "@/components/Submissions/SetToAnswerButton";
 
 const getTextColor = (statusId: number) => {
   switch (statusId) {
@@ -49,6 +50,9 @@ const JudgeDetailList = ({
 
   return (
     <>
+      <div className="flex justify-end">
+        <SetToAnswerButton submission={submissionDetail!} className="mt-4" />
+      </div>
       {submissionDetail?.judgeTokens.length ? (
         <ol className="mt-6 flex flex-col gap-2">
           <Accordion

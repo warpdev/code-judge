@@ -23,7 +23,7 @@ const AccordionItem = ({
 } & AccordionItemProps) => (
   <Item
     className={twMerge(
-      "mt-px overflow-hidden first:mt-0 first:rounded-t last:rounded-b focus-within:relative focus-within:z-10 focus-within:shadow-[0_0_0_2px] focus-within:shadow-neutral-900",
+      "mt-px overflow-hidden first:mt-0 first:rounded-t last:rounded-b focus-within:shadow-[0_0_0_2px] focus-within:shadow-neutral-900",
       className,
     )}
     {...props}

@@ -33,8 +33,20 @@ module.exports = {
           from: { opacity: 0 },
           to: { opacity: 1 },
         },
-        slideIn: {
+        slideInTop: {
           from: { transform: "translateY(-4px)", opacity: 0.4 },
+          to: { transform: "translateY(0)", opacity: 1 },
+        },
+        slideInLeft: {
+          from: { transform: "translateX(-4px)", opacity: 0.4 },
+          to: { transform: "translateX(0)", opacity: 1 },
+        },
+        slideInRight: {
+          from: { transform: "translateX(4px)", opacity: 0.4 },
+          to: { transform: "translateX(0)", opacity: 1 },
+        },
+        slideInBottom: {
+          from: { transform: "translateY(4px)", opacity: 0.4 },
           to: { transform: "translateY(0)", opacity: 1 },
         },
       },
@@ -42,7 +54,10 @@ module.exports = {
         slideDown: "slideDown 300ms cubic-bezier(0.87, 0, 0.13, 1)",
         slideUp: "slideUp 300ms cubic-bezier(0.87, 0, 0.13, 1)",
         fadeIn: "fadeIn 300ms ease-out forwards",
-        slideIn: "slideIn 170ms ease-out forwards",
+        slideInTop: "slideInTop 170ms ease-out forwards",
+        slideInLeft: "slideInLeft 170ms ease-out forwards",
+        slideInRight: "slideInRight 170ms ease-out forwards",
+        slideInBottom: "slideInBottom 170ms ease-out forwards",
       },
       brightness: {
         85: ".85",

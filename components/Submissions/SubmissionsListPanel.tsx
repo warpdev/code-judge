@@ -27,7 +27,7 @@ const submissionWithExtra = Prisma.validator<Prisma.SubmissionArgs>()({
   },
 });
 
-const gridTemplate = twJoin(`grid-cols-[1fr_auto_30px]`);
+const gridTemplate = twJoin(`grid-cols-[1fr_auto_70px]`);
 
 const SubmissionsListPanel = ({
   userInfo,
@@ -74,9 +74,7 @@ const SubmissionsListPanel = ({
               time={new Date(submission.createdAt)}
               className="text-right"
             />
-            <span>
-              <ScoreBadge statuses={submission.judgeTokens} />
-            </span>
+            <ScoreBadge statuses={submission.judgeTokens} />
           </Link>
         </li>
       ))}

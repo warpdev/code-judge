@@ -22,7 +22,7 @@ const CodeEditor = (
     theme?: string;
     setEditor?: (editor: any) => void;
   } & EditorProps,
-  ref: ForwardedRef<any>
+  ref: ForwardedRef<any>,
 ) => {
   const {
     storedValue: content,
@@ -57,6 +57,9 @@ const CodeEditor = (
           automaticLayout: true,
           minimap: {
             enabled: false,
+          },
+          scrollbar: {
+            alwaysConsumeMouseWheel: false,
           },
           ...options,
         }}
