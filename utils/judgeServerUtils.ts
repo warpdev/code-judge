@@ -128,3 +128,26 @@ export const getDetailSubmission = async (
   );
   return submission;
 };
+
+export const runCode = async ({
+  langId,
+  code,
+  input,
+}: {
+  langId: number;
+  code: string;
+  input: string;
+}) => {
+  const { stdout } = await fetchJudgeApi<{ stdout: string }>(
+    "/submissions?base64_encoded=true&wait=true&fields=stdout",
+    {
+      method: "POST",
+      body: JSON.stringify({
+        language_id: langId,
+        source_code: btoa(code),
+        stdin: btoa(input),
+      }),
+    },
+  );
+  return atob(stdout);
+};

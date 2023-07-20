@@ -21,10 +21,12 @@ const publicOrCreatedBy = (user?: Session["user"]) => [
 /**
  * Get problem detail info (Public or created by user)
  * @param id Problem id
+ * @param extra
  */
-export const getProblemInfo = async (
+export const getProblemInfo = async <T extends Prisma.ProblemArgs>(
   id: number | string,
-): Promise<Problem | null> => {
+  extra?: T,
+): Promise<Prisma.ProblemGetPayload<T> | null> => {
   const user = await getServerUser();
   const problemId = z.coerce.number().parse(id);
 
@@ -33,9 +35,10 @@ export const getProblemInfo = async (
       id: problemId,
       OR: publicOrCreatedBy(user),
     },
+    ...extra,
   });
 
-  return problem;
+  return problem as Prisma.ProblemGetPayload<T> | null;
 };
 
 export const getPublicProblems = async ({

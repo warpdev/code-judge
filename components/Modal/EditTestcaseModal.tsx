@@ -6,9 +6,11 @@ import { twJoin, twMerge } from "tailwind-merge";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import {
+  actionBorderNeutral,
   actionNeutral,
   actionOpacity,
   actionToDark,
+  actionToLight,
   baseInput,
   miniLabel,
   roundButton,
@@ -16,6 +18,7 @@ import {
 import axios from "axios";
 import { useSWRConfig } from "swr";
 import { useTranslations } from "next-intl";
+import { PlayCircle } from "lucide-react";
 
 const inputStyle = twJoin(baseInput, "h-40");
 
@@ -46,6 +49,7 @@ const EditTestcaseModal = ({
     register,
     handleSubmit,
     setValue,
+    getValues,
     formState: { errors },
   } = useForm<ITestCase>();
 
@@ -69,11 +73,22 @@ const EditTestcaseModal = ({
     handleClose();
   };
 
+  //TODO: merge gpt + run
+  const handleRun = async () => {
+    const { data } = await axios.post(
+      `/api/problem/${problem.id}/testcase/auto`,
+      {
+        input: getValues("input"),
+      },
+    );
+    setValue("output", data.output);
+  };
+
   return (
     <BaseModal onClose={handleClose}>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit(submitData)}>
-        <ul className={twJoin("flex w-full flex-col gap-4", "md:flex-row")}>
-          <li className={twJoin("flex flex-col gap-2", "w-full", "md:w-1/2")}>
+        <div className={twJoin("flex w-full flex-col gap-4", "md:flex-row")}>
+          <div className={twJoin("flex flex-col gap-2", "w-full", "md:w-1/2")}>
             <label
               className={twMerge(miniLabel, "text-lg")}
               htmlFor={`input-case-${caseNumber}`}
@@ -89,8 +104,20 @@ const EditTestcaseModal = ({
               id={`input-case-${caseNumber}`}
               {...register("input")}
             />
-          </li>
-          <li className={twJoin("flex flex-col gap-2", "w-full", "md:w-1/2")}>
+          </div>
+          <button
+            type="button"
+            className={twMerge(
+              roundButton,
+              "bg-neutral-200 p-2 dark:bg-neutral-800",
+              actionBorderNeutral,
+              "self-center",
+            )}
+            onClick={handleRun}
+          >
+            <PlayCircle className="h-6 w-6" />
+          </button>
+          <div className={twJoin("flex flex-col gap-2", "w-full", "md:w-1/2")}>
             <label
               className={twMerge(miniLabel, "text-lg")}
               htmlFor={`output-case-${caseNumber}`}
@@ -106,8 +133,8 @@ const EditTestcaseModal = ({
               id={`output-case-${caseNumber}`}
               {...register("output")}
             />
-          </li>
-        </ul>
+          </div>
+        </div>
         <div className="flex items-center justify-between">
           <button
             type="button"
