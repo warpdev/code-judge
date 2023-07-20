@@ -6,6 +6,7 @@ import { getProblemInfo } from "@/utils/dbUtils";
 import supabase from "@/lib/supabase";
 import { getServerUser } from "@/utils/serverUtils";
 import { runCode } from "@/utils/judgeServerUtils";
+import { Prisma } from "@prisma/client";
 
 const AutoTestcaseSchema = z.object({
   input: z.string(),
@@ -31,15 +32,15 @@ export const POST = async (
   const { id } = params.data;
   const { input } = body.data;
 
-  const problemInfo = await getProblemInfo<{
-    include: {
-      submission: true;
-    };
-  }>(id, {
+  const problemInfo = (await getProblemInfo(id, {
     include: {
       submission: true,
     },
-  });
+  })) as Prisma.ProblemGetPayload<{
+    include: {
+      submission: true;
+    };
+  }>;
 
   if (!problemInfo) {
     return ResTypes.NOT_FOUND("Problem not found");
