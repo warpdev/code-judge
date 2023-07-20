@@ -4,7 +4,7 @@ import { IAllDetailedSubmissions } from "@/types/dbTypes";
 import { twJoin } from "tailwind-merge";
 import { greenButton } from "@/style/baseComponent";
 import { useTranslations } from "next-intl";
-import axios, { isAxiosError } from "axios";
+import axios from "axios";
 import { toast } from "sonner";
 import { getScore } from "@/utils/commonUtils";
 import Tooltip from "@/components/Tooltip";
@@ -23,7 +23,6 @@ const SetToAnswerButton = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const isComplete =
-    submission.judgeTokens.length >= 10 &&
     submission.judgeTokens.length === getScore(submission.judgeTokens);
 
   const handleClick = async () => {
@@ -32,12 +31,9 @@ const SetToAnswerButton = ({
     }
     setIsSubmitting(true);
     try {
-      const { data } = await axios.post(
-        `/api/problem/${submission.problemId}/answer`,
-        {
-          submissionId: submission.id,
-        },
-      );
+      await axios.post(`/api/problem/${submission.problemId}/answer`, {
+        submissionId: submission.id,
+      });
       toast.success(t("toast.setToAnswer.success"));
     } catch (e) {
       toast.error(t("toast.setToAnswer.fail"));
