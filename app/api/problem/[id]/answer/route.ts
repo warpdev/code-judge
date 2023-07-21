@@ -51,7 +51,7 @@ export const POST = async (
   const correct = getScore(submission.judgeTokens);
   const total = submission.judgeTokens.length;
 
-  if (total < 10 || correct !== total) {
+  if (correct !== total) {
     return ResTypes.BAD_REQUEST("Submission is not fully judged");
   }
 

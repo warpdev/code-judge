@@ -1,4 +1,3 @@
-import { Configuration, OpenAIApi } from "openai-edge";
 import { OpenAIStream, StreamingTextResponse } from "ai";
 import { kv } from "@vercel/kv";
 import { Ratelimit } from "@upstash/ratelimit";
@@ -12,11 +11,7 @@ import { ResTypes } from "@/constants/response";
 import { LOCALES } from "@/constants/common";
 import { ProblemParamsSchema } from "@/app/api/schemas";
 import { z } from "zod";
-
-const config = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-const openai = new OpenAIApi(config);
+import { openAiClient } from "@/lib/openAi";
 
 const HintSchema = z.object({
   prompt: z.string(),
@@ -71,7 +66,7 @@ export async function POST(
     JSON.stringify(problemInfo.outputFormat),
   );
 
-  const response = await openai.createChatCompletion({
+  const response = await openAiClient.createChatCompletion({
     model: "gpt-3.5-turbo",
     messages: [
       {
@@ -83,12 +78,7 @@ export async function POST(
         content: prompt,
       },
     ],
-    temperature: 0.7,
-    top_p: 1,
-    frequency_penalty: 0,
-    presence_penalty: 0,
     stream: true,
-    n: 1,
   });
 
   // Convert the response into a friendly text-stream

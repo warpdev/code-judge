@@ -1,6 +1,5 @@
 import { PROMPTS } from "@/constants/prompts";
 import { ILocale, IProblemFilter } from "@/types/common";
-import { z } from "zod";
 import { isAxiosError } from "axios";
 
 export const makeHintUserPrompt = (
@@ -18,6 +17,17 @@ export const makeHintUserPrompt = (
   }: ${inputFormat.replaceAll("\\n", "\n")}\n\n${
     prompt.output
   }: ${outputFormat.replaceAll("\\n", "\n")}\n\n`;
+};
+
+export const makeAutoInputPrompt = (
+  locale: ILocale,
+  problem: string,
+  inputFormat: string,
+) => {
+  const prompt = PROMPTS.user[locale];
+  return `${prompt.problem}: ${problem.replaceAll("\\n", "\n")}\n\n${
+    prompt.input
+  }: ${inputFormat.replaceAll("\\n", "\n")}\n\n`;
 };
 
 export const handleNumberInput = (

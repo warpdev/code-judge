@@ -1,16 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ProblemParamsSchema } from "@/app/api/schemas";
 import { ResTypes } from "@/constants/response";
-import { z } from "zod";
 import { getProblemInfo } from "@/utils/dbUtils";
 import supabase from "@/lib/supabase";
 import { getServerUser } from "@/utils/serverUtils";
 import { runCode } from "@/utils/judgeServerUtils";
 import { Prisma } from "@prisma/client";
-
-const AutoTestcaseSchema = z.object({
-  input: z.string(),
-});
+import { openAiClient } from "@/lib/openAi";
+import { PROMPTS } from "@/constants/prompts";
+import { LOCALES } from "@/constants/common";
+import { makeAutoInputPrompt } from "@/utils/commonUtils";
+import { generateText } from "@tiptap/core";
+import { TiptapExtensions } from "@/lib/editorConfigs";
 
 export const POST = async (
   req: NextRequest,
@@ -22,15 +23,10 @@ export const POST = async (
   }
 
   const params = ProblemParamsSchema.safeParse(_params);
-  const body = AutoTestcaseSchema.safeParse(await req.json());
   if (!params.success) {
     return ResTypes.BAD_REQUEST(params.error.message);
   }
-  if (!body.success) {
-    return ResTypes.BAD_REQUEST(body.error.message);
-  }
   const { id } = params.data;
-  const { input } = body.data;
 
   const problemInfo = (await getProblemInfo(id, {
     include: {
@@ -62,13 +58,41 @@ export const POST = async (
   }
 
   const code = await _code?.text();
+  const aiResponse = await openAiClient.createChatCompletion({
+    model: "gpt-3.5-turbo",
+    messages: [
+      {
+        role: "system",
+        content: PROMPTS.autoInput[LOCALES[problemInfo.locale]],
+      },
+      {
+        role: "user",
+        content: makeAutoInputPrompt(
+          LOCALES[problemInfo.locale],
+          JSON.stringify(
+            generateText(problemInfo.description as any, TiptapExtensions),
+          ),
+          JSON.stringify(
+            generateText(problemInfo.inputFormat as any, TiptapExtensions),
+          ),
+        ),
+      },
+    ],
+  });
+
+  const { choices } = await aiResponse.json();
+  const { input: generatedInput } = JSON.parse(
+    choices[0].message.content as string,
+  );
+
   const output = await runCode({
     langId: answerSubmission.languageId,
     code,
-    input,
+    input: generatedInput,
   });
 
   return NextResponse.json({
+    input: generatedInput,
     output,
   });
 };

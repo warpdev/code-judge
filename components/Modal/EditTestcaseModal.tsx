@@ -77,11 +77,9 @@ const EditTestcaseModal = ({
   const handleRun = async () => {
     const { data } = await axios.post(
       `/api/problem/${problem.id}/testcase/auto`,
-      {
-        input: getValues("input"),
-      },
     );
     setValue("output", data.output);
+    setValue("input", data.input);
   };
 
   return (
