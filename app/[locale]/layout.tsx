@@ -3,7 +3,7 @@ import "@/style/prosemirror.css";
 import { Inter } from "next/font/google";
 import { Providers } from "@/components/Providers";
 import { Analytics } from "@vercel/analytics/react";
-import { NextIntlClientProvider, useLocale } from "next-intl";
+import { NextIntlClientProvider } from "next-intl";
 import { notFound } from "next/navigation";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -13,21 +13,17 @@ export const metadata = {
   description: "Code Start is a platform for competitive programming.",
 };
 
+export function generateStaticParams() {
+  return [{ locale: "en" }, { locale: "ko" }];
+}
+
 export default async function RootLayout({
   children,
-  params,
+  params: { locale },
 }: {
   children: React.ReactNode;
   params: { locale: string };
 }) {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const locale = useLocale();
-
-  // Show a 404 error if the user requests an unknown locale
-  if (params.locale !== locale) {
-    notFound();
-  }
-
   let messages;
   try {
     messages = (await import(`../../messages/${locale}.json`)).default;
