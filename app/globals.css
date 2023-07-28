@@ -7,5 +7,6 @@
         @apply text-neutral-950 dark:text-neutral-50;
         @apply bg-white dark:bg-neutral-950;
         @apply scrollbar-thin scrollbar-track-neutral-700/50 scrollbar-thumb-neutral-500 scrollbar-thumb-rounded;
+        @apply overflow-x-hidden -mr-[calc(100vw-100%)];
     }
 }
