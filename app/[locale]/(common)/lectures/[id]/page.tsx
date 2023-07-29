@@ -40,9 +40,9 @@ const LectureDetailPage = async ({
   }
 
   return (
-    <article className="flex flex-col gap-16">
-      <div className="flex flex-row items-center gap-2">
-        <h1 className={title}>{lecture.title}</h1>
+    <article className="flex flex-col gap-8 md:gap-16">
+      <div className="flex flex-row items-end gap-2">
+        <h1 className={twJoin(title, "leading-none")}>{lecture.title}</h1>
         <p className={twJoin("text-sm font-medium", "text-neutral-500")}>
           {lecture.description}
         </p>
@@ -57,25 +57,27 @@ const LectureDetailPage = async ({
           }}
         />
       </div>
-      <div className="flex flex-col gap-4">
-        <h2 className={twJoin("self-start", sectionTitle)}>
-          {t("relatedProblems")}
-        </h2>
-        <ul
-          className={twJoin(
-            "grid grid-cols-1 gap-4",
-            "sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4",
-          )}
-        >
-          {lecture.problems.map((problem) => (
-            <li key={problem.id}>
-              <Link href={`/problems/${problem.id}`}>
-                <RelatedProblemCard problem={problem} />
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
+      {lecture.problems.length > 0 && (
+        <div className="flex flex-col gap-4">
+          <h2 className={twJoin("self-start", sectionTitle)}>
+            {t("relatedProblems")}
+          </h2>
+          <ul
+            className={twJoin(
+              "grid grid-cols-1 gap-4",
+              "sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4",
+            )}
+          >
+            {lecture.problems.map((problem) => (
+              <li key={problem.id}>
+                <Link href={`/problems/${problem.id}`}>
+                  <RelatedProblemCard problem={problem} />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </article>
   );
 };
