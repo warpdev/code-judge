@@ -36,12 +36,12 @@ import InputRow from "@/components/Shared/InputRow";
   sampleInput String
   sampleOutput String
  */
-type InputValue = Record<
-  (typeof problemInputs)[number][number]["id"],
-  IInputContent["type"]
-> & {
-  locale?: string;
-};
+type InputValue = Partial<
+  Record<
+    (typeof problemInputs)[number][number]["id"],
+    (typeof problemInputs)[number][number]["type"]
+  >
+>;
 
 const AddProblemForm = ({ locale }: { locale: ILocale }) => {
   const t = useTranslations();

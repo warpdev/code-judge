@@ -8,11 +8,11 @@ import {
 import { IInputContent } from "@/types/input";
 import { useTranslations } from "next-intl";
 import Editor from "@/components/Editor/Editor";
-import { twJoin } from "tailwind-merge";
+import { twJoin, twMerge } from "tailwind-merge";
 import { baseSelect } from "@/style/baseComponent";
 import { handleNumberInput } from "@/utils/commonUtils";
 import React from "react";
-import { baseInput } from "@/style/baseStyle";
+import { baseInput, miniLabel } from "@/style/baseStyle";
 
 const InputRow = ({
   namespace,
@@ -27,7 +27,7 @@ const InputRow = ({
   register: UseFormRegister<any>;
   error?: FieldError;
 }) => {
-  const t = useTranslations(namespace);
+  const t = useTranslations();
   const {
     id,
     allowDecimal,
@@ -36,11 +36,33 @@ const InputRow = ({
     inputMode,
     className,
     hasPlaceholder,
+    hasHint,
   } = inputProps;
 
   return (
     <div className="flex flex-col gap-2">
-      <label htmlFor={id}>{t(`input.${id}` as any)}</label>
+      <div className="flex items-end justify-between gap-2">
+        <label
+          htmlFor={id}
+          className="after:ml-1 after:text-red-500 data-[required=true]:after:content-['*']"
+          data-required={!!options.required}
+        >
+          {t(`${namespace}.input.${id}` as any)}
+        </label>
+        {hasHint && (
+          <span
+            className={twMerge(
+              miniLabel,
+              "text-neutral-600 dark:text-neutral-400",
+            )}
+          >
+            {t(`${namespace}.inputHint.${id}` as any, {
+              min: ((options.minLength ?? options.min) as any)?.value,
+              max: ((options.maxLength ?? options.max) as any)?.value,
+            })}
+          </span>
+        )}
+      </div>
       {type === "editor" ? (
         <Controller
           control={control}
@@ -55,7 +77,9 @@ const InputRow = ({
           className={twJoin("h-40 resize-none", baseInput, className)}
           {...register(id, options)}
           placeholder={
-            hasPlaceholder ? t(`placeholder.${id}` as any) : undefined
+            hasPlaceholder
+              ? t(`${namespace}.placeholder.${id}` as any)
+              : undefined
           }
         />
       ) : type === "select" ? (
@@ -76,7 +100,9 @@ const InputRow = ({
                 id={id}
                 className={twJoin(baseInput, className)}
                 placeholder={
-                  hasPlaceholder ? t(`placeholder.${id}` as any) : undefined
+                  hasPlaceholder
+                    ? t(`${namespace}.placeholder.${id}` as any)
+                    : undefined
                 }
                 inputMode={inputMode}
                 defaultValue={value}
@@ -94,11 +120,9 @@ const InputRow = ({
       {error && (
         <span className="text-sm text-red-400">
           {t(error.message as any, {
-            label: t(`input.${id}` as any),
-            minLength: (options.minLength as any)?.value,
-            maxLength: (options.maxLength as any)?.value,
-            min: (options.min as any)?.value,
-            max: (options.max as any)?.value,
+            label: t(`${namespace}.view.${id}` as any),
+            min: ((options.minLength ?? options.min) as any)?.value,
+            max: ((options.maxLength ?? options.max) as any)?.value,
           })}
         </span>
       )}

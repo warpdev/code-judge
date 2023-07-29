@@ -12,9 +12,11 @@ type IInputType =
       }[];
     };
 
-export type IInputContent = {
-  id: string;
+export type IInputContent<T = string> = {
+  id: T;
   inputMode?: "text" | "numeric";
+  //TODO: has hint
+  hasHint?: boolean;
   hasPlaceholder?: boolean;
   options: RegisterOptions;
   className?: string;

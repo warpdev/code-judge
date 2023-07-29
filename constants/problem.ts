@@ -1,7 +1,11 @@
 import { LOCALE_MAP, LOCALES } from "@/constants/common";
 import { IInputContent } from "@/types/input";
+import { ProblemSchema } from "@/types/schema";
+import { z } from "zod";
 
-export const problemInputs: IInputContent[][] = [
+export const problemInputs: IInputContent<
+  keyof z.infer<typeof ProblemSchema>
+>[][] = [
   [
     {
       id: "title",
@@ -37,6 +41,7 @@ export const problemInputs: IInputContent[][] = [
       id: "timeLimit",
       type: "number",
       inputMode: "numeric",
+      hasPlaceholder: true,
       options: {
         required: {
           value: true,
@@ -60,6 +65,7 @@ export const problemInputs: IInputContent[][] = [
       id: "memoryLimit",
       type: "number",
       inputMode: "numeric",
+      hasPlaceholder: true,
       options: {
         required: {
           value: true,

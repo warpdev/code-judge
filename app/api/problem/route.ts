@@ -2,49 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { getServerUser } from "@/utils/serverUtils";
 import { ResTypes } from "@/constants/response";
-import { getPublicProblems } from "@/utils/dbUtils";
-import { LOCALE_MAP, LOCALES } from "@/constants/common";
+import { LOCALE_MAP } from "@/constants/common";
 import supabase from "@/lib/supabase";
 import { revalidateProblems } from "@/utils/revalidateUtils";
-import { z } from "zod";
-
-const BaseDocSchema = z
-  .object({
-    type: z.optional(z.string()),
-    attrs: z.optional(z.record(z.any())),
-    marks: z.optional(
-      z.array(
-        z
-          .object({
-            type: z.string(),
-            attrs: z.optional(z.record(z.any())),
-          })
-          .catchall(z.any()),
-      ),
-    ),
-    text: z.optional(z.string()),
-  })
-  .catchall(z.any());
-
-type DocContent = z.infer<typeof BaseDocSchema> & {
-  content?: DocContent[];
-};
-
-const DocSchema: z.ZodType<DocContent> = BaseDocSchema.extend({
-  content: z.lazy(() => z.optional(DocSchema.array())),
-});
-
-const ProblemSchema = z.object({
-  title: z.string().min(1).max(100),
-  description: DocSchema,
-  inputFormat: DocSchema,
-  outputFormat: DocSchema,
-  sampleInput: z.string(),
-  sampleOutput: z.string(),
-  memoryLimit: z.coerce.number(),
-  timeLimit: z.coerce.number().transform((v) => v * 1000),
-  locale: z.enum(LOCALES),
-});
+import { ProblemSchema } from "@/types/schema";
+import { getPublicProblems } from "@/utils/dbUtils";
 
 export const POST = async (req: NextRequest) => {
   const _body = await req.json();
@@ -99,7 +61,7 @@ export const POST = async (req: NextRequest) => {
   }
 
   revalidateProblems();
-  return NextResponse.json(problem);
+  return ResTypes.CREATED(problem);
 };
 
 export const GET = async (req: NextRequest) => {

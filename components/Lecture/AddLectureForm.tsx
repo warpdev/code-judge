@@ -1,50 +1,26 @@
 "use client";
 
-import {
-  Control,
-  Controller,
-  FieldError,
-  SubmitHandler,
-  useForm,
-  UseFormRegister,
-} from "react-hook-form";
-import axios from "axios";
-import { useRouter } from "next/navigation";
-import { baseInput } from "@/style/baseStyle";
-import { problemInputs } from "@/constants/problem";
+import { SubmitHandler, useForm } from "react-hook-form";
 import React, { useEffect } from "react";
-import Editor from "@/components/Editor/Editor";
 import { twJoin } from "tailwind-merge";
 import useStorage from "@/utils/hooks/useStorage";
 import { useDebouncedCallback } from "use-debounce";
 import { useTranslations } from "next-intl";
-import { baseSelect, greenButton } from "@/style/baseComponent";
-import { IInputContent } from "@/types/input";
+import { greenButton } from "@/style/baseComponent";
 import { ILocale } from "@/types/common";
 import InputRow from "@/components/Shared/InputRow";
 import { lectureInputs } from "@/constants/lecture";
+import axios from "axios";
 
-/*
-  title String
-  description String
-  difficulty String
-  tags String[]
-  memoryLimit Int
-  timeLimit Int
-  input String
-  output String
-  sampleInput String
-  sampleOutput String
- */
-type InputValue = Record<
-  (typeof problemInputs)[number][number]["id"],
-  IInputContent["type"]
-> & {
-  locale?: string;
-};
+type InputValue = Partial<
+  Record<
+    (typeof lectureInputs)[number][number]["id"],
+    (typeof lectureInputs)[number][number]["type"]
+  >
+>;
 
 const AddLectureForm = ({ locale }: { locale: ILocale }) => {
-  const t = useTranslations();
+  const t = useTranslations("lecture");
   const {
     storedValue: content,
     setValue: setContent,
@@ -74,9 +50,11 @@ const AddLectureForm = ({ locale }: { locale: ILocale }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const router = useRouter();
-
-  const onSubmit: SubmitHandler<InputValue> = async (data) => {};
+  const onSubmit: SubmitHandler<InputValue> = async (data) => {
+    const { data: lecture } = await axios.post("/api/lecture", data);
+    setContent({});
+    console.log(lecture);
+  };
 
   return (
     <div className="flex flex-col gap-4 p-4">
@@ -89,7 +67,6 @@ const AddLectureForm = ({ locale }: { locale: ILocale }) => {
             )}
             key={index}
           >
-            {/* register your input into the hook by invoking the "register" function */}
             {inputs.map((input) => (
               <InputRow
                 namespace="lecture"
@@ -104,7 +81,7 @@ const AddLectureForm = ({ locale }: { locale: ILocale }) => {
         );
       })}
       <button onClick={handleSubmit(onSubmit)} className={greenButton}>
-        {t("lecture.input.submit")}
+        {t("input.submit")}
       </button>
     </div>
   );

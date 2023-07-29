@@ -108,7 +108,7 @@ const ProblemFilterModal = ({
     <BaseModal className="max-w-2xl" onClose={onClose}>
       <ul className="flex flex-col">
         <FilterViewRow
-          title={t("language")}
+          title={t("problemLocale")}
           options={filterItem.locale.options}
           currentValue={currentFilter.locale || ""}
           onChange={handleFilterChange("locale")}

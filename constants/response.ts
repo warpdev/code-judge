@@ -35,4 +35,8 @@ export const ResTypes = {
         status: 400,
       },
     ),
+  CREATED: (data?: any) =>
+    NextResponse.json(data, {
+      status: 201,
+    }),
 };

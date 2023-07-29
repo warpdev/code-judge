@@ -37,3 +37,13 @@ export const ctaButton = twJoin(
   "bg-emerald-500 font-bold text-neutral-50",
   actionToDark,
 );
+
+export const baseCard = twJoin(
+  "rounded-lg p-4",
+  "bg-white dark:bg-neutral-950",
+  "border-neutral-200 dark:border-neutral-800 border",
+  "transition duration-300",
+  "hover:shadow-lg",
+  "hover:bg-neutral-100 dark:hover:bg-neutral-900",
+  "hover:-translate-y-1",
+);

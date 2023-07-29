@@ -45,7 +45,9 @@ export const actionBorderNeutral = twJoin(
 );
 
 /** texts */
-export const title = twJoin("text-2xl font-bold");
+export const title = twJoin("text-3xl font-bold");
+
+export const sectionTitle = twJoin("text-2xl font-bold");
 
 export const miniLabel = twJoin(
   "text-sm font-bold text-neutral-600",
