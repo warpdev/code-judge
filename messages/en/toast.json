@@ -1,0 +1,10 @@
+{
+  "deleteProblem": {
+    "success": "The problem has been deleted.",
+    "fail": "Failed to delete the problem. Please try again later."
+  },
+  "setToAnswer": {
+    "success": "The code has been set as the answer!",
+    "fail": "Failed to set the code as the answer. Please try again later."
+  }
+}

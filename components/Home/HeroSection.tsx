@@ -17,7 +17,7 @@ const circlePanel = twJoin(
 );
 
 const HeroSection = async ({ locale }: { locale: string }) => {
-  const t = await getTranslator(locale, "main.hero");
+  const t = await getTranslator(locale, "home.hero");
   const user = await getServerUser();
 
   return (

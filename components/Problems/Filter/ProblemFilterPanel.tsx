@@ -39,7 +39,7 @@ const ProblemFilterPanel = ({
           )}
           onClick={() => setIsFilterOpen(true)}
         >
-          {t("problem.filter")}
+          {t("problem.view.filter")}
         </button>
       </motion.span>
       <AnimatePresence key="modal-problem">

@@ -49,6 +49,7 @@ model User {
   submissions   Submission[]
   Hint          Hint[]
   Problem       Problem[]
+  Lecture       Lecture[]
 }
 
 model VerificationToken {
@@ -60,25 +61,26 @@ model VerificationToken {
 }
 
 model Problem {
-  id           Int          @id @default(autoincrement())
-  title        String
-  description  Json
-  locale       Int
-  memoryLimit  Int
-  timeLimit    Int
-  inputFormat  Json
-  outputFormat Json
-  sampleInput  String
-  sampleOutput String
-  testSetSize  Int          @default(0)
-  createdAt    DateTime     @default(now())
-  createdBy    String
-  isPublic     Boolean      @default(false)
-  answerId     Int?
-  submission   Submission[]
-  Hint         Hint[]
-  User         User         @relation(fields: [createdBy], references: [id], onDelete: NoAction)
-  tagMap       TagMap[]
+  id             Int              @id @default(autoincrement())
+  title          String
+  description    Json
+  locale         Int
+  memoryLimit    Int
+  timeLimit      Int
+  inputFormat    Json
+  outputFormat   Json
+  sampleInput    String
+  sampleOutput   String
+  testSetSize    Int              @default(0)
+  createdAt      DateTime         @default(now())
+  createdBy      String
+  isPublic       Boolean          @default(false)
+  answerId       Int?
+  submission     Submission[]
+  Hint           Hint[]
+  User           User             @relation(fields: [createdBy], references: [id], onDelete: NoAction)
+  tagMap         TagMap[]
+  LectureProblem LectureProblem[]
 }
 
 model Submission {
@@ -129,4 +131,26 @@ model JudgeToken {
   submissionId Int
   status       Int        @default(1)
   submission   Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+}
+
+model Lecture {
+  id             Int              @id @default(autoincrement())
+  title          String
+  description    String
+  content        String
+  videoUrl       String?
+  locale         Int
+  createdAt      DateTime         @default(now())
+  createdBy      String
+  isPublic       Boolean          @default(true)
+  User           User             @relation(fields: [createdBy], references: [id], onDelete: NoAction)
+  LectureProblem LectureProblem[]
+}
+
+model LectureProblem {
+  id        Int     @id @default(autoincrement())
+  lectureId Int
+  problemId Int
+  problem   Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  lecture   Lecture @relation(fields: [lectureId], references: [id], onDelete: Cascade)
 }

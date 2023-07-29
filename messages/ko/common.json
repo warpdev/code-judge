@@ -1,0 +1,14 @@
+{
+  "profile": "프로필",
+  "signIn": "로그인",
+  "signOut": "로그아웃",
+  "delete": "삭제",
+  "language": "문제 언어",
+  "korean": "한국어",
+  "english": "영어",
+  "all": "모두",
+  "public": "공개됨",
+  "private": "비공개",
+  "next": "다음",
+  "previous": "이전"
+}

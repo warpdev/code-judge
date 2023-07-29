@@ -1,0 +1,13 @@
+{
+  "input": {
+    "title": "Title",
+    "description": "Sub title",
+    "content": "Content",
+    "submit": "Submit"
+  },
+  "placeholder": {
+    "title": "Input and Output",
+    "description": "Learn about basic input and output in Python.",
+    "content": "Write lecture content"
+  }
+}

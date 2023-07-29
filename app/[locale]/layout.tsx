@@ -5,6 +5,7 @@ import { Providers } from "@/components/Providers";
 import { Analytics } from "@vercel/analytics/react";
 import { NextIntlClientProvider } from "next-intl";
 import { notFound } from "next/navigation";
+import { getMessages } from "@/i18n";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,7 +27,7 @@ export default async function RootLayout({
 }) {
   let messages;
   try {
-    messages = (await import(`../../messages/${locale}.json`)).default;
+    messages = await getMessages(locale);
   } catch (error) {
     notFound();
   }

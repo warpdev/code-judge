@@ -41,7 +41,7 @@ const ProblemDetailPage = async ({
 
   const isMine = getIsMyProblem(problem, user);
 
-  const t = await getTranslator(params.locale, "problem");
+  const t = await getTranslator(params.locale, "problem.view");
 
   const memoryLimit = t("memoryLimit").split(" ");
   const timeLimit = t("timeLimit").split(" ");

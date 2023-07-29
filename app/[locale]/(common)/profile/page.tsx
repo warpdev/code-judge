@@ -3,12 +3,9 @@ import { twJoin } from "tailwind-merge";
 import { title } from "@/style/baseStyle";
 import { redirect } from "next/navigation";
 import Image from "next/image";
-import SubmissionsListPanel from "@/components/Submissions/SubmissionsListPanel";
 import SignOutButton from "@/components/Auth/SignOutButton";
 import { getTranslator } from "next-intl/server";
 import { headers } from "next/headers";
-import { getAllSubmissions } from "@/utils/dbUtils";
-import Navigator from "@/components/Navigator";
 import ProfileDashboard from "@/components/Profile/ProfileDashboard";
 
 const UserProfilePage = async ({

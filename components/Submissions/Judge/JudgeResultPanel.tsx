@@ -43,7 +43,7 @@ const JudgeResultPanel = ({
             </span>
             <span>
               {`${t("submission.execTime")} : ${data?.time} ${t(
-                "problem.seconds",
+                "problem.view.seconds",
               )}`}
             </span>
           </div>

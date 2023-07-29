@@ -1,11 +1,10 @@
 import { LOCALE_MAP, LOCALES } from "@/constants/common";
-import { IProblemInput } from "@/types/input";
+import { IInputContent } from "@/types/input";
 
-export const problemInputs: IProblemInput[][] = [
+export const problemInputs: IInputContent[][] = [
   [
     {
       id: "title",
-      label: "title",
       type: "text",
       options: {
         required: {
@@ -20,7 +19,6 @@ export const problemInputs: IProblemInput[][] = [
     },
     {
       id: "locale",
-      label: "language",
       type: "select",
       options: {
         required: {
@@ -37,10 +35,8 @@ export const problemInputs: IProblemInput[][] = [
   [
     {
       id: "timeLimit",
-      label: "timeLimit",
       type: "number",
       inputMode: "numeric",
-      placeholder: "placeholder.timeLimitRange",
       options: {
         required: {
           value: true,
@@ -62,10 +58,8 @@ export const problemInputs: IProblemInput[][] = [
     },
     {
       id: "memoryLimit",
-      label: "memoryLimit",
       type: "number",
       inputMode: "numeric",
-      placeholder: "placeholder.memoryLimitRange",
       options: {
         required: {
           value: true,
@@ -89,7 +83,6 @@ export const problemInputs: IProblemInput[][] = [
   [
     {
       id: "description",
-      label: "description",
       type: "editor",
       options: {
         required: {
@@ -102,7 +95,6 @@ export const problemInputs: IProblemInput[][] = [
   [
     {
       id: "inputFormat",
-      label: "inputFormat",
       type: "editor",
       options: {
         required: {
@@ -115,7 +107,6 @@ export const problemInputs: IProblemInput[][] = [
   [
     {
       id: "outputFormat",
-      label: "outputFormat",
       type: "editor",
       options: {
         required: {
@@ -128,7 +119,6 @@ export const problemInputs: IProblemInput[][] = [
   [
     {
       id: "sampleInput",
-      label: "sampleInput",
       type: "multiline",
       options: {
         required: {
@@ -140,7 +130,6 @@ export const problemInputs: IProblemInput[][] = [
     },
     {
       id: "sampleOutput",
-      label: "sampleOutput",
       type: "multiline",
       options: {
         required: {

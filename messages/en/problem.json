@@ -1,0 +1,37 @@
+{
+  "view": {
+    "allProblems": "Public Problems",
+    "myProblems": "My Problems",
+    "newProblem": "New Problem",
+    "language": "Written Language",
+    "title": "Title",
+    "description": "Description",
+    "memoryLimit": "Memory Limit",
+    "timeLimit": "Execution Time Limit",
+    "inputFormat": "Input Format",
+    "outputFormat": "Output Format",
+    "sampleInput": "Sample Input",
+    "sampleOutput": "Sample Output",
+    "submit": "Submit",
+    "startCoding": "Start Coding!",
+    "editTestCases": "Edit Test Cases",
+    "filter": "Filter",
+    "seconds": "s"
+  },
+  "input": {
+    "title": "Title",
+    "language": "Written Language",
+    "description": "Description",
+    "memoryLimit": "Memory Limit (MiB)",
+    "timeLimit": "Execution Time Limit (s)",
+    "inputFormat": "Input Format",
+    "outputFormat": "Output Format",
+    "sampleInput": "Sample Input",
+    "sampleOutput": "Sample Output",
+    "submit": "Submit"
+  },
+  "placeholder": {
+    "memoryLimit": "2 ~ 512",
+    "timeLimit": "0.01 ~ 5"
+  }
+}

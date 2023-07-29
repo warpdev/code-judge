@@ -1,0 +1,14 @@
+{
+  "profile": "Profile",
+  "signIn": "Sign In",
+  "signOut": "Sign Out",
+  "delete": "Delete",
+  "language": "Language",
+  "korean": "Korean",
+  "english": "English",
+  "all": "All",
+  "public": "Public",
+  "private": "Private",
+  "next": "Next",
+  "previous": "Previous"
+}

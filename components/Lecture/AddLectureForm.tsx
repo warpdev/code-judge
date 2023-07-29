@@ -19,10 +19,10 @@ import useStorage from "@/utils/hooks/useStorage";
 import { useDebouncedCallback } from "use-debounce";
 import { useTranslations } from "next-intl";
 import { baseSelect, greenButton } from "@/style/baseComponent";
-import { handleNumberInput } from "@/utils/commonUtils";
 import { IInputContent } from "@/types/input";
 import { ILocale } from "@/types/common";
 import InputRow from "@/components/Shared/InputRow";
+import { lectureInputs } from "@/constants/lecture";
 
 /*
   title String
@@ -43,13 +43,13 @@ type InputValue = Record<
   locale?: string;
 };
 
-const AddProblemForm = ({ locale }: { locale: ILocale }) => {
+const AddLectureForm = ({ locale }: { locale: ILocale }) => {
   const t = useTranslations();
   const {
     storedValue: content,
     setValue: setContent,
     rawGet,
-  } = useStorage<InputValue>("add.problem");
+  } = useStorage<InputValue>("add.lecture");
   const {
     register,
     handleSubmit,
@@ -76,15 +76,11 @@ const AddProblemForm = ({ locale }: { locale: ILocale }) => {
 
   const router = useRouter();
 
-  const onSubmit: SubmitHandler<InputValue> = async (data) => {
-    const { data: problem } = await axios.post("/api/problem", data);
-    setContent({});
-    router.push(`/problems/${problem.id}`);
-  };
+  const onSubmit: SubmitHandler<InputValue> = async (data) => {};
 
   return (
     <div className="flex flex-col gap-4 p-4">
-      {problemInputs.map((inputs, index) => {
+      {lectureInputs.map((inputs, index) => {
         return (
           <div
             className={twJoin(
@@ -96,7 +92,7 @@ const AddProblemForm = ({ locale }: { locale: ILocale }) => {
             {/* register your input into the hook by invoking the "register" function */}
             {inputs.map((input) => (
               <InputRow
-                namespace="problem"
+                namespace="lecture"
                 key={input.id}
                 register={register}
                 control={control}
@@ -108,10 +104,10 @@ const AddProblemForm = ({ locale }: { locale: ILocale }) => {
         );
       })}
       <button onClick={handleSubmit(onSubmit)} className={greenButton}>
-        {t("problem.input.submit")}
+        {t("lecture.input.submit")}
       </button>
     </div>
   );
 };
 
-export default AddProblemForm;
+export default AddLectureForm;

@@ -1,0 +1,13 @@
+{
+  "allSubmissions": "All Submissions",
+  "mySubmissions": "My Submissions",
+  "viewDetail": "View Detail",
+  "submissionDetail": "Submission Detail",
+  "yourCode": "Your Submitted Code",
+  "notMyProblem": "You can only check the problems created by you😢",
+  "stdin": "Input Value",
+  "stdout": "My Code Output",
+  "execTime": "Execution Time",
+  "execMemory": "Memory Usage",
+  "setToAnswer": "Set this code as the answer"
+}

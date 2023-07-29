@@ -19,7 +19,7 @@ const MyProblemPage = async ({
 }) => {
   const currentPage =
     searchParams.page && +searchParams.page > 0 ? +searchParams.page : 1;
-  const t = await getTranslator(locale, "myProblem");
+  const t = await getTranslator(locale, "problem.view");
   const user = await getServerUser();
   if (!user) {
     redirect("/api/auth/signin");

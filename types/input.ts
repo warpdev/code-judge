@@ -1,4 +1,4 @@
-import { RegisterOptions } from "react-hook-form/dist/types/validator";
+import { RegisterOptions } from "react-hook-form";
 
 type IInputType =
   | {
@@ -12,11 +12,10 @@ type IInputType =
       }[];
     };
 
-export type IProblemInput = {
+export type IInputContent = {
   id: string;
-  label: string;
-  placeholder?: string;
   inputMode?: "text" | "numeric";
+  hasPlaceholder?: boolean;
   options: RegisterOptions;
   className?: string;
   allowDecimal?: boolean;

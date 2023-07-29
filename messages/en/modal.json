@@ -1,0 +1,8 @@
+{
+  "deleteModal": {
+    "title": "Are you sure you want to delete?",
+    "content": "Deleted problems cannot be restored.\nAll submissions related to the problem will also be deleted.",
+    "confirm": "Delete",
+    "cancel": "Cancel"
+  }
+}

@@ -31,8 +31,8 @@ const DeleteProblemModal = ({
   return (
     <BaseModal onClose={onClose} className="max-w-xl">
       <div className="flex flex-col gap-4">
-        <h4 className="text-lg font-bold">{t("deleteModal.title")}</h4>
-        <p>{t("deleteModal.content")}</p>
+        <h4 className="text-lg font-bold">{t("modal.deleteModal.title")}</h4>
+        <p>{t("modal.deleteModal.content")}</p>
         <div className="mt-4 flex justify-between">
           <button
             type="button"
@@ -45,10 +45,10 @@ const DeleteProblemModal = ({
             )}
             onClick={onClose}
           >
-            {t("deleteModal.cancel")}
+            {t("modal.deleteModal.cancel")}
           </button>
           <button className={redButton} onClick={handleDelete}>
-            {t("deleteModal.confirm")}
+            {t("modal.deleteModal.confirm")}
           </button>
         </div>
       </div>
