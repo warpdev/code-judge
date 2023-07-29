@@ -7,6 +7,7 @@ import supabase from "@/lib/supabase";
 import { revalidateProblems } from "@/utils/revalidateUtils";
 import { ProblemSchema } from "@/types/schema";
 import { getPublicProblems } from "@/utils/dbUtils";
+import { z } from "zod";
 
 export const POST = async (req: NextRequest) => {
   const _body = await req.json();
@@ -64,14 +65,32 @@ export const POST = async (req: NextRequest) => {
   return ResTypes.CREATED(problem);
 };
 
+const GetProblemsSchema = z.object({
+  locale: z.string().nullable().default("all"),
+  page: z.coerce.number().nullable().default(1),
+  search: z
+    .string()
+    .nullable()
+    .optional()
+    .transform((v) => (v ? decodeURIComponent(v) : v)),
+});
+
 export const GET = async (req: NextRequest) => {
   const { searchParams } = new URL(req.url);
-  const locale = searchParams.get("locale") || "all";
-  const page = parseInt(searchParams.get("page") || "1");
+  const result = GetProblemsSchema.safeParse({
+    locale: searchParams.get("locale"),
+    page: searchParams.get("page"),
+    search: searchParams.get("search"),
+  });
+  if (!result.success) {
+    return ResTypes.BAD_REQUEST(result.error.message);
+  }
+  const { locale, page, search } = result.data;
 
   const [problems] = await getPublicProblems({
-    locale: locale,
-    pageIndex: page,
+    locale: locale || "all",
+    pageIndex: page || 1,
+    search: search || undefined,
   });
 
   return NextResponse.json(problems);

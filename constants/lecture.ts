@@ -53,7 +53,7 @@ export const lectureInputs: IInputContent<
           message: "error.required",
         },
         minLength: {
-          value: 20,
+          value: 2,
           message: "error.minLength",
         },
         maxLength: {

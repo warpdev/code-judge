@@ -7,6 +7,8 @@ import { generateHTML } from "@tiptap/html";
 import { TiptapExtensions } from "@/lib/editorConfigs";
 import dynamic from "next/dynamic";
 import { Prisma } from "@prisma/client";
+import Link from "next-intl/link";
+import RelatedProblemCard from "@/components/Lecture/RelatedProblemCard";
 
 const VideoPanel = dynamic(() => import("@/components/Shared/VideoPanel"), {
   ssr: false,
@@ -55,14 +57,21 @@ const LectureDetailPage = async ({
           }}
         />
       </div>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-4">
         <h2 className={twJoin("self-start", sectionTitle)}>
           {t("relatedProblems")}
         </h2>
-        <ul>
+        <ul
+          className={twJoin(
+            "grid grid-cols-1 gap-4",
+            "sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4",
+          )}
+        >
           {lecture.problems.map((problem) => (
             <li key={problem.id}>
-              <a href={`/problems/${problem.id}`}>{problem.title}</a>
+              <Link href={`/problems/${problem.id}`}>
+                <RelatedProblemCard problem={problem} />
+              </Link>
             </li>
           ))}
         </ul>

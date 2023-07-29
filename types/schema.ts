@@ -44,5 +44,6 @@ export const LectureSchema = z.object({
   locale: z.enum(LOCALES),
   description: z.string().min(2).max(20),
   content: DocSchema,
-  videoUrl: z.string().url().optional(),
+  videoUrl: z.string().url().optional().or(z.literal("")),
+  relatedProblems: z.array(z.coerce.number()).optional(),
 });

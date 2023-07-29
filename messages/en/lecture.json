@@ -1,13 +1,31 @@
 {
-  "input": {
+  "view": {
+    "publicLecture": "All Lectures",
     "title": "Title",
-    "description": "Sub title",
+    "locale": "Language",
+    "description": "Subtitle",
+    "content": "Lecture Content",
+    "videoUrl": "Video URL",
+    "relatedProblems": "Related Problems"
+  },
+  "input": {
+    "title": "Enter Title",
+    "locale": "Select Language",
+    "description": "Enter Subtitle",
     "content": "Content",
-    "submit": "Submit"
+    "videoUrl": "Video URL",
+    "relatedProblems": "Related Problems",
+    "submit": "Save"
   },
   "placeholder": {
     "title": "Input and Output",
-    "description": "Learn about basic input and output in Python.",
-    "content": "Write lecture content"
+    "description": "Learn about the basic input and output methods of Python.",
+    "content": "Write lecture content",
+    "videoUrl": "https://www.youtube.com/watch?v=abcde"
+  },
+  "inputHint": {
+    "title": "{min} ~ {max} characters",
+    "description": "{min} ~ {max} characters",
+    "videoUrl": "Only Youtube supported"
   }
 }

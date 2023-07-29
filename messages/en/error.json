@@ -4,5 +4,6 @@
   "minLength": "{label} must be at least {min} characters.",
   "maxLength": "{label} must be less than {max} characters.",
   "min": "{label} must be at least {min}.",
-  "max": "{label} must be less than {max}."
+  "max": "{label} must be less than {max}.",
+  "url": "Please enter a valid URL."
 }

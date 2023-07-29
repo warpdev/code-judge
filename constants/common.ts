@@ -11,6 +11,11 @@ export const NAV_LINKS = [
   //   requiredAuth: false,
   // },
   {
+    name: "lectures",
+    href: "/lectures",
+    requiredAuth: false,
+  },
+  {
     name: "myProblems",
     href: "/my-problems",
     requiredAuth: true,

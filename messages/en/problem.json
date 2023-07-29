@@ -3,7 +3,7 @@
     "allProblems": "Public Problems",
     "myProblems": "My Problems",
     "newProblem": "New Problem",
-    "problemLocale": "Written Language",
+    "locale": "Written Language",
     "title": "Title",
     "description": "Description",
     "memoryLimit": "Memory Limit",
@@ -20,7 +20,7 @@
   },
   "input": {
     "title": "Title",
-    "problemLocale": "Written Language",
+    "locale": "Written Language",
     "description": "Description",
     "memoryLimit": "Memory Limit (MiB)",
     "timeLimit": "Execution Time Limit (s)",

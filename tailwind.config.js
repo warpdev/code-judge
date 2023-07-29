@@ -52,6 +52,8 @@ module.exports = {
         },
       },
       animation: {
+        pulse:
+          "pulse 2s alternate-reverse cubic-bezier(0.4, 0, 0.6, 1) infinite",
         slideDown: "slideDown 300ms cubic-bezier(0.87, 0, 0.13, 1)",
         slideUp: "slideUp 300ms cubic-bezier(0.87, 0, 0.13, 1)",
         fadeIn: "fadeIn 300ms ease-out forwards",

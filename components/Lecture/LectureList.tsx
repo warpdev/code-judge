@@ -6,6 +6,7 @@ import useSWR from "swr";
 import { makeParams } from "@/utils/commonUtils";
 import LectureCard from "@/components/Lecture/LectureCard";
 import Link from "next-intl/link";
+import { twJoin } from "tailwind-merge";
 
 const LectureList = ({
   className,
@@ -25,7 +26,7 @@ const LectureList = ({
   );
 
   return (
-    <ul className={className}>
+    <ul className={twJoin("flex flex-col gap-4", className)}>
       {lectures?.map((lecture) => (
         <li key={lecture.id}>
           <Link href={`/lectures/${lecture.id}`}>

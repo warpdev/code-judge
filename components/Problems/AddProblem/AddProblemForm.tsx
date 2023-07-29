@@ -4,6 +4,7 @@ import {
   Control,
   Controller,
   FieldError,
+  FormProvider,
   SubmitHandler,
   useForm,
   UseFormRegister,
@@ -50,13 +51,7 @@ const AddProblemForm = ({ locale }: { locale: ILocale }) => {
     setValue: setContent,
     rawGet,
   } = useStorage<InputValue>("add.problem");
-  const {
-    register,
-    handleSubmit,
-    control,
-    watch,
-    formState: { errors },
-  } = useForm<InputValue>({
+  const methods = useForm<InputValue>({
     defaultValues: async () => {
       return {
         locale,
@@ -64,6 +59,8 @@ const AddProblemForm = ({ locale }: { locale: ILocale }) => {
       } as InputValue;
     },
   });
+
+  const { watch, handleSubmit } = methods;
 
   const setDebouncedContent = useDebouncedCallback((value: any) => {
     setContent(value);
@@ -84,32 +81,31 @@ const AddProblemForm = ({ locale }: { locale: ILocale }) => {
 
   return (
     <div className="flex flex-col gap-4 p-4">
-      {problemInputs.map((inputs, index) => {
-        return (
-          <div
-            className={twJoin(
-              "grid gap-4 p-4 md:auto-cols-fr md:grid-flow-col",
-              "grid-flow-row",
-            )}
-            key={index}
-          >
-            {/* register your input into the hook by invoking the "register" function */}
-            {inputs.map((input) => (
-              <InputRow
-                namespace="problem"
-                key={input.id}
-                register={register}
-                control={control}
-                inputProps={input}
-                error={errors[input.id]}
-              />
-            ))}
-          </div>
-        );
-      })}
-      <button onClick={handleSubmit(onSubmit)} className={greenButton}>
-        {t("problem.input.submit")}
-      </button>
+      <FormProvider {...methods}>
+        {problemInputs.map((inputs, index) => {
+          return (
+            <div
+              className={twJoin(
+                "grid gap-4 p-4 md:auto-cols-fr md:grid-flow-col",
+                "grid-flow-row",
+              )}
+              key={index}
+            >
+              {/* register your input into the hook by invoking the "register" function */}
+              {inputs.map((input) => (
+                <InputRow
+                  namespace="problem"
+                  key={input.id}
+                  inputProps={input}
+                />
+              ))}
+            </div>
+          );
+        })}
+        <button onClick={handleSubmit(onSubmit)} className={greenButton}>
+          {t("problem.input.submit")}
+        </button>
+      </FormProvider>
     </div>
   );
 };

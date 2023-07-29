@@ -32,16 +32,24 @@ export const getProblemInfo = async (
 
 export const getPublicProblems = async ({
   pageIndex = 1,
+  take = PROBLEM_LIST_PAGE_SIZE,
   locale,
+  search,
 }: {
   pageIndex: number;
+  take?: number;
   locale?: string;
+  search?: string;
 }): Promise<[Problem[], number]> => {
   const problemsData = await prisma.$transaction([
     prisma.problem.findMany({
       where: {
         locale: LOCALE_MAP[locale as ILocale]?.id,
         isPublic: true,
+        title: {
+          contains: search,
+          mode: "insensitive",
+        },
       },
       skip: (pageIndex - 1) * PROBLEM_LIST_PAGE_SIZE,
       take: PROBLEM_LIST_PAGE_SIZE,
@@ -85,6 +93,26 @@ export const getMyProblems = async ({
       },
     }),
   ]);
+
+  return problems;
+};
+
+export const getProblemsByText = async ({
+  take = 10,
+  text,
+}: {
+  take?: number;
+  text: string;
+}): Promise<Problem[]> => {
+  const problems = await prisma.problem.findMany({
+    where: {
+      isPublic: true,
+      title: {
+        contains: text,
+      },
+    },
+    take,
+  });
 
   return problems;
 };

@@ -3,6 +3,7 @@ import {
   Control,
   Controller,
   FieldError,
+  useFormContext,
   UseFormRegister,
 } from "react-hook-form";
 import { IInputContent } from "@/types/input";
@@ -16,18 +17,17 @@ import { baseInput, miniLabel } from "@/style/baseStyle";
 
 const InputRow = ({
   namespace,
-  control,
   inputProps,
-  register,
-  error,
 }: {
   namespace: keyof IntlMessages;
-  control: Control<any>;
   inputProps: IInputContent;
-  register: UseFormRegister<any>;
-  error?: FieldError;
 }) => {
   const t = useTranslations();
+  const {
+    register,
+    control,
+    formState: { errors },
+  } = useFormContext();
   const {
     id,
     allowDecimal,
@@ -117,9 +117,9 @@ const InputRow = ({
           name={id}
         />
       )}
-      {error && (
+      {errors && errors[id] && (
         <span className="text-sm text-red-400">
-          {t(error.message as any, {
+          {t(errors[id]?.message as any, {
             label: t(`${namespace}.view.${id}` as any),
             min: ((options.minLength ?? options.min) as any)?.value,
             max: ((options.maxLength ?? options.max) as any)?.value,

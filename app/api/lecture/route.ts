@@ -11,7 +11,8 @@ export const POST = async (req: NextRequest) => {
   if (!result.success) {
     return ResTypes.BAD_REQUEST(result.error.message);
   }
-  const { title, locale, videoUrl, description, content } = result.data;
+  const { title, locale, videoUrl, description, content, relatedProblems } =
+    result.data;
 
   const user = await getServerUser();
   if (!user) {
@@ -26,6 +27,11 @@ export const POST = async (req: NextRequest) => {
       description,
       content,
       createdBy: user.id,
+      problems: {
+        connect: relatedProblems?.map((id) => ({
+          id,
+        })),
+      },
     },
     select: {
       id: true,
