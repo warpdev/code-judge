@@ -26,16 +26,20 @@ export const ResTypes = {
         status: 404,
       },
     ),
-  BAD_REQUEST: (message: string) =>
+  BAD_REQUEST: (message: any = "") =>
     NextResponse.json(
       {
-        error: JSON.parse(message),
+        error: message,
       },
       {
         status: 400,
       },
     ),
-  CREATED: (data?: any) =>
+  OK: (data: any = null) =>
+    NextResponse.json(data, {
+      status: 200,
+    }),
+  CREATED: (data: any = null) =>
     NextResponse.json(data, {
       status: 201,
     }),

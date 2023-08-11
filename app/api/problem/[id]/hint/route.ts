@@ -5,8 +5,7 @@ import { PROMPTS } from "@/constants/prompts";
 import { getProblemInfo } from "@/utils/dbUtils";
 import { makeHintUserPrompt } from "@/utils/commonUtils";
 import prisma from "@/lib/prisma";
-import { getServerUser } from "@/utils/serverUtils";
-import { NextResponse } from "next/server";
+import { wrapApi } from "@/utils/serverUtils";
 import { ResTypes } from "@/constants/response";
 import { LOCALES } from "@/constants/common";
 import { ProblemParamsSchema } from "@/app/api/schemas";
@@ -17,16 +16,11 @@ const HintSchema = z.object({
   prompt: z.string(),
 });
 
-export async function POST(
-  req: Request,
-  { params: _params }: { params: { id: string } },
-): Promise<Response> {
-  const params = ProblemParamsSchema.safeParse(_params);
-  if (!params.success) {
-    return ResTypes.BAD_REQUEST(params.error.message);
-  }
-  const userInfo = await getServerUser();
-  if (!userInfo) return ResTypes.NOT_AUTHORIZED;
+export const POST = wrapApi({
+  withAuth: true,
+  paramsSchema: ProblemParamsSchema,
+  bodySchema: HintSchema,
+})(async (req: Request, { user, params, body }): Promise<Response> => {
   if (
     process.env.NODE_ENV != "development" &&
     process.env.KV_REST_API_URL &&
@@ -38,7 +32,7 @@ export async function POST(
     });
 
     const { success, limit, reset, remaining } = await ratelimit.limit(
-      `hint_ratelimit_${userInfo.id}`,
+      `hint_ratelimit_${user.id}`,
     );
 
     if (!success) {
@@ -53,8 +47,8 @@ export async function POST(
     }
   }
 
-  let { prompt: userCode } = HintSchema.parse(await req.json());
-  const problemInfo = await getProblemInfo(params.data.id);
+  let { prompt: userCode } = body;
+  const problemInfo = await getProblemInfo(params.id);
   if (!problemInfo) {
     return ResTypes.NOT_FOUND("Problem not found");
   }
@@ -86,7 +80,7 @@ export async function POST(
     onCompletion: async (completion) => {
       await prisma.hint.create({
         data: {
-          userId: userInfo.id,
+          userId: user.id,
           problemId: problemInfo.id,
           content: completion,
         },
@@ -96,25 +90,18 @@ export async function POST(
 
   // Respond with the stream
   return new StreamingTextResponse(stream);
-}
+});
 
-export const GET = async (
-  req: Request,
-  { params: _params }: { params: { id: string } },
-) => {
-  const params = ProblemParamsSchema.safeParse(_params);
-  if (!params.success) {
-    return ResTypes.BAD_REQUEST(params.error.message);
-  }
-  const userInfo = await getServerUser();
-  if (!userInfo) return ResTypes.NOT_AUTHORIZED;
-
+export const GET = wrapApi({
+  withAuth: true,
+  paramsSchema: ProblemParamsSchema,
+})(async (req: Request, { user, params }) => {
   const hints = await prisma.hint.findMany({
     where: {
-      problemId: params.data.id,
-      userId: userInfo.id,
+      problemId: params.id,
+      userId: user.id,
     },
   });
 
-  return NextResponse.json(hints);
-};
+  return ResTypes.OK(hints);
+});

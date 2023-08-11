@@ -1,27 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getProblemInfo } from "@/utils/dbUtils";
 import prisma from "@/lib/prisma";
-import { getIsMyProblem, getServerUser } from "@/utils/serverUtils";
+import { getIsMyProblem, getServerUser, wrapApi } from "@/utils/serverUtils";
 import { ResTypes } from "@/constants/response";
 import supabase from "@/lib/supabase";
 import { revalidateProblems } from "@/utils/revalidateUtils";
 import { ProblemParamsSchema } from "@/app/api/schemas";
 
-export const GET = async (
-  req: NextRequest,
-  { params: _params }: { params: { id: string } },
-) => {
-  const params = ProblemParamsSchema.safeParse(_params);
-  if (!params.success) {
-    return ResTypes.BAD_REQUEST(params.error.message);
-  }
-  const problemInfo = await getProblemInfo(params.data.id);
+export const GET = wrapApi({
+  paramsSchema: ProblemParamsSchema,
+})(async (req: NextRequest, { params }) => {
+  const problemInfo = await getProblemInfo(params.id);
   if (!problemInfo) {
     return ResTypes.NOT_FOUND("Problem not found");
   }
 
-  return NextResponse.json(problemInfo);
-};
+  return ResTypes.OK(problemInfo);
+});
 
 export const DELETE = async (
   req: NextRequest,

@@ -3,7 +3,7 @@ import { ProblemParamsSchema } from "@/app/api/schemas";
 import { ResTypes } from "@/constants/response";
 import { getProblemInfo } from "@/utils/dbUtils";
 import supabase from "@/lib/supabase";
-import { getServerUser } from "@/utils/serverUtils";
+import { wrapApi } from "@/utils/serverUtils";
 import { runCode } from "@/utils/judgeServerUtils";
 import { Prisma } from "@prisma/client";
 import { openAiClient } from "@/lib/openAi";
@@ -13,20 +13,11 @@ import { makeAutoInputPrompt } from "@/utils/commonUtils";
 import { generateText } from "@tiptap/core";
 import { TiptapExtensions } from "@/lib/editorConfigs";
 
-export const POST = async (
-  req: NextRequest,
-  { params: _params }: { params: { id: string } },
-) => {
-  const user = await getServerUser();
-  if (!user) {
-    return ResTypes.NOT_AUTHORIZED;
-  }
-
-  const params = ProblemParamsSchema.safeParse(_params);
-  if (!params.success) {
-    return ResTypes.BAD_REQUEST(params.error.message);
-  }
-  const { id } = params.data;
+export const POST = wrapApi({
+  withAuth: true,
+  paramsSchema: ProblemParamsSchema,
+})(async (req: NextRequest, { params, user }) => {
+  const { id } = params;
 
   const problemInfo = (await getProblemInfo(id, {
     include: {
@@ -95,4 +86,4 @@ export const POST = async (
     input: generatedInput,
     output,
   });
-};
+});

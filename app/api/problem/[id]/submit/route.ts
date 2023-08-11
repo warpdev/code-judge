@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import prisma from "@/lib/prisma";
 import { postBatchSubmission } from "@/utils/judgeServerUtils";
 import { getProblemInfo } from "@/utils/dbUtils";
-import { getServerUser } from "@/utils/serverUtils";
+import { wrapApi } from "@/utils/serverUtils";
 import { ResTypes } from "@/constants/response";
 import supabase from "@/lib/supabase";
 import { revalidateSubmissions } from "@/utils/revalidateUtils";
@@ -14,28 +14,15 @@ const SubmissionBodySchema = z.object({
   langId: z.number(),
 });
 
-export const POST = async (
-  req: NextRequest,
-  { params: _params }: { params: { id: string } },
-) => {
-  const _body = await req.json();
-  const body = SubmissionBodySchema.safeParse(_body);
-  const params = ProblemParamsSchema.safeParse(_params);
-  if (!params.success) {
-    return ResTypes.BAD_REQUEST(params.error.message);
-  }
-  if (!body.success) {
-    return ResTypes.BAD_REQUEST(body.error.message);
-  }
-
-  const { id: problemId } = params.data;
-  const { code, langId } = body.data;
+export const POST = wrapApi({
+  withAuth: true,
+  paramsSchema: ProblemParamsSchema,
+  bodySchema: SubmissionBodySchema,
+})(async (req: NextRequest, { params, user, body }) => {
+  const { id: problemId } = params;
+  const { code, langId } = body;
 
   const problemInfo = await getProblemInfo(problemId);
-  const userInfo = await getServerUser();
-  if (!userInfo) {
-    return ResTypes.NOT_AUTHORIZED;
-  }
   if (!problemInfo) {
     return ResTypes.NOT_FOUND("Problem not found");
   }
@@ -43,14 +30,14 @@ export const POST = async (
   const sub = await prisma.submission.create({
     data: {
       problemId: problemId,
-      userId: userInfo.id,
+      userId: user.id,
       languageId: langId,
     },
   });
 
   const { data: codeUploadResult } = await supabase.storage
     .from("usercodes")
-    .upload(`${userInfo.id}/${problemId}/${sub.id}`, code);
+    .upload(`${user.id}/${problemId}/${sub.id}`, code);
 
   setTimeout(async () => {
     const allTestSets = await Promise.all(
@@ -94,5 +81,5 @@ export const POST = async (
     return ResTypes.OTHER_ERROR;
   }
   revalidateSubmissions();
-  return NextResponse.json(sub);
-};
+  return ResTypes.OK(sub);
+});

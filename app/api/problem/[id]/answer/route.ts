@@ -4,33 +4,20 @@ import { ResTypes } from "@/constants/response";
 import { ProblemParamsSchema } from "@/app/api/schemas";
 import { getSubmissionAllInfo } from "@/utils/dbUtils";
 import { getScore } from "@/utils/commonUtils";
-import { getServerUser } from "@/utils/serverUtils";
+import { wrapApi } from "@/utils/serverUtils";
 import prisma from "@/lib/prisma";
 
 const SetAnswerSchema = z.object({
   submissionId: z.number(),
 });
 
-export const POST = async (
-  req: NextRequest,
-  { params: _params }: { params: { id: string } },
-) => {
-  const user = await getServerUser();
-  if (!user) {
-    return ResTypes.NOT_AUTHORIZED;
-  }
-
-  const _body = await req.json();
-  const params = ProblemParamsSchema.safeParse(_params);
-  if (!params.success) {
-    return ResTypes.BAD_REQUEST(params.error.message);
-  }
-  const body = SetAnswerSchema.safeParse(_body);
-  if (!body.success) {
-    return ResTypes.BAD_REQUEST(body.error.message);
-  }
-  const { submissionId } = body.data;
-  const { id } = params.data;
+export const POST = wrapApi({
+  withAuth: true,
+  bodySchema: SetAnswerSchema,
+  paramsSchema: ProblemParamsSchema,
+})(async (req: NextRequest, { user, body, params }) => {
+  const { submissionId } = body;
+  const { id } = params;
 
   const submission = await getSubmissionAllInfo(submissionId);
   if (!submission) {
@@ -65,4 +52,4 @@ export const POST = async (
   });
 
   return NextResponse.json(result);
-};
+});

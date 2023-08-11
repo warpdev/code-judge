@@ -1,15 +1,21 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { getAllSubmissions } from "@/utils/dbUtils";
+import { wrapApi } from "@/utils/serverUtils";
+import { z } from "zod";
+import { ResTypes } from "@/constants/response";
 
-export const GET = async (req: NextRequest) => {
-  const { searchParams } = new URL(req.url);
-  const page = parseInt(searchParams.get("page") || "1");
-  const onlyMine = searchParams.get("onlyMine") === "true";
+const querySchema = z.object({
+  page: z.number().default(1),
+  onlyMine: z.boolean().default(false),
+});
 
+export const GET = wrapApi({
+  querySchema: querySchema,
+})(async (req: NextRequest, { query: { page, onlyMine } }) => {
   const [allSubmissions] = await getAllSubmissions({
     pageIndex: page,
     onlyMy: onlyMine,
   });
 
-  return NextResponse.json(allSubmissions);
-};
+  return ResTypes.OK(allSubmissions);
+});

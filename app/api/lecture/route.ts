@@ -1,42 +1,34 @@
 import { NextRequest } from "next/server";
 import { LectureSchema } from "@/types/schema";
 import { ResTypes } from "@/constants/response";
-import { getServerUser } from "@/utils/serverUtils";
+import { wrapApi } from "@/utils/serverUtils";
 import prisma from "@/lib/prisma";
 import { LOCALE_MAP } from "@/constants/common";
 
-export const POST = async (req: NextRequest) => {
-  const body = await req.json();
-  const result = LectureSchema.safeParse(body);
-  if (!result.success) {
-    return ResTypes.BAD_REQUEST(result.error.message);
-  }
-  const { title, locale, videoUrl, description, content, relatedProblems } =
-    result.data;
+export const POST = wrapApi({ withAuth: true, bodySchema: LectureSchema })(
+  async (req: NextRequest, { user, body }) => {
+    const { title, locale, videoUrl, description, content, relatedProblems } =
+      body;
 
-  const user = await getServerUser();
-  if (!user) {
-    return ResTypes.NOT_AUTHORIZED;
-  }
-
-  const lecture = await prisma.lecture.create({
-    data: {
-      title,
-      locale: LOCALE_MAP[locale].id,
-      videoUrl,
-      description,
-      content,
-      createdBy: user.id,
-      problems: {
-        connect: relatedProblems?.map((id) => ({
-          id,
-        })),
+    const lecture = await prisma.lecture.create({
+      data: {
+        title,
+        locale: LOCALE_MAP[locale].id,
+        videoUrl,
+        description,
+        content,
+        createdBy: user.id,
+        problems: {
+          connect: relatedProblems?.map((id) => ({
+            id,
+          })),
+        },
       },
-    },
-    select: {
-      id: true,
-    },
-  });
+      select: {
+        id: true,
+      },
+    });
 
-  return ResTypes.CREATED(lecture);
-};
+    return ResTypes.CREATED(lecture);
+  },
+);

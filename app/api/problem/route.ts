@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import { getServerUser } from "@/utils/serverUtils";
+import { wrapApi } from "@/utils/serverUtils";
 import { ResTypes } from "@/constants/response";
 import { LOCALE_MAP } from "@/constants/common";
 import supabase from "@/lib/supabase";
@@ -9,18 +9,10 @@ import { ProblemSchema } from "@/types/schema";
 import { getPublicProblems } from "@/utils/dbUtils";
 import { z } from "zod";
 
-export const POST = async (req: NextRequest) => {
-  const _body = await req.json();
-  const result = ProblemSchema.safeParse(_body);
-  if (!result.success) {
-    return ResTypes.BAD_REQUEST(result.error.message);
-  }
-  const body = result.data;
-  const user = await getServerUser();
-  if (!user) {
-    return ResTypes.NOT_AUTHORIZED;
-  }
-
+export const POST = wrapApi({
+  withAuth: true,
+  bodySchema: ProblemSchema,
+})(async (req: NextRequest, { user, body }) => {
   const problem = await prisma.problem.create({
     data: {
       description: body.description,
@@ -60,14 +52,13 @@ export const POST = async (req: NextRequest) => {
     });
     return ResTypes.OTHER_ERROR;
   }
-
   revalidateProblems();
   return ResTypes.CREATED(problem);
-};
+});
 
 const GetProblemsSchema = z.object({
-  locale: z.string().nullable().default("all"),
-  page: z.coerce.number().nullable().default(1),
+  locale: z.string().default("all"),
+  page: z.coerce.number().default(1),
   search: z
     .string()
     .nullable()
@@ -75,23 +66,16 @@ const GetProblemsSchema = z.object({
     .transform((v) => (v ? decodeURIComponent(v) : v)),
 });
 
-export const GET = async (req: NextRequest) => {
-  const { searchParams } = new URL(req.url);
-  const result = GetProblemsSchema.safeParse({
-    locale: searchParams.get("locale"),
-    page: searchParams.get("page"),
-    search: searchParams.get("search"),
-  });
-  if (!result.success) {
-    return ResTypes.BAD_REQUEST(result.error.message);
-  }
-  const { locale, page, search } = result.data;
+export const GET = wrapApi({
+  querySchema: GetProblemsSchema,
+})(async (req: NextRequest, { query }) => {
+  const { locale, page, search } = query;
 
   const [problems] = await getPublicProblems({
-    locale: locale || "all",
-    pageIndex: page || 1,
+    locale: locale,
+    pageIndex: page,
     search: search || undefined,
   });
 
-  return NextResponse.json(problems);
-};
+  return ResTypes.OK(problems);
+});

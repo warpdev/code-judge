@@ -1,14 +1,19 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { getMyProblems } from "@/utils/dbUtils";
-import { getServerUser } from "@/utils/serverUtils";
+import { wrapApi } from "@/utils/serverUtils";
 import { ResTypes } from "@/constants/response";
 import { z } from "zod";
 
-export const GET = async (req: NextRequest) => {
-  const { searchParams } = new URL(req.url);
-  const locale = z.string().parse(searchParams.get("locale") || "all");
-  const page = z.coerce.number().parse(searchParams.get("page") || "1");
-  const user = await getServerUser();
+const GetMyProblemSchema = z.object({
+  locale: z.string().default("all"),
+  page: z.coerce.number().default(1),
+});
+
+export const GET = wrapApi({
+  withAuth: true,
+  querySchema: GetMyProblemSchema,
+})(async (req: NextRequest, { user, query }) => {
+  const { locale, page } = query;
 
   if (!user) {
     return ResTypes.NOT_AUTHORIZED;
@@ -20,5 +25,5 @@ export const GET = async (req: NextRequest) => {
     pageIndex: page,
   });
 
-  return NextResponse.json(problems);
-};
+  return ResTypes.OK(problems);
+});

@@ -2,30 +2,24 @@ import { NextRequest, NextResponse } from "next/server";
 import supabase from "@/lib/supabase";
 import { getProblemInfo } from "@/utils/dbUtils";
 import prisma from "@/lib/prisma";
-import { getIsMyProblem, getServerUser } from "@/utils/serverUtils";
+import { getIsMyProblem, wrapApi } from "@/utils/serverUtils";
 import { ResTypes } from "@/constants/response";
 import { ProblemParamsSchema } from "@/app/api/schemas";
+import { z } from "zod";
 
-export const POST = async (
-  req: NextRequest,
-  { params: _params }: { params: { id: string } },
-) => {
-  const params = ProblemParamsSchema.safeParse(_params);
-  if (!params.success) {
-    return ResTypes.BAD_REQUEST(params.error.message);
-  }
-  const user = await getServerUser();
-  if (!user) {
-    return ResTypes.NOT_AUTHORIZED;
-  }
-  const body = await req.json();
+const PostTestcaseSchema = z.object({
+  input: z.string(),
+  output: z.string(),
+  idx: z.number().optional(),
+});
 
-  const {
-    idx,
-    input,
-    output,
-  }: { input: string; output: string; idx?: number } = body;
-  const { id: problemId } = params.data;
+export const POST = wrapApi({
+  withAuth: true,
+  paramsSchema: ProblemParamsSchema,
+  bodySchema: PostTestcaseSchema,
+})(async (req: NextRequest, { user, params, body }) => {
+  const { idx, input, output } = body;
+  const { id: problemId } = params;
 
   const isEdit = idx !== undefined;
 
@@ -75,22 +69,18 @@ export const POST = async (
   } catch (error) {
     return ResTypes.OTHER_ERROR;
   }
-};
+});
 
-export const GET = async (
-  req: NextRequest,
-  { params: _params }: { params: { id: string } },
-) => {
-  const params = ProblemParamsSchema.safeParse(_params);
-  if (!params.success) {
-    return ResTypes.BAD_REQUEST(params.error.message);
-  }
-  const user = await getServerUser();
-  if (!user) {
-    return ResTypes.NOT_AUTHORIZED;
-  }
+const GetTestcaseQuerySchema = z.object({
+  idx: z.coerce.number(),
+});
 
-  const { id: problemId } = params.data;
+export const GET = wrapApi({
+  withAuth: true,
+  paramsSchema: ProblemParamsSchema,
+  querySchema: GetTestcaseQuerySchema,
+})(async (req: NextRequest, { user, params, query }) => {
+  const { id: problemId } = params;
 
   const problemInfo = await getProblemInfo(problemId);
   const isMine = getIsMyProblem(problemInfo, user);
@@ -98,18 +88,7 @@ export const GET = async (
     return ResTypes.NOT_AUTHORIZED;
   }
 
-  const { searchParams } = new URL(req.url);
-  const idx = parseInt(searchParams.get("idx") ?? "");
-  if (isNaN(idx)) {
-    return NextResponse.json(
-      {
-        error: "Invalid index",
-      },
-      {
-        status: 400,
-      },
-    );
-  }
+  const { idx } = query;
 
   const { data: input, error: inputError } = await supabase.storage
     .from("testcase")
@@ -122,8 +101,8 @@ export const GET = async (
     return NextResponse.error();
   }
 
-  return NextResponse.json({
+  return ResTypes.OK({
     input: await input?.text(),
     output: await output?.text(),
   });
-};
+});
