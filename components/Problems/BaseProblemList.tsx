@@ -65,7 +65,13 @@ const BaseProblemList = ({
                     </Badge>
                   }
                 >
-                  <span className={miniLabel}>{t("tooltip.privateTag")}</span>
+                  <span className={miniLabel}>
+                    {t(
+                      problem.isPublic
+                        ? "tooltip.publicTag"
+                        : "tooltip.privateTag",
+                    )}
+                  </span>
                 </Tooltip>
               )}
             </Link>

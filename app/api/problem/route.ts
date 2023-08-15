@@ -21,7 +21,7 @@ export const POST = wrapApi({
       outputFormat: body.outputFormat,
       sampleInput: body.sampleInput,
       sampleOutput: body.sampleOutput,
-      isPublic: false,
+      isPublic: user.role === "admin",
       memoryLimit: body.memoryLimit,
       timeLimit: body.timeLimit,
       locale: LOCALE_MAP[body.locale].id,
