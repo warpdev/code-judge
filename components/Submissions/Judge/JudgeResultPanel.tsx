@@ -20,7 +20,7 @@ const JudgeResultPanel = ({
 }) => {
   const t = useTranslations();
   const { data, isLoading } = useSWRImmutable<IJudgeFullStatus>(
-    `/api/problem/${problemId}/${tokenId}`,
+    `/api/problem/${problemId}/detail/${tokenId}`,
   );
 
   //TODO: expect out ?

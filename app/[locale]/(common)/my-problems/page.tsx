@@ -1,5 +1,5 @@
 import { title } from "@/style/baseStyle";
-import AddProblemButton from "@/components/Problems/AddProblemButton";
+import AddButton from "@/components/Problems/AddButton";
 import { getTranslator } from "next-intl/server";
 import { getMyProblems } from "@/utils/dbUtils";
 import MyProblemList from "@/components/Problems/MyProblemList";
@@ -35,7 +35,8 @@ const MyProblemPage = async ({
     <div className="flex flex-col">
       <h1 className={title}>{t("myProblems")}</h1>
       <div className="mt-8 flex justify-end gap-2">
-        <AddProblemButton
+        <AddButton
+          href="/problems/add"
           className="h-max min-w-max"
           buttonText={t("newProblem")}
         />

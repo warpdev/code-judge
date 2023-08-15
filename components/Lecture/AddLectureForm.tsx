@@ -16,6 +16,7 @@ import { Problem } from "@prisma/client";
 import RelatedProblemCard from "@/components/Lecture/RelatedProblemCard";
 import { X } from "lucide-react";
 import { useRouter } from "next-intl/client";
+import { motion, AnimatePresence } from "framer-motion";
 
 type InputValue = Partial<
   Record<
@@ -91,29 +92,39 @@ const AddLectureForm = ({ locale }: { locale: ILocale }) => {
           <label htmlFor="relatedProblems">{t("input.relatedProblems")}</label>
           <RelatedProblemSelector id="relatedProblems" />
           <ul className={twJoin("flex flex-wrap gap-4")}>
-            {currentRelatedProblems?.map((problem) => (
-              <li key={problem.id} className="group relative rounded-lg">
-                <RelatedProblemCard problem={problem} />
-                <button
-                  className={twJoin(
-                    "absolute inset-0 text-center opacity-0 backdrop-blur-sm",
-                    "flex items-center justify-center rounded-lg",
-                    "transition duration-300",
-                    "group-hover:opacity-100",
-                  )}
-                  onClick={() => {
-                    setValue(
-                      "relatedProblems",
-                      currentRelatedProblems.filter(
-                        (currentProblem) => currentProblem.id !== problem.id,
-                      ) as any,
-                    );
+            <AnimatePresence mode="popLayout">
+              {currentRelatedProblems?.map((problem) => (
+                <motion.li
+                  layout="position"
+                  key={problem.id}
+                  className="group relative min-w-max rounded-lg"
+                  exit={{
+                    opacity: 0,
+                    x: -16,
                   }}
                 >
-                  <X className="h-6 w-6" />
-                </button>
-              </li>
-            ))}
+                  <RelatedProblemCard problem={problem} />
+                  <button
+                    className={twJoin(
+                      "absolute inset-0 text-center opacity-0 backdrop-blur-sm",
+                      "flex items-center justify-center rounded-lg",
+                      "transition duration-300",
+                      "group-hover:opacity-100",
+                    )}
+                    onClick={() => {
+                      setValue(
+                        "relatedProblems",
+                        currentRelatedProblems.filter(
+                          (currentProblem) => currentProblem.id !== problem.id,
+                        ) as any,
+                      );
+                    }}
+                  >
+                    <X className="h-6 w-6" />
+                  </button>
+                </motion.li>
+              ))}
+            </AnimatePresence>
           </ul>
         </div>
         <button

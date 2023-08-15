@@ -3,6 +3,7 @@ import React from "react";
 import { RemoveScroll } from "react-remove-scroll";
 import { motion, MotionConfig } from "framer-motion";
 import { twMerge } from "tailwind-merge";
+import { FocusOn } from "react-focus-on";
 
 const BaseModal = ({
   children,
@@ -16,23 +17,24 @@ const BaseModal = ({
   return (
     <MotionConfig transition={{ duration: 0.17, ease: "easeOut" }}>
       <motion.div
-        className="fixed inset-0 z-50 flex items-end justify-center md:items-center"
-        onClick={handleClose}
+        className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 md:items-center"
+        style={{ pointerEvents: "auto" }}
+        initial={{
+          opacity: 0.4,
+        }}
+        animate={{
+          opacity: 1,
+        }}
+        exit={{
+          opacity: 0,
+        }}
       >
-        <RemoveScroll className="w-full" removeScrollBar={false}>
-          <motion.div
-            style={{ pointerEvents: "auto" }}
-            className="absolute inset-0 -z-10 bg-black/40"
-            initial={{
-              opacity: 0.4,
-            }}
-            animate={{
-              opacity: 1,
-            }}
-            exit={{
-              opacity: 0,
-            }}
-          ></motion.div>
+        <FocusOn
+          className="w-full"
+          onClickOutside={handleClose}
+          onEscapeKey={handleClose}
+          gapMode="padding"
+        >
           <motion.div
             className={twMerge(
               "container max-h-screen w-full overflow-y-auto rounded-t-2xl bg-white p-4 md:m-auto md:rounded-2xl md:p-10 md:px-14",
@@ -49,7 +51,7 @@ const BaseModal = ({
           >
             {children}
           </motion.div>
-        </RemoveScroll>
+        </FocusOn>
       </motion.div>
     </MotionConfig>
   );

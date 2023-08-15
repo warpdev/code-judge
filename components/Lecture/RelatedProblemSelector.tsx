@@ -2,7 +2,7 @@ import { useFormContext } from "react-hook-form";
 import { twJoin, twMerge } from "tailwind-merge";
 import { actionNeutral, baseInput } from "@/style/baseStyle";
 import { useDebouncedCallback } from "use-debounce";
-import { useCallback, useState } from "react";
+import { MouseEventHandler, useCallback, useState } from "react";
 import useSWR from "swr";
 import { Problem } from "@prisma/client";
 import Skeleton from "@/components/Shared/Skeleton";
@@ -13,7 +13,7 @@ const RelatedProblemSelector = ({ id }: { id: string }) => {
   const [searchText, setSearchText] = useState("");
 
   const { data: problems, isLoading: _isLoading } = useSWR<Problem[]>(
-    searchText && `/api/problem?search=${searchText}`,
+    `/api/problem?search=${searchText}`,
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
@@ -38,18 +38,19 @@ const RelatedProblemSelector = ({ id }: { id: string }) => {
   );
 
   const handleClick = useCallback(
-    (problem: Problem) => () => {
-      const currentValue = getValues(id)?.filter(
-        (p: Problem) => p.id !== problem.id,
-      );
-      setValue(id, [...(currentValue ?? []), problem]);
-      setInnerSearchText("");
-    },
+    (problem: Problem): MouseEventHandler<HTMLButtonElement> =>
+      (e) => {
+        const currentValue = getValues(id)?.filter(
+          (p: Problem) => p.id !== problem.id,
+        );
+        setValue(id, [...(currentValue ?? []), problem]);
+        e.currentTarget.blur();
+      },
     [getValues, id, setValue],
   );
 
   return (
-    <div className="relative flex w-full flex-col gap-2">
+    <div className="group relative flex w-full flex-col gap-2">
       <input
         id={id}
         type="text"
@@ -57,7 +58,6 @@ const RelatedProblemSelector = ({ id }: { id: string }) => {
           baseInput,
           "w-full border-2",
           "hover:bg-neutral-200 dark:hover:bg-neutral-700",
-          "peer",
         )}
         onChange={handleChange}
         value={_searchText}
@@ -67,7 +67,9 @@ const RelatedProblemSelector = ({ id }: { id: string }) => {
           "text-sm",
           "absolute left-0 top-full mt-2 w-full",
           "z-10",
-          !_searchText && "hidden",
+          // !_searchText && "hidden",
+          "hidden",
+          "focus-within:block group-focus-within:block group-focus:block focus:block",
           "max-h-64",
         )}
       >

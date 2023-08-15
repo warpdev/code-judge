@@ -6,7 +6,8 @@
     "description": "부제목",
     "content": "강의 내용",
     "videoUrl": "동영상 URL",
-    "relatedProblems": "관련 문제"
+    "relatedProblems": "관련 문제",
+    "newLecture": "새 강의"
   },
   "input": {
     "title": "제목 입력",

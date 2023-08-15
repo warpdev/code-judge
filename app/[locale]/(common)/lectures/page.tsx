@@ -1,11 +1,10 @@
-import { redirect } from "next/navigation";
 import { getTranslator } from "next-intl/server";
 import { getPublicLectures, getPublicProblems } from "@/utils/dbUtils";
 import { title } from "@/style/baseStyle";
-import ProblemFilterPanel from "@/components/Problems/Filter/ProblemFilterPanel";
-import ProblemsList from "@/components/Problems/ProblemsList";
 import Navigator from "@/components/Navigator";
 import LectureList from "@/components/Lecture/LectureList";
+import AddButton from "@/components/Problems/AddButton";
+import { getIsAdmin, getServerUser } from "@/utils/serverUtils";
 
 const LectureListPage = async ({
   searchParams,
@@ -25,9 +24,17 @@ const LectureListPage = async ({
     pageIndex: currentPage,
   });
 
+  const user = await getServerUser();
+  const isAdmin = await getIsAdmin(user);
+
   return (
     <div>
       <h1 className={title}>{t("publicLecture")}</h1>
+      {isAdmin && (
+        <div className="flex justify-end">
+          <AddButton href="/lectures/add" buttonText={t("newLecture")} />
+        </div>
+      )}
       <LectureList lectures={lectures} locale={locale} className="mt-4" />
       <Navigator totalCount={totalCount} className="mt-4" />
     </div>

@@ -50,7 +50,6 @@ const ExtraInfoPanel = ({
   );
 
   const { completion, complete, isLoading } = useCompletion({
-    id: "hint",
     api: `/api/problem/${id}/hint`,
     onResponse: (response) => {
       if (response.status === 429) {

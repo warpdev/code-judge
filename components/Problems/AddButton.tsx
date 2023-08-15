@@ -1,18 +1,20 @@
-import Link from "next/link";
 import { violetButton } from "@/style/baseComponent";
 import { BaseProps } from "@/types/common";
 import { twMerge } from "tailwind-merge";
 import { PlusCircle } from "lucide-react";
+import Link from "next-intl/link";
 
-const AddProblemButton = ({
+const AddButton = ({
+  href,
   className,
   buttonText,
 }: BaseProps & {
+  href: string;
   buttonText: string;
 }) => {
   return (
     <Link
-      href={"/problems/add"}
+      href={href}
       className={twMerge(
         violetButton,
         "dark:bg-neutral-800",
@@ -26,4 +28,4 @@ const AddProblemButton = ({
   );
 };
 
-export default AddProblemButton;
+export default AddButton;

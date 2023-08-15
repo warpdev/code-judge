@@ -71,10 +71,29 @@ export const GET = wrapApi({
 })(async (req: NextRequest, { query }) => {
   const { locale, page, search } = query;
 
+  if (search) {
+    const problem = await prisma.problem.findMany({
+      where: {
+        title: {
+          contains: search,
+          mode: "insensitive",
+        },
+      },
+      orderBy: {
+        _relevance: {
+          fields: ["title"],
+          search: search,
+          sort: "desc",
+        },
+      },
+      take: 5,
+    });
+    return ResTypes.OK(problem);
+  }
+
   const [problems] = await getPublicProblems({
     locale: locale,
     pageIndex: page,
-    search: search || undefined,
   });
 
   return ResTypes.OK(problems);

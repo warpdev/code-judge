@@ -5,8 +5,8 @@ import { z } from "zod";
 import { ResTypes } from "@/constants/response";
 
 const querySchema = z.object({
-  page: z.number().default(1),
-  onlyMine: z.boolean().default(false),
+  page: z.coerce.number().default(1),
+  onlyMine: z.coerce.boolean().default(false),
 });
 
 export const GET = wrapApi({

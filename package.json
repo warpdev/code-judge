@@ -60,6 +60,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-editor-js": "^2.1.0",
+    "react-focus-on": "^3.9.1",
     "react-hook-form": "^7.45.4",
     "react-player": "^2.12.0",
     "react-remove-scroll": "^2.5.6",

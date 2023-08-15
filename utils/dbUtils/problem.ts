@@ -34,25 +34,19 @@ export const getPublicProblems = async ({
   pageIndex = 1,
   take = PROBLEM_LIST_PAGE_SIZE,
   locale,
-  search,
 }: {
   pageIndex: number;
   take?: number;
   locale?: string;
-  search?: string;
 }): Promise<[Problem[], number]> => {
   const problemsData = await prisma.$transaction([
     prisma.problem.findMany({
       where: {
         locale: LOCALE_MAP[locale as ILocale]?.id,
         isPublic: true,
-        title: {
-          contains: search,
-          mode: "insensitive",
-        },
       },
-      skip: (pageIndex - 1) * PROBLEM_LIST_PAGE_SIZE,
-      take: PROBLEM_LIST_PAGE_SIZE,
+      skip: (pageIndex - 1) * take,
+      take: take,
     }),
     prisma.problem.count({
       where: {

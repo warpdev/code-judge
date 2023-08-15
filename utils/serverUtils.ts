@@ -61,7 +61,14 @@ export const wrapApi =
       ...args: A
     ) => R,
   ) =>
-  async (req: T, _params?: Record<string, string>, ...args: A) => {
+  async (
+    req: T,
+    _params?: {
+      params: Record<string, string>;
+    },
+    ...args: A
+  ) => {
+    console.log(req.nextUrl.toString());
     let props: any = {};
     if (withAuth) {
       const user = await getServerUser();
@@ -70,10 +77,11 @@ export const wrapApi =
       }
       props.user = user;
     }
+    console.log(_params);
     if (paramsSchema) {
-      const params = paramsSchema.safeParse(_params);
+      const params = paramsSchema.safeParse(_params?.params);
       if (!params.success) {
-        return ResTypes.BAD_REQUEST(params.error.message);
+        return ResTypes.BAD_REQUEST(params.error.format());
       }
       props.params = params.data;
     }
@@ -81,14 +89,14 @@ export const wrapApi =
       const { searchParams } = new URL(req.url);
       const query = querySchema.safeParse(Object.fromEntries(searchParams));
       if (!query.success) {
-        return ResTypes.BAD_REQUEST(query.error.message);
+        return ResTypes.BAD_REQUEST(query.error.format());
       }
       props.query = query.data;
     }
     if (bodySchema) {
       const body = bodySchema.safeParse(await req.json());
       if (!body.success) {
-        return ResTypes.BAD_REQUEST(body.error.message);
+        return ResTypes.BAD_REQUEST(body.error.format());
       }
       props.body = body.data;
     }

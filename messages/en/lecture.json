@@ -6,7 +6,8 @@
     "description": "Subtitle",
     "content": "Lecture Content",
     "videoUrl": "Video URL",
-    "relatedProblems": "Related Problems"
+    "relatedProblems": "Related Problems",
+    "newLecture": "New Lecture"
   },
   "input": {
     "title": "Enter Title",
