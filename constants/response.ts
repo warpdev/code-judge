@@ -9,6 +9,14 @@ export const ResTypes = {
       status: 401,
     },
   ),
+  FORBIDDEN: NextResponse.json(
+    {
+      error: "Forbidden",
+    },
+    {
+      status: 403,
+    },
+  ),
   OTHER_ERROR: NextResponse.json(
     {
       error: "Something went wrong",
@@ -26,7 +34,7 @@ export const ResTypes = {
         status: 404,
       },
     ),
-  BAD_REQUEST: (message: any = "") =>
+  BAD_REQUEST: (message: any = "Bad Request") =>
     NextResponse.json(
       {
         error: message,
@@ -35,12 +43,12 @@ export const ResTypes = {
         status: 400,
       },
     ),
-  OK: (data: any = null) =>
+  OK: (data: any = { success: true }) =>
     NextResponse.json(data, {
-      status: 200,
+      status: data ? 200 : 500,
     }),
-  CREATED: (data: any = null) =>
+  CREATED: (data: any = { success: true }) =>
     NextResponse.json(data, {
-      status: 201,
+      status: data ? 201 : 500,
     }),
 };
