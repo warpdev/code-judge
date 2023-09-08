@@ -5,11 +5,11 @@ export const JUDGE_API_URL = process.env.JUDGE_HOST || "";
 //TODO: merge my submission and problem
 export const NAV_LINKS = [
   //TODO: add problems page
-  // {
-  //   name: "problems",
-  //   href: "/problems",
-  //   requiredAuth: false,
-  // },
+  {
+    name: "problems",
+    href: "/problems",
+    requiredAuth: false,
+  },
   // {
   //   name: "lectures",
   //   href: "/lectures",

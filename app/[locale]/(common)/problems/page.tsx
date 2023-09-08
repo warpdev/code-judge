@@ -18,8 +18,7 @@ const ProblemListPage = async ({
 }) => {
   const currentPage =
     searchParams.page && +searchParams.page > 0 ? +searchParams.page : 1;
-  //TODO: remove
-  redirect("/my-problems");
+
   const t = await getTranslator(locale, "problem.view");
   const [problems, totalCount] = await getPublicProblems({
     pageIndex: currentPage,
