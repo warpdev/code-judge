@@ -19,7 +19,7 @@ const TestcaseListPanel = ({ initProblems }: { initProblems: Problem }) => {
 
   return (
     <div className="flex flex-col gap-8">
-      <ol className="grid grid-cols-2 gap-8">
+      <ol className="grid grid-cols-2 gap-4">
         {Array.from({ length: problem.testSetSize }, (_, i) => i + 1).map(
           (i) => (
             <li key={i}>

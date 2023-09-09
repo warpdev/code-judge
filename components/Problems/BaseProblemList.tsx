@@ -36,12 +36,14 @@ const BaseProblemList = ({
             <Link
               className={twJoin(
                 //TODO: grid
-                "flex justify-between",
+                "grid grid-cols-[1fr_auto]",
                 "block w-full",
               )}
               href={`/problems/${problem.id}`}
             >
-              <span>{problem.title}</span>
+              <span className="flex items-center gap-1">
+                <span>{problem.title}</span>
+              </span>
               {showBadge && (
                 <Tooltip
                   trigger={

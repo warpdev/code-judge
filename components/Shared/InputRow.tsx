@@ -44,7 +44,10 @@ const InputRow = ({
       <div className="flex items-end justify-between gap-2">
         <label
           htmlFor={id}
-          className="after:ml-1 after:text-red-500 data-[required=true]:after:content-['*']"
+          className={twJoin(
+            "after:ml-1 after:text-red-500 data-[required=true]:after:content-['*']",
+            "text-sm",
+          )}
           data-required={!!options.required}
         >
           {t(`${namespace}.input.${id}` as any)}

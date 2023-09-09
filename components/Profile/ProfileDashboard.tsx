@@ -17,7 +17,7 @@ const ProfileDashboard = () => {
         {t.rich("feedback", {
           link: (chunk) => (
             <a
-              href="https://google.com"
+              href="mailto:contact@opencody.com"
               target="_blank"
               rel="noreferrer"
               className="text-neutral-950 underline dark:text-neutral-50"

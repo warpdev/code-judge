@@ -29,7 +29,7 @@ const TooltipDemo = ({
         <Tooltip.Portal>
           <Tooltip.Content
             className={twJoin(
-              "bg-neutral-400 dark:bg-neutral-700",
+              "bg-neutral-300 dark:bg-neutral-700",
               "text-neutral-700 dark:text-neutral-300",
               "whitespace-pre-line",
               "rounded-md p-2",
@@ -40,7 +40,7 @@ const TooltipDemo = ({
           >
             {children}
             <Tooltip.Arrow
-              className="fill-neutral-400 dark:fill-neutral-700"
+              className="fill-neutral-300 dark:fill-neutral-700"
               width={16}
               height={8}
             />

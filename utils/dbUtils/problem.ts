@@ -110,3 +110,14 @@ export const getProblemsByText = async ({
 
   return problems;
 };
+
+export const serverGetMyProblems = async (userId: string) => {
+  return prisma.problem.findMany({
+    where: {
+      createdBy: userId,
+    },
+    select: {
+      title: true,
+    },
+  });
+};
