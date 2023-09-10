@@ -3,13 +3,14 @@ import { twJoin } from "tailwind-merge";
 import { baseProse, title } from "@/style/baseStyle";
 import { getIsAdmin, getIsMyProblem, getServerUser } from "@/utils/serverUtils";
 import SignInButton from "@/components/Auth/SignInButton";
-import { getProblemInfo } from "@/utils/dbUtils";
+import { serverGetProblemInfo } from "@/utils/dbUtils";
 import { generateHTML } from "@tiptap/html";
 import { TiptapExtensions } from "@/lib/editorConfigs";
-import Link from "next/link";
+import Link from "next-intl/link";
 import DeleteProblemButton from "@/components/Problems/DeleteProblemButton";
 import { getTranslator } from "next-intl/server";
 import { greenButton, violetButton } from "@/style/baseComponent";
+import { FileEdit } from "lucide-react";
 
 const sectionTitle = twJoin(
   "mb-4",
@@ -30,7 +31,7 @@ const ProblemDetailPage = async ({
     id: string;
   };
 }) => {
-  const problem = await getProblemInfo(params.id);
+  const problem = await serverGetProblemInfo(params.id);
 
   const user = await getServerUser();
   const isAdmin = await getIsAdmin(user);
@@ -40,6 +41,10 @@ const ProblemDetailPage = async ({
   }
 
   const isMine = getIsMyProblem(problem, user);
+
+  const isEditable = isMine || isAdmin;
+
+  const editUrl = `/problems/${params.id}/edit`;
 
   const t = await getTranslator(params.locale, "problem.view");
 
@@ -54,7 +59,22 @@ const ProblemDetailPage = async ({
           "flex-col-reverse md:flex-row",
         )}
       >
-        <h1 className={twJoin(title)}>{problem.title}</h1>
+        <div className="group flex items-center gap-2">
+          <h1 className={twJoin(title)}>{problem.title}</h1>
+          {isEditable && (
+            <Link
+              href={editUrl}
+              aria-label={t("editProblem")}
+              className={twJoin(
+                "text-neutral-500 dark:text-neutral-400",
+                "transition",
+                "hover:text-neutral-900 dark:hover:text-neutral-100",
+              )}
+            >
+              <FileEdit className="h-8 w-8" />
+            </Link>
+          )}
+        </div>
         <span className="flex gap-4 text-xs md:text-sm">
           <span>
             <span>{memoryLimit[0]}</span>{" "}

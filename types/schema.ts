@@ -47,3 +47,7 @@ export const LectureSchema = z.object({
   videoUrl: z.string().url().optional().or(z.literal("")),
   relatedProblems: z.array(z.coerce.number()).optional(),
 });
+
+export const ProblemPageParamsSchema = z.object({
+  id: z.coerce.number(),
+});

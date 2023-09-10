@@ -14,24 +14,33 @@
     "sampleOutput": "Sample Output",
     "submit": "Submit",
     "startCoding": "Start Coding!",
+    "editProblem": "Edit Problem",
     "editTestCases": "Edit Test Cases",
     "filter": "Filter",
     "seconds": "s"
   },
   "input": {
     "title": "Title",
-    "locale": "Written Language",
+    "locale": {
+      "label": "Written Language",
+      "options": {
+        "ko": "Korean",
+        "en": "English"
+      }
+    },
     "description": "Description",
-    "memoryLimit": "Memory Limit (MiB)",
-    "timeLimit": "Execution Time Limit (s)",
+    "memoryLimit": {
+      "label": "Memory Limit (MiB)",
+      "placeholder": "2 ~ 512"
+    },
+    "timeLimit": {
+      "label": "Execution Time Limit (s)",
+      "placeholder": "0.01 ~ 5"
+    },
     "inputFormat": "Input Format",
     "outputFormat": "Output Format",
     "sampleInput": "Sample Input",
     "sampleOutput": "Sample Output",
     "submit": "Submit"
-  },
-  "placeholder": {
-    "memoryLimit": "2 ~ 512",
-    "timeLimit": "0.01 ~ 5"
   }
 }

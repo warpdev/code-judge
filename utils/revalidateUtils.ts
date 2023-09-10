@@ -1,8 +1,8 @@
 import { revalidatePath } from "next/cache";
 
 export const revalidateProblems = () => {
-  revalidatePath("/problems");
-  revalidatePath("/my-problems");
+  revalidatePath("/[locale]/(common)/problems");
+  revalidatePath("/[locale]/(common)/problems/[id]");
 };
 
 export const revalidateSubmissions = () => {

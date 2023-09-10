@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import prisma from "@/lib/prisma";
 import { postBatchSubmission } from "@/utils/judgeServerUtils";
-import { getProblemInfo } from "@/utils/dbUtils";
+import { serverGetProblemInfo } from "@/utils/dbUtils";
 import { wrapApi } from "@/utils/serverUtils";
 import { ResTypes } from "@/constants/response";
 import supabase from "@/lib/supabase";
@@ -22,7 +22,7 @@ export const POST = wrapApi({
   const { id: problemId } = params;
   const { code, langId } = body;
 
-  const problemInfo = await getProblemInfo(problemId);
+  const problemInfo = await serverGetProblemInfo(problemId);
   if (!problemInfo) {
     return ResTypes.NOT_FOUND("Problem not found");
   }

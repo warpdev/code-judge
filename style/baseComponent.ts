@@ -19,6 +19,12 @@ export const greenButton = twJoin(
   actionToDark,
 );
 
+export const neutralButton = twJoin(
+  roundButton,
+  "bg-neutral-950 font-bold text-neutral-50",
+  actionToDark,
+);
+
 export const baseSelect = twJoin(
   "rounded px-2 py-2",
   "border-2 border-neutral-600",

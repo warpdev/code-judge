@@ -2,7 +2,7 @@ import { OpenAIStream, StreamingTextResponse } from "ai";
 import { kv } from "@vercel/kv";
 import { Ratelimit } from "@upstash/ratelimit";
 import { PROMPTS } from "@/constants/prompts";
-import { getProblemInfo } from "@/utils/dbUtils";
+import { serverGetProblemInfo } from "@/utils/dbUtils";
 import { makeHintUserPrompt } from "@/utils/commonUtils";
 import prisma from "@/lib/prisma";
 import { wrapApi } from "@/utils/serverUtils";
@@ -48,7 +48,7 @@ export const POST = wrapApi({
   }
 
   let { prompt: userCode } = body;
-  const problemInfo = await getProblemInfo(params.id);
+  const problemInfo = await serverGetProblemInfo(params.id);
   if (!problemInfo) {
     return ResTypes.NOT_FOUND("Problem not found");
   }

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getDetailSubmission } from "@/utils/judgeServerUtils";
 import { getIsMyProblem, getServerUser, wrapApi } from "@/utils/serverUtils";
-import { getProblemInfo } from "@/utils/dbUtils";
+import { serverGetProblemInfo } from "@/utils/dbUtils";
 import { ResTypes } from "@/constants/response";
 import { ProblemParamsSchema } from "@/app/api/schemas";
 import { z } from "zod";
@@ -13,7 +13,7 @@ const ParamsSchema = ProblemParamsSchema.extend({
 export const GET = wrapApi({ withAuth: true, paramsSchema: ParamsSchema })(
   async (req: NextRequest, { params, user }) => {
     const { id, judgeId } = params;
-    const problem = await getProblemInfo(id);
+    const problem = await serverGetProblemInfo(id);
     if (!problem) {
       return ResTypes.NOT_FOUND("Problem not found");
     }

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ProblemParamsSchema } from "@/app/api/schemas";
 import { ResTypes } from "@/constants/response";
-import { getProblemInfo } from "@/utils/dbUtils";
+import { serverGetProblemInfo } from "@/utils/dbUtils";
 import supabase from "@/lib/supabase";
 import { wrapApi } from "@/utils/serverUtils";
 import { runCode } from "@/utils/judgeServerUtils";
@@ -19,7 +19,7 @@ export const POST = wrapApi({
 })(async (req: NextRequest, { params, user }) => {
   const { id } = params;
 
-  const problemInfo = (await getProblemInfo(id, {
+  const problemInfo = (await serverGetProblemInfo(id, {
     include: {
       submission: true,
     },

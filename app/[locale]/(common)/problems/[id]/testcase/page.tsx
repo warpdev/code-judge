@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import TestcaseListPanel from "@/components/Problems/Testcase/TestcaseListPanel";
-import { getProblemInfo } from "@/utils/dbUtils";
+import { serverGetProblemInfo } from "@/utils/dbUtils";
 import { getIsMyProblem, getServerUser } from "@/utils/serverUtils";
 
 const EditTestCasePage = async ({
@@ -16,7 +16,7 @@ const EditTestCasePage = async ({
     redirect("/api/auth/signin");
   }
 
-  const problems = await getProblemInfo(params.id);
+  const problems = await serverGetProblemInfo(params.id);
   const isMine = getIsMyProblem(problems, user);
 
   if (!isMine) {

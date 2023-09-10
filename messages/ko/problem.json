@@ -14,24 +14,33 @@
     "sampleOutput": "출력 예시",
     "submit": "제출하기",
     "startCoding": "코딩 시작!",
+    "editProblem": "수정하기",
     "editTestCases": "테스트 케이스 수정",
     "filter": "필터",
     "seconds": "초"
   },
   "input": {
     "title": "제목",
-    "locale": "작성된 언어",
+    "locale": {
+      "label": "작성된 언어",
+      "options": {
+        "ko": "한국어",
+        "en": "영어"
+      }
+    },
     "description": "설명",
-    "memoryLimit": "메모리 제한 (MiB)",
-    "timeLimit": "실행시간 제한 (초)",
+    "memoryLimit": {
+      "label": "메모리 제한 (MiB)",
+      "placeholder": "2 ~ 512"
+    },
+    "timeLimit": {
+      "label": "실행시간 제한 (초)",
+      "placeholder": "0.01 ~ 5"
+    },
     "inputFormat": "입력 형식",
     "outputFormat": "출력 형식",
     "sampleInput": "입력 예시",
     "sampleOutput": "출력 예시",
     "submit": "완료"
-  },
-  "placeholder": {
-    "memoryLimit": "2 ~ 512",
-    "timeLimit": "0.01 ~ 5"
   }
 }

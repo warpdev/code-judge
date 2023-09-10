@@ -12,7 +12,7 @@ import { ILocale } from "@/types/common";
  * @param id Problem id
  * @param extra
  */
-export const getProblemInfo = async (
+export const serverGetProblemInfo = async (
   id: number | string,
   extra?: Prisma.ProblemArgs,
 ): Promise<Problem | null> => {

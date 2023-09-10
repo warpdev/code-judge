@@ -22,3 +22,11 @@ export type IInputContent<T = string> = {
   className?: string;
   allowDecimal?: boolean;
 } & IInputType;
+
+export interface IInputExtraData {
+  id: string;
+  label?: string;
+  placeholder?: string;
+  hint?: string;
+  error?: React.ReactNode;
+}

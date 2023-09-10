@@ -1,68 +1,79 @@
 "use client";
-
-import {
-  Control,
-  Controller,
-  FieldError,
-  FormProvider,
-  SubmitHandler,
-  useForm,
-  UseFormRegister,
-} from "react-hook-form";
-import axios from "axios";
-import { useRouter } from "next/navigation";
-import { baseInput } from "@/style/baseStyle";
-import { problemInputs } from "@/constants/problem";
-import React, { useEffect } from "react";
-import Editor from "@/components/Editor/Editor";
+import { ILocale } from "@/types/common";
+import { z } from "zod";
+import { ProblemSchema } from "@/types/schema";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import TextInput from "@/components/Shared/TextInput";
+import { useTranslations } from "next-intl";
+import { Problem } from "@prisma/client";
 import { twJoin } from "tailwind-merge";
+import SelectInput from "@/components/Shared/SelectInput";
+import EditorInput from "@/components/Shared/EditorInput";
+import TextareaInput from "@/components/Shared/TextareaInput";
+import { greenButton } from "@/style/baseComponent";
+import { useEffect, useMemo } from "react";
+import { LOCALES } from "@/constants/common";
 import useStorage from "@/utils/hooks/useStorage";
 import { useDebouncedCallback } from "use-debounce";
-import { useTranslations } from "next-intl";
-import { baseSelect, greenButton } from "@/style/baseComponent";
-import { handleNumberInput } from "@/utils/commonUtils";
-import { IInputContent } from "@/types/input";
-import { ILocale } from "@/types/common";
-import InputRow from "@/components/Shared/InputRow";
+import { api } from "@/lib/apiClient";
+import { useRouter } from "next-intl/client";
 
-/*
-  title String
-  description String
-  difficulty String
-  tags String[]
-  memoryLimit Int
-  timeLimit Int
-  input String
-  output String
-  sampleInput String
-  sampleOutput String
- */
-type InputValue = Partial<
-  Record<
-    (typeof problemInputs)[number][number]["id"],
-    (typeof problemInputs)[number][number]["type"]
-  >
->;
+const InputSchema = ProblemSchema.extend({
+  memoryLimit: z.coerce.number().min(2).max(512),
+  timeLimit: z.coerce
+    .number()
+    .min(0.01)
+    .max(5)
+    .refine((v) => v * 1000),
+});
 
-const AddProblemForm = ({ locale }: { locale: ILocale }) => {
-  const t = useTranslations();
+type IInput = z.infer<typeof InputSchema>;
+
+const rowStyle = twJoin(
+  "grid gap-4 md:auto-cols-fr md:grid-flow-col",
+  "grid-flow-row",
+);
+
+const AddProblemForm = ({
+  locale,
+  initProblem,
+}: {
+  locale: ILocale;
+  initProblem?: Problem;
+}) => {
+  const t = useTranslations("problem.input");
   const {
     storedValue: content,
     setValue: setContent,
     rawGet,
-  } = useStorage<InputValue>("add.problem");
-  const methods = useForm<InputValue>({
-    defaultValues: async () => {
-      return {
-        locale,
-        ...(((await rawGet()) as InputValue) ?? {}),
-      } as InputValue;
-    },
-  });
+  } = useStorage<IInput>("add.problem");
+  const router = useRouter();
 
-  const { watch, handleSubmit } = methods;
+  const { control, register, handleSubmit, watch, getValues } = useForm<IInput>(
+    {
+      defaultValues: async () => {
+        if (initProblem) {
+          return {
+            ...initProblem,
+            locale: LOCALES[initProblem.locale],
+            timeLimit: initProblem.timeLimit / 1000,
+          } as IInput;
+        } else {
+          return {
+            locale,
+            ...(((await rawGet()) as any) ?? {}),
+          } as IInput;
+        }
+      },
+      resolver: zodResolver(InputSchema),
+    },
+  );
 
   const setDebouncedContent = useDebouncedCallback((value: any) => {
+    if (initProblem) {
+      return;
+    }
     setContent(value);
   }, 1500);
 
@@ -71,42 +82,82 @@ const AddProblemForm = ({ locale }: { locale: ILocale }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const router = useRouter();
-
-  const onSubmit: SubmitHandler<InputValue> = async (data) => {
-    const { data: problem } = await axios.post("/api/problem", data);
-    setContent({});
+  const onSubmit = async () => {
+    const data = getValues();
+    const { data: problem } = await api.post(
+      initProblem ? `/problem/${initProblem.id}` : "/problem",
+      data,
+    );
+    if (!initProblem) {
+      setContent({} as any);
+    }
     router.push(`/problems/${problem.id}`);
   };
 
   return (
-    <div className="flex flex-col gap-4 p-4">
-      <FormProvider {...methods}>
-        {problemInputs.map((inputs, index) => {
-          return (
-            <div
-              className={twJoin(
-                "grid gap-4 p-4 md:auto-cols-fr md:grid-flow-col",
-                "grid-flow-row",
-              )}
-              key={index}
-            >
-              {/* register your input into the hook by invoking the "register" function */}
-              {inputs.map((input) => (
-                <InputRow
-                  namespace="problem"
-                  key={input.id}
-                  inputProps={input}
-                />
-              ))}
-            </div>
-          );
-        })}
-        <button onClick={handleSubmit(onSubmit)} className={greenButton}>
-          {t("problem.input.submit")}
+    <form className="flex flex-col gap-8">
+      <div className={rowStyle}>
+        <TextInput id="title" {...register("title")} label={t("title")} />
+        <SelectInput
+          id="locale"
+          {...register("locale")}
+          label={t("locale.label")}
+        >
+          <option value="ko">{t("locale.options.ko")}</option>
+          <option value="en">{t("locale.options.en")}</option>
+        </SelectInput>
+      </div>
+      <div className={rowStyle}>
+        <TextInput
+          id="timeLimit"
+          {...register("timeLimit")}
+          label={t("timeLimit.label")}
+          placeholder={t("timeLimit.placeholder")}
+        />
+        <TextInput
+          id="memoryLimit"
+          {...register("memoryLimit")}
+          label={t("memoryLimit.label")}
+          placeholder={t("memoryLimit.placeholder")}
+        />
+      </div>
+      <EditorInput
+        id="description"
+        control={control}
+        label={t("description")}
+      />
+      <EditorInput
+        id="inputFormat"
+        control={control}
+        label={t("inputFormat")}
+      />
+      <EditorInput
+        id="outputFormat"
+        control={control}
+        label={t("outputFormat")}
+      />
+      <div className={rowStyle}>
+        <TextareaInput
+          id="sampleInput"
+          {...register("sampleInput")}
+          label={t("sampleInput")}
+        />
+        <TextareaInput
+          id="sampleOutput"
+          {...register("sampleOutput")}
+          label={t("sampleOutput")}
+        />
+      </div>
+      <div className="flex items-center justify-end">
+        <button
+          type="button"
+          className={twJoin(greenButton)}
+          onClick={onSubmit}
+        >
+          {t("submit")}
         </button>
-      </FormProvider>
-    </div>
+      </div>
+    </form>
   );
 };
 

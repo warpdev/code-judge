@@ -5,6 +5,7 @@ import { NextRequest } from "next/server";
 import { z } from "zod";
 import { ResTypes } from "@/constants/response";
 import { redirect } from "next/navigation";
+import { ILocale } from "@/types/common";
 
 export const getServerUser = async () => {
   const session = await getServerSession(authOptions);
@@ -184,7 +185,7 @@ export const pageWithOptions =
         user: WA extends true ? NonNullable<Session["user"]> : undefined;
         query: QD extends z.ZodType<infer Q> ? z.infer<QD> : undefined;
         params: PD extends z.ZodType<infer P> ? z.infer<PD> : undefined;
-        locale: string;
+        locale: ILocale;
       },
       ...args: A
     ) => R,

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import supabase from "@/lib/supabase";
-import { getProblemInfo } from "@/utils/dbUtils";
+import { serverGetProblemInfo } from "@/utils/dbUtils";
 import prisma from "@/lib/prisma";
 import { getIsMyProblem, wrapApi } from "@/utils/serverUtils";
 import { ResTypes } from "@/constants/response";
@@ -23,7 +23,7 @@ export const POST = wrapApi({
 
   const isEdit = idx !== undefined;
 
-  const problemInfo = await getProblemInfo(problemId);
+  const problemInfo = await serverGetProblemInfo(problemId);
   if (!problemInfo) {
     return ResTypes.NOT_FOUND("Problem not found");
   }
@@ -82,7 +82,7 @@ export const GET = wrapApi({
 })(async (req: NextRequest, { user, params, query }) => {
   const { id: problemId } = params;
 
-  const problemInfo = await getProblemInfo(problemId);
+  const problemInfo = await serverGetProblemInfo(problemId);
   const isMine = getIsMyProblem(problemInfo, user);
   if (!isMine) {
     return ResTypes.NOT_AUTHORIZED;
