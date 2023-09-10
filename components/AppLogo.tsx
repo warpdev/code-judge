@@ -14,7 +14,7 @@ const AppLogo = ({ className }: BaseProps) => {
       )}
     >
       <LogoIcon />
-      <span className="min-w-max">Code Start</span>
+      <span className="min-w-max">OpenCody</span>
     </span>
   );
 };

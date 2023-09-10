@@ -10,8 +10,8 @@ import { getMessages } from "@/i18n";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Code Start",
-  description: "Code Start is a platform for competitive programming.",
+  title: "OpenCody",
+  description: "OpenCody is a platform for competitive programming.",
 };
 
 export function generateStaticParams() {
