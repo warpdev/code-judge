@@ -22,7 +22,7 @@ const DeleteProblemModal = ({
     try {
       await axios.delete(`/api/problem/${problem.id}`);
       toast.success(t("toast.deleteProblem.success"));
-      router.replace("/problems");
+      router.replace("/my-problems");
     } catch (e) {
       toast.error(t("toast.deleteProblem.fail"));
     }
