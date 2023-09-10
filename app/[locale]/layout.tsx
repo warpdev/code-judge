@@ -11,11 +11,6 @@ import { Metadata } from "next";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata = {
-  title: "OpenCody",
-  description: "OpenCody is a platform for competitive programming.",
-};
-
 export function generateStaticParams() {
   return [{ locale: "en" }, { locale: "ko" }];
 }
