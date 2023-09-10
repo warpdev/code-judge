@@ -51,7 +51,9 @@ const JudgeDetailList = ({
   return (
     <>
       <div className="flex justify-end">
-        <SetToAnswerButton submission={submissionDetail!} className="mt-4" />
+        {isMyProblem && (
+          <SetToAnswerButton submission={submissionDetail!} className="mt-4" />
+        )}
       </div>
       {submissionDetail?.judgeTokens.length ? (
         <ol className="mt-6 flex flex-col gap-2">
