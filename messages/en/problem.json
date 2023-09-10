@@ -20,7 +20,9 @@
     "seconds": "s"
   },
   "input": {
-    "title": "Title",
+    "title": {
+      "label": "Title"
+    },
     "locale": {
       "label": "Written Language",
       "options": {
@@ -28,7 +30,9 @@
         "en": "English"
       }
     },
-    "description": "Description",
+    "description": {
+      "label": "Description"
+    },
     "memoryLimit": {
       "label": "Memory Limit (MiB)",
       "placeholder": "2 ~ 512"
@@ -37,10 +41,18 @@
       "label": "Execution Time Limit (s)",
       "placeholder": "0.01 ~ 5"
     },
-    "inputFormat": "Input Format",
-    "outputFormat": "Output Format",
-    "sampleInput": "Sample Input",
-    "sampleOutput": "Sample Output",
+    "inputFormat": {
+      "label": "Input Format"
+    },
+    "outputFormat": {
+      "label": "Output Format"
+    },
+    "sampleInput": {
+      "label": "Sample Input"
+    },
+    "sampleOutput": {
+      "label": "Sample Output"
+    },
     "submit": "Submit"
   }
 }

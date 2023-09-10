@@ -5,5 +5,6 @@
   "maxLength": "{label}은(는) {max}자 이하로 입력해주세요.",
   "min": "{label}은(는) {min} 이상이어야 합니다.",
   "max": "{label}은(는) {max} 이하여야 합니다.",
-  "url": "올바른 URL을 입력해주세요."
+  "url": "올바른 URL을 입력해주세요.",
+  "invalid": "올바른 {label}이 아닙니다."
 }

@@ -18,6 +18,7 @@ import useStorage from "@/utils/hooks/useStorage";
 import { useDebouncedCallback } from "use-debounce";
 import { api } from "@/lib/apiClient";
 import { useRouter } from "next-intl/client";
+import { getErrorData } from "@/utils/errorMap";
 
 const InputSchema = ProblemSchema.extend({
   memoryLimit: z.coerce.number().min(2).max(512),
@@ -42,6 +43,7 @@ const AddProblemForm = ({
   locale: ILocale;
   initProblem?: Problem;
 }) => {
+  const errorT = useTranslations("error");
   const t = useTranslations("problem.input");
   const {
     storedValue: content,
@@ -50,25 +52,44 @@ const AddProblemForm = ({
   } = useStorage<IInput>("add.problem");
   const router = useRouter();
 
-  const { control, register, handleSubmit, watch, getValues } = useForm<IInput>(
-    {
-      defaultValues: async () => {
-        if (initProblem) {
+  const {
+    control,
+    register,
+    handleSubmit,
+    watch,
+    getValues,
+    formState: { errors },
+  } = useForm<IInput>({
+    defaultValues: async () => {
+      if (initProblem) {
+        return {
+          ...initProblem,
+          locale: LOCALES[initProblem.locale],
+          timeLimit: initProblem.timeLimit / 1000,
+        } as IInput;
+      } else {
+        return {
+          locale,
+          ...(((await rawGet()) as any) ?? {}),
+        } as IInput;
+      }
+    },
+    resolver: zodResolver(InputSchema, {
+      errorMap: (issue, _ctx) => {
+        const errorData = getErrorData(issue);
+        if (errorData) {
           return {
-            ...initProblem,
-            locale: LOCALES[initProblem.locale],
-            timeLimit: initProblem.timeLimit / 1000,
-          } as IInput;
+            message: errorT(errorData.key, {
+              ...errorData.data,
+              label: t(`${issue.path.join(".")}.label` as any),
+            }),
+          };
         } else {
-          return {
-            locale,
-            ...(((await rawGet()) as any) ?? {}),
-          } as IInput;
+          return { message: _ctx.defaultError };
         }
       },
-      resolver: zodResolver(InputSchema),
-    },
-  );
+    }),
+  });
 
   const setDebouncedContent = useDebouncedCallback((value: any) => {
     if (initProblem) {
@@ -97,11 +118,17 @@ const AddProblemForm = ({
   return (
     <form className="flex flex-col gap-8">
       <div className={rowStyle}>
-        <TextInput id="title" {...register("title")} label={t("title")} />
+        <TextInput
+          id="title"
+          {...register("title")}
+          label={t("title.label")}
+          error={errors.title?.message}
+        />
         <SelectInput
           id="locale"
           {...register("locale")}
           label={t("locale.label")}
+          error={errors.locale?.message}
         >
           <option value="ko">{t("locale.options.ko")}</option>
           <option value="en">{t("locale.options.en")}</option>
@@ -113,46 +140,50 @@ const AddProblemForm = ({
           {...register("timeLimit")}
           label={t("timeLimit.label")}
           placeholder={t("timeLimit.placeholder")}
+          error={errors.timeLimit?.message}
         />
         <TextInput
           id="memoryLimit"
           {...register("memoryLimit")}
           label={t("memoryLimit.label")}
           placeholder={t("memoryLimit.placeholder")}
+          error={errors.memoryLimit?.message}
         />
       </div>
       <EditorInput
         id="description"
         control={control}
-        label={t("description")}
+        label={t("description.label")}
       />
       <EditorInput
         id="inputFormat"
         control={control}
-        label={t("inputFormat")}
+        label={t("inputFormat.label")}
       />
       <EditorInput
         id="outputFormat"
         control={control}
-        label={t("outputFormat")}
+        label={t("outputFormat.label")}
       />
       <div className={rowStyle}>
         <TextareaInput
           id="sampleInput"
           {...register("sampleInput")}
-          label={t("sampleInput")}
+          label={t("sampleInput.label")}
+          error={errors.sampleInput?.message}
         />
         <TextareaInput
           id="sampleOutput"
           {...register("sampleOutput")}
-          label={t("sampleOutput")}
+          label={t("sampleOutput.label")}
+          error={errors.sampleOutput?.message}
         />
       </div>
       <div className="flex items-center justify-end">
         <button
           type="button"
           className={twJoin(greenButton)}
-          onClick={onSubmit}
+          onClick={handleSubmit(onSubmit)}
         >
           {t("submit")}
         </button>
