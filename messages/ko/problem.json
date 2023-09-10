@@ -54,5 +54,9 @@
       "label": "출력 예시"
     },
     "submit": "완료"
+  },
+  "opengraph": {
+    "problem": "문제",
+    "privateProblem": "비공개 문제"
   }
 }
