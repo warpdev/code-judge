@@ -54,5 +54,9 @@
       "label": "Sample Output"
     },
     "submit": "Submit"
+  },
+  "opengraph": {
+    "problem": "Problem",
+    "privateProblem": "Private Problem"
   }
 }
