@@ -1,9 +1,8 @@
 import { pageWithOptions } from "@/utils/serverUtils";
 import { serverGetArticleList } from "@/utils/dbUtils/article";
-import Link from "next-intl/link";
+import Link from "next/link";
 import { twJoin } from "tailwind-merge";
 import dynamic from "next/dynamic";
-import { Suspense } from "react";
 import Skeleton from "@/components/Shared/Skeleton";
 
 const TimeText = dynamic(() => import("@/components/TimeText"), {

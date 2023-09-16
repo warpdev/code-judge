@@ -2,7 +2,7 @@ import { pageWithOptions } from "@/utils/serverUtils";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { z } from "zod";
 import { serverGetArticle } from "@/utils/dbUtils/article";
-import { twJoin, twMerge } from "tailwind-merge";
+import { twMerge } from "tailwind-merge";
 import { baseProse } from "@/style/baseStyle";
 
 const ParamSchema = z.object({
