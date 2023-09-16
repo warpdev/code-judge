@@ -59,7 +59,7 @@ const HeroSection = async ({ locale }: { locale: string }) => {
               </Link>
             ) : (
               <Link
-                href="/my-problems"
+                href="/problems"
                 title={t("try")}
                 className={twMerge(ctaButton, "px-6 py-3 text-lg")}
               >

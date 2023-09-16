@@ -6,6 +6,12 @@ export const JUDGE_API_URL = process.env.JUDGE_HOST || "";
 export const NAV_LINKS = [
   //TODO: add problems page
   {
+    name: "articles",
+    href: "/articles",
+    requiredAuth: false,
+    isNew: true,
+  },
+  {
     name: "problems",
     href: "/problems",
     requiredAuth: false,

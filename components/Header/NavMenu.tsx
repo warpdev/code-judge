@@ -9,6 +9,7 @@ import { useState } from "react";
 import { RemoveScroll } from "react-remove-scroll";
 import { useTranslations } from "next-intl";
 import { usePathname } from "next-intl/client";
+import { Badge } from "@/components/BaseComponents";
 
 const baseLinkStyle = twJoin(
   roundButton,
@@ -63,7 +64,12 @@ const NavMenu = ({ user }: { user?: Session["user"] }) => {
                     )}
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    {t(link.name as any)}
+                    <span>{t(link.name as any)}</span>
+                    {link.isNew && (
+                      <Badge className="ml-1 inline bg-sky-500 text-sky-500">
+                        New!
+                      </Badge>
+                    )}
                   </Link>
                 </li>
               ) : null,
