@@ -10,6 +10,8 @@ const TimeText = dynamic(() => import("@/components/TimeText"), {
   loading: (loadingProps) => <Skeleton $as="span" className="max-w-xs" />,
 });
 
+export const revalidate = 60;
+
 const ArticleListPage = pageWithOptions({})(async ({ locale }) => {
   const articleList = await serverGetArticleList(locale);
 
